@@ -28,3 +28,8 @@ The samples are archived at -80C and are ready to be processed for virome sequen
 2. **What virus community signatures are associated with colon cancer, and how do these compare to the bacterial communities?** We know that there are bacterial community signatures associated with colon cancer developement and presence. What is the virome diversity associated with colon cancer? It will also be important to assess how these trends compare to the bacterial community signatures. In many cases, lower bacterial diversity has been associated with higher viral diversity in disease states.
 
 3. **Can we construct an accurate predictive model using virome data, and can this supplement models using bacterial data?** We can construct models for predicting and classifying colon cancer based on bacterial community information. We will try this with the virus community data, compare it's accuracy to that of bacterial community models, and evaluate the extent to which they supplement each other.
+
+###Major Resources
+- [ ] **NexteraXT 24 Sample Library Kit**
+- [ ] **NexteraXT 96 Sample Library Kit**
+- [ ] **DNA Purification Columns for Virome Extraction**
