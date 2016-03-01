@@ -55,14 +55,32 @@ runFastx () {
 }
 
 runDeconSeq () {
-	# This is set for mouse decontamination
-	perl ${DeconsSeq} -f ${1} -dbs mmref -out_dir ${2}
+	# # This is set for mouse decontamination
+	# perl ${DeconsSeq} -f ${1} -dbs mmref -out_dir ${2}
+	mv ${2}/*clean.fq ${3}
+	mv ${2}/*cont.fq #{4}
+	rm -r ${2}
+}
+
+GetReadCount () {
+	# WARNING: remove the appended file before running this through a loop
+	echo Sample Name is ${1}
+	echo Catg is ${2}
+	export LineCount=$(wc -l ${3} |  | sed 's/ .*//')
+	awk --assign count=$LineCount --assign name=${1} --assign catg=${2} '{ print name"\t"catg"\t"count }' >> ${4}
 }
 
 # Get them subroutines
 export -f runCutadaptWithMap
 export -f runFastx
 export -f runDeconSeq
+export -f GetReadCount
+
+#######################################
+# Remove Appended Files Before Adding #
+#######################################
+rm ./${Output}/SequenceCounts/RawAndFinalCounts.tsv
+rm ./${Output}/SequenceCounts/ContaminationCounts.tsv
 
 ############
 # Run Data #
@@ -71,20 +89,50 @@ for name in $(awk '{ print $2 }' ${MappingFile}); do
 	# Because we are dealing with both directions
 	for primer in R1 R2; do
 		echo Processing sample ${name} and primer ${primer}...
-		mkdir ./${Output}/CutAdapt
-		runCutadaptWithMap \
-			${RawSequenceDir}/${name}*${primer}*.fastq \
-			${MappingFile} \
-			./${Output}/CutAdapt/${name}_${primer}.fastq
+		# mkdir ./${Output}/CutAdapt
+		# runCutadaptWithMap \
+		# 	${RawSequenceDir}/${name}*${primer}*.fastq \
+		# 	${MappingFile} \
+		# 	./${Output}/CutAdapt/${name}_${primer}.fastq
 
-		mkdir ./${Output}/FastxTrim
-		runFastx \
-			./${Output}/CutAdapt/${name}_${primer}.fastq \
-			./${Output}/FastxTrim/${name}_${primer}.fastq
+		# mkdir ./${Output}/FastxTrim
+		# runFastx \
+		# 	./${Output}/CutAdapt/${name}_${primer}.fastq \
+		# 	./${Output}/FastxTrim/${name}_${primer}.fastq
 
 		mkdir ./${Output}/DeconSeq
 		runDeconSeq \
 			./${Output}/FastxTrim/${name}_${primer}.fastq \
-			./${Output}/DeconSeq/${name}_${primer}.fastq
+			./${Output}/DeconSeq/${name}_${primer}.fastq \
+			./${Output}/DeconSeq/${name}_${primer}_clean.fastq \
+			./${Output}/DeconSeq/${name}_${primer}_cont.fastq
+
+		mkdir ./${Output}/SequenceCounts
+		# Get raw and filtered counts
+		GetReadCount \
+			${name}_${primer} \
+			'Raw' \
+			${RawSequenceDir}/${name}*${primer}*.fastq \
+			./${Output}/SequenceCounts/RawAndFinalCounts.tsv
+		GetReadCount \
+			${name}_${primer} \
+			'Final' \
+			./${Output}/DeconSeq/${name}_${primer}_clean.fastq \
+			./${Output}/SequenceCounts/RawAndFinalCounts.tsv
+		# Get counts for mouse contamination
+		GetReadCount \
+			${name}_${primer} \
+			'Cont' \
+			./${Output}/DeconSeq/${name}_${primer}_cont.fastq \
+			./${Output}/SequenceCounts/ContaminationCounts.tsv
+		GetReadCount \
+			${name}_${primer} \
+			'Clean' \
+			./${Output}/DeconSeq/${name}_${primer}_clean.fastq \
+			./${Output}/SequenceCounts/ContaminationCounts.tsv
 	done
 done
+
+
+
+
