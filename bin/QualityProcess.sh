@@ -16,7 +16,7 @@
 ##################
 
 # Set the variables to be used in this script
-export WorkingDirectory=/mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerVirome/bin/data
+export WorkingDirectory=/mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerVirome/data
 export Output='QualitySeqs'
 
 export MappingFile=/mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerVirome/data/NexteraXT001Map.tsv
