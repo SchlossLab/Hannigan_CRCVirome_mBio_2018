@@ -58,7 +58,7 @@ runDeconSeq () {
 	# # This is set for mouse decontamination
 	# perl ${DeconsSeq} -f ${1} -dbs mmref -out_dir ${2}
 	mv ${2}/*clean.fq ${3}
-	mv ${2}/*cont.fq #{4}
+	mv ${2}/*cont.fq ${4}
 	rm -r ${2}
 }
 
@@ -66,7 +66,7 @@ GetReadCount () {
 	# WARNING: remove the appended file before running this through a loop
 	echo Sample Name is ${1}
 	echo Catg is ${2}
-	export LineCount=$(wc -l ${3} |  | sed 's/ .*//')
+	export LineCount=$(wc -l ${3} | sed 's/ .*//')
 	awk --assign count=$LineCount --assign name=${1} --assign catg=${2} '{ print name"\t"catg"\t"count }' >> ${4}
 }
 
