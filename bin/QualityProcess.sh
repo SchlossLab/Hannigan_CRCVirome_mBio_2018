@@ -56,7 +56,7 @@ runFastx () {
 
 runDeconSeq () {
 	# # This is set for mouse decontamination
-	# perl ${DeconsSeq} -f ${1} -dbs mmref -out_dir ${2}
+	perl ${DeconsSeq} -f ${1} -dbs mmref -out_dir ${2}
 	mv ${2}/*clean.fq ${3}
 	mv ${2}/*cont.fq ${4}
 	rm -r ${2}
@@ -67,7 +67,7 @@ GetReadCount () {
 	echo Sample Name is ${1}
 	echo Catg is ${2}
 	export LineCount=$(wc -l ${3} | sed 's/ .*//')
-	awk --assign count=$LineCount --assign name=${1} --assign catg=${2} '{ print name"\t"catg"\t"count }' >> ${4}
+	awk --assign count=$LineCount --assign name=${1} --assign catg=${2} ' BEGIN { print name"\t"catg"\t"count }' >> ${4}
 }
 
 # Get them subroutines
@@ -100,12 +100,12 @@ for name in $(awk '{ print $2 }' ${MappingFile}); do
 		# 	./${Output}/CutAdapt/${name}_${primer}.fastq \
 		# 	./${Output}/FastxTrim/${name}_${primer}.fastq
 
-		mkdir ./${Output}/DeconSeq
-		runDeconSeq \
-			./${Output}/FastxTrim/${name}_${primer}.fastq \
-			./${Output}/DeconSeq/${name}_${primer}.fastq \
-			./${Output}/DeconSeq/${name}_${primer}_clean.fastq \
-			./${Output}/DeconSeq/${name}_${primer}_cont.fastq
+		# mkdir ./${Output}/DeconSeq
+		# runDeconSeq \
+		# 	./${Output}/FastxTrim/${name}_${primer}.fastq \
+		# 	./${Output}/DeconSeq/${name}_${primer}.fastq \
+		# 	./${Output}/DeconSeq/${name}_${primer}_clean.fastq \
+		# 	./${Output}/DeconSeq/${name}_${primer}_cont.fastq
 
 		mkdir ./${Output}/SequenceCounts
 		# Get raw and filtered counts
