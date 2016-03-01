@@ -47,7 +47,7 @@ runCutadaptWithMap () {
 	export SAMPLEID=$(echo ${1} | sed 's/_L001.*//g')
 	export THREEPRIME=$(awk --assign sampleid=$SAMPLEID '$2 == sampleid { print $22 }' ${2})
 	export FIVEPRIME=$(awk --assign sampleid=$SAMPLEID '$2 == sampleid { print $19 }' ${2})
-	${CutAdapt} --error-rate=0.1 --overlap=10 -a $THREEPRIME -a $FIVEPRIME ${1} > ${3}
+	python2.7 ${CutAdapt} --error-rate=0.1 --overlap=10 -a $THREEPRIME -a $FIVEPRIME ${1} > ${3}
 }
 
 runFastx () {
