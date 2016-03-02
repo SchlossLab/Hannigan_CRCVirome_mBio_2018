@@ -147,5 +147,6 @@ Rscript ${LocalBin}/RunReadCountStats.R \
 Rscript ${LocalBin}/RunReadCountStats.R \
 	-c ./${Output}/SequenceCounts/ContaminationCounts.tsv \
 	-o ${Figures}/ContaminationCounts.pdf \
-	-t "Read Count Before & After Mouse Removal"
+	-t "Read Count Before & After Mouse Removal" \
+	--log
 
