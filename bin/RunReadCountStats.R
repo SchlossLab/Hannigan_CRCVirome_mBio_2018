@@ -17,9 +17,11 @@ library("optparse")
 
 option_list = list(
 	make_option(c("-c", "--counts"), type="character", default=NULL, 
-			help="table with read count information", metavar="character"),
+			help="Table with read count information", metavar="character"),
 	make_option(c("-o", "--output"), type="character", default=NULL, 
-			help="output file for count summary", metavar="character")
+			help="Output file for count summary", metavar="character"),
+	make_option(c("-t", "--title"), type="character", default=NULL,
+                        help="Title for the resulting plot", metavar="character")
 ); 
 
 opt_parser = OptionParser(option_list=option_list);
@@ -42,7 +44,8 @@ ComparePlot <- ggplot(COUNTS, aes(x=V1, y=V3, fill=V2)) +
 	geom_bar(stat = "identity", position="dodge") + 
 	scale_fill_brewer(palette="Set2") + 
 	theme(axis.text.x = element_text(angle = 90, hjust = 1)) + 
-	ylab("Sequence Count")
+	ylab("Sequence Count") +
+	coord_flip()
 
 pdf(file=opt$output, width=8, height=6)
 	ComparePlot
