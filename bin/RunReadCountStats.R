@@ -45,7 +45,9 @@ ComparePlot <- ggplot(COUNTS, aes(x=V1, y=V3, fill=V2)) +
 	scale_fill_brewer(palette="Set2") + 
 	theme(axis.text.x = element_text(angle = 90, hjust = 1)) + 
 	ylab("Sequence Count") +
-	coord_flip()
+	xlab("Samples") +
+	coord_flip() +
+	ggtitle(opt$title)
 
 pdf(file=opt$output, width=8, height=6)
 	ComparePlot
