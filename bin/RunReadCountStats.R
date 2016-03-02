@@ -37,7 +37,12 @@ COUNTS <- read.delim(file=opt$counts, sep="\t", header=F)
 
 Summary <- summary(COUNTS)
 
-ComparePlot <- ggplot(COUNTS, aes(x=V1, y=V3, fill=V2)) + theme_classic() + geom_bar(stat = "identity", position="dodge") + scale_fill_brewer(palette="Set2")
+ComparePlot <- ggplot(COUNTS, aes(x=V1, y=V3, fill=V2)) + 
+	theme_classic() + 
+	geom_bar(stat = "identity", position="dodge") + 
+	scale_fill_brewer(palette="Set2") + 
+	theme(axis.text.x = element_text(angle = 90, hjust = 1)) + 
+	ylab("Sequence Count")
 
 pdf(file=opt$output, width=8, height=6)
 	ComparePlot
