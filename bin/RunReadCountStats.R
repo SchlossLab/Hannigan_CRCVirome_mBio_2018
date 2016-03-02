@@ -9,7 +9,6 @@
 
 library("ggplot2")
 library("RColorBrewer")
-library("gridExtra")
 
 #################################
 # Parse Input from Command Line #
@@ -40,6 +39,6 @@ Summary <- summary(COUNTS)
 ComparePlot <- ggplot(COUNTS, aes(x=V1, y=V3, colour=V2)) + theme_classic() + geom_bar() + scale_colour_brewer(palette="Set2")
 
 pdf(file=opt$output, width=8, height=6)
-	grid.table(Summary, show.rownames=FALSE)
+	table(Summary)
 	ComparePlot
 dev.off()
