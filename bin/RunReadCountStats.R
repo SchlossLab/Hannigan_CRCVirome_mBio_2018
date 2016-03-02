@@ -9,7 +9,7 @@
 
 library("ggplot2")
 library("RColorBrewer")
-library(optparse)
+library("optparse")
 
 #################################
 # Parse Input from Command Line #
@@ -37,9 +37,8 @@ COUNTS <- read.delim(file=opt$counts, sep="\t", header=F)
 
 Summary <- summary(COUNTS)
 
-ComparePlot <- ggplot(COUNTS, aes(x=V1, y=V3, colour=V2)) + theme_classic() + geom_bar() + scale_colour_brewer(palette="Set2")
+ComparePlot <- ggplot(COUNTS, aes(x=V1, y=V3, colour=V2)) + theme_classic() + geom_bar(stat = "identity") + scale_colour_brewer(palette="Set2")
 
 pdf(file=opt$output, width=8, height=6)
-	table(Summary)
 	ComparePlot
 dev.off()
