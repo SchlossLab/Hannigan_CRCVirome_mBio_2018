@@ -33,7 +33,7 @@ export DeconsSeq=/mnt/EXT/Schloss-data/bin/deconseq-standalone-0.4.3/deconseq.pl
 export fastx=/home/ghannig/bin/fastq_quality_trimmer
 
 export RawSequenceDir=/mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerVirome/data/rawFastq/NexteraXT001
-export 16sRef=/mnt/EXT/Schloss-data/dbs/Silva_seed_v123/silva_bacteria_seed_v123
+# export 16sRef=/mnt/EXT/Schloss-data/dbs/Silva_seed_v123/silva_bacteria_seed_v123
 
 # Make the output directory and move to the working directory
 echo Creating output directory...
@@ -184,8 +184,9 @@ for name in $(awk '{ print $2 }' ${MappingFile}); do
 
 		# Convert fastq file to fasta
 		/home/ghannig/bin/fastq_to_fasta \
-			-i ./${Output}/DeconSeq/${name}_${primer}_clean.fastq \
-			-o ./${Output}/DeconSeq/${name}_${primer}_clean.fasta
+		-Q 33 \
+		-i ./${Output}/DeconSeq/${name}_${primer}_clean.fastq \
+		-o ./${Output}/DeconSeq/${name}_${primer}_clean.fasta
 
 		# Compare bacterial contamination
 		16sContaminationEst \
