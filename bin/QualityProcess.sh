@@ -94,23 +94,23 @@ for name in $(awk '{ print $2 }' ${MappingFile}); do
 	# Because we are dealing with both directions
 	for primer in R1 R2; do
 		echo Processing sample ${name} and primer ${primer}...
-		# mkdir ./${Output}/CutAdapt
-		# runCutadaptWithMap \
-		# 	${RawSequenceDir}/${name}*${primer}*.fastq \
-		# 	${MappingFile} \
-		# 	./${Output}/CutAdapt/${name}_${primer}.fastq
+		mkdir ./${Output}/CutAdapt
+		runCutadaptWithMap \
+			${RawSequenceDir}/${name}*${primer}*.fastq \
+			${MappingFile} \
+			./${Output}/CutAdapt/${name}_${primer}.fastq
 
-		# mkdir ./${Output}/FastxTrim
-		# runFastx \
-		# 	./${Output}/CutAdapt/${name}_${primer}.fastq \
-		# 	./${Output}/FastxTrim/${name}_${primer}.fastq
+		mkdir ./${Output}/FastxTrim
+		runFastx \
+			./${Output}/CutAdapt/${name}_${primer}.fastq \
+			./${Output}/FastxTrim/${name}_${primer}.fastq
 
-		# mkdir ./${Output}/DeconSeq
-		# runDeconSeq \
-		# 	./${Output}/FastxTrim/${name}_${primer}.fastq \
-		# 	./${Output}/DeconSeq/${name}_${primer}.fastq \
-		# 	./${Output}/DeconSeq/${name}_${primer}_clean.fastq \
-		# 	./${Output}/DeconSeq/${name}_${primer}_cont.fastq
+		mkdir ./${Output}/DeconSeq
+		runDeconSeq \
+			./${Output}/FastxTrim/${name}_${primer}.fastq \
+			./${Output}/DeconSeq/${name}_${primer}.fastq \
+			./${Output}/DeconSeq/${name}_${primer}_clean.fastq \
+			./${Output}/DeconSeq/${name}_${primer}_cont.fastq
 
 		mkdir ./${Output}/SequenceCounts
 		# Get raw and filtered counts
