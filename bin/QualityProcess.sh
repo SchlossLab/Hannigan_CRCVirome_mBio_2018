@@ -125,6 +125,7 @@ export -f 16sContaminationEst
 #######################################
 rm ./${Output}/SequenceCounts/RawAndFinalCounts.tsv
 rm ./${Output}/SequenceCounts/ContaminationCounts.tsv
+rm ./${Output}/SequenceCounts/PercentContamination.tsv
 rm ./${Output}/SequenceCounts/16sHits.tsv
 
 ############
@@ -183,7 +184,7 @@ for name in $(awk '{ print $2 }' ${MappingFile}); do
 			./${Output}/SequenceCounts/PercentContamination.tsv
 
 		# Convert fastq file to fasta
-		fastq2fasta \
+		${fastq2fasta} \
 			-i ./${Output}/DeconSeq/${name}_${primer}_clean.fastq \
 			-o ./${Output}/DeconSeq/${name}_${primer}_clean.fasta
 
