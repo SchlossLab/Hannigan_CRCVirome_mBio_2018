@@ -22,7 +22,9 @@ option_list = list(
 	make_option(c("-o", "--output"), type="character", default=NULL, 
 			help="Output file for count summary", metavar="character"),
 	make_option(c("-t", "--title"), type="character", default=NULL,
-                        help="Title for the resulting plot", metavar="character")
+                        help="Title for the resulting plot", metavar="character"),
+	make_option(c("-l", "--log"), action="store_true", default=FALSE,
+			help="Should we use a log scale? [default %default]")
 ); 
 
 opt_parser = OptionParser(option_list=option_list);
@@ -49,6 +51,10 @@ ComparePlot <- ggplot(COUNTS, aes(x=V1, y=V3, fill=V2)) +
 	xlab("Samples") +
 	coord_flip() +
 	ggtitle(opt$title)
+
+if (opt$log) {
+   ComparePlot <- ComparePlot + scale_y_log10()
+}
 
 pdf(file=opt$output, width=8, height=6)
 	ComparePlot
