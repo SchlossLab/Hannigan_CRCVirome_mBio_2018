@@ -33,6 +33,7 @@ export DeconsSeq=/mnt/EXT/Schloss-data/bin/deconseq-standalone-0.4.3/deconseq.pl
 export fastx=/home/ghannig/bin/fastq_quality_trimmer
 
 export RawSequenceDir=/mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerVirome/data/rawFastq/NexteraXT001
+export 16sRef=/mnt/EXT/Schloss-data/dbs/Silva_seed_v123/silva_bacteria_seed_v123
 
 # Make the output directory and move to the working directory
 echo Creating output directory...
@@ -75,17 +76,53 @@ GetReadCount () {
 	awk --assign count=$LineCount --assign name=${1} --assign catg=${2} ' BEGIN { print name"\t"catg"\t"count/4 }' >> ${4}
 }
 
+GetPercent () {
+	echo Sample Name is ${1}
+	export Clean=$(wc -l ${2} | sed 's/ .*//')
+	export Cont=$(wc -l ${3} | sed 's/ .*//')
+	awk --assign name=${1} --assign clean=${Clean} --assign cont=${Cont} 'BEGIN { print name"\tPercentCont\t"100*cont/(clean+cont) }' >> ${4}
+}
+
+16sContaminationEst () {
+	blastn \
+		-query ${2} \
+		-out ${2}.tmp \
+		-db ${16sRef} \
+		-outfmt 6 \
+		-evalue 1e-10 \
+		-max_target_seqs 1
+
+	# Get the unique 16S hits for the sample
+	cut -f 2 ${2}.tmp \
+		| sort \
+		| uniq \
+		> ${2}.tmp2
+
+	export HitCount=$(wc -l ${2}.tmp2 | sed 's/ .*//')
+	export TotalCount=$(wc -l ${2} | sed 's/ .*//')
+
+	# Create table with contamination information
+	awk --assign name=${1} --assign hitcount=${HitCount} -assign totalcount=${TotalCount} 'BEGIN { print name"\tPercent16sHits\t"100*hitcount/(totalcount/4) }' >> ${3}
+
+	# Remove the tmp file
+	rm ${2}.tmp
+	rm ${2}.tmp2
+}
+
 # Get them subroutines
 export -f runCutadaptWithMap
 export -f runFastx
 export -f runDeconSeq
 export -f GetReadCount
+export -f GetPercent
+export -f 16sContaminationEst
 
 #######################################
 # Remove Appended Files Before Adding #
 #######################################
 rm ./${Output}/SequenceCounts/RawAndFinalCounts.tsv
 rm ./${Output}/SequenceCounts/ContaminationCounts.tsv
+rm ./${Output}/SequenceCounts/16sHits.tsv
 
 ############
 # Run Data #
@@ -94,23 +131,23 @@ for name in $(awk '{ print $2 }' ${MappingFile}); do
 	# Because we are dealing with both directions
 	for primer in R1 R2; do
 		echo Processing sample ${name} and primer ${primer}...
-		mkdir ./${Output}/CutAdapt
-		runCutadaptWithMap \
-			${RawSequenceDir}/${name}*${primer}*.fastq \
-			${MappingFile} \
-			./${Output}/CutAdapt/${name}_${primer}.fastq
+		# mkdir ./${Output}/CutAdapt
+		# runCutadaptWithMap \
+		# 	${RawSequenceDir}/${name}*${primer}*.fastq \
+		# 	${MappingFile} \
+		# 	./${Output}/CutAdapt/${name}_${primer}.fastq
 
-		mkdir ./${Output}/FastxTrim
-		runFastx \
-			./${Output}/CutAdapt/${name}_${primer}.fastq \
-			./${Output}/FastxTrim/${name}_${primer}.fastq
+		# mkdir ./${Output}/FastxTrim
+		# runFastx \
+		# 	./${Output}/CutAdapt/${name}_${primer}.fastq \
+		# 	./${Output}/FastxTrim/${name}_${primer}.fastq
 
-		mkdir ./${Output}/DeconSeq
-		runDeconSeq \
-			./${Output}/FastxTrim/${name}_${primer}.fastq \
-			./${Output}/DeconSeq/${name}_${primer}.fastq \
-			./${Output}/DeconSeq/${name}_${primer}_clean.fastq \
-			./${Output}/DeconSeq/${name}_${primer}_cont.fastq
+		# mkdir ./${Output}/DeconSeq
+		# runDeconSeq \
+		# 	./${Output}/FastxTrim/${name}_${primer}.fastq \
+		# 	./${Output}/DeconSeq/${name}_${primer}.fastq \
+		# 	./${Output}/DeconSeq/${name}_${primer}_clean.fastq \
+		# 	./${Output}/DeconSeq/${name}_${primer}_cont.fastq
 
 		mkdir ./${Output}/SequenceCounts
 		# Get raw and filtered counts
@@ -124,6 +161,7 @@ for name in $(awk '{ print $2 }' ${MappingFile}); do
 			'Final' \
 			./${Output}/DeconSeq/${name}_${primer}_clean.fastq \
 			./${Output}/SequenceCounts/RawAndFinalCounts.tsv
+
 		# Get counts for mouse contamination
 		GetReadCount \
 			${name}_${primer} \
@@ -135,6 +173,17 @@ for name in $(awk '{ print $2 }' ${MappingFile}); do
 			'Clean' \
 			./${Output}/DeconSeq/${name}_${primer}_clean.fastq \
 			./${Output}/SequenceCounts/ContaminationCounts.tsv
+		GetPercent \
+			${name}_${primer} \
+			./${Output}/DeconSeq/${name}_${primer}_clean.fastq \
+			./${Output}/DeconSeq/${name}_${primer}_cont.fastq \
+			./${Output}/SequenceCounts/PercentContamination.tsv
+
+		# Compare bacterial contamination
+		16sContaminationEst \
+			${name}_${primer} \
+			./${Output}/DeconSeq/${name}_${primer}_clean.fastq \
+			./${Output}/SequenceCounts/16sHits.tsv
 	done
 done
 
@@ -149,4 +198,14 @@ Rscript ${LocalBin}/RunReadCountStats.R \
 	-o ${Figures}/ContaminationCounts.pdf \
 	-t "Read Count Before & After Mouse Removal" \
 	--log
+
+Rscript ${LocalBin}/RunReadCountStats.R \
+	-c ./${Output}/SequenceCounts/PercentContamination.tsv \
+	-o ${Figures}/PercentContamination.pdf \
+	-t "PercentContamination"
+
+Rscript ${LocalBin}/RunReadCountStats.R \
+	-c ./${Output}/SequenceCounts/16sHits.tsv \
+	-o ${Figures}/16sHits.pdf \
+	-t "Percent Reads Mapping to 16S"
 
