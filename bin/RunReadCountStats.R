@@ -62,6 +62,6 @@ pdf(file=opt$output, width=8, height=6)
 	ComparePlot
 dev.off()
 
-png(file=opt$png, width=8, height=6)
+png(file=opt$png, width=8, height=6, units="in", res=300)
 	ComparePlot
 dev.off()
