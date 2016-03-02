@@ -50,5 +50,6 @@ ComparePlot <- ggplot(COUNTS, aes(x=V1, y=V3, fill=V2)) +
 	ggtitle(opt$title)
 
 pdf(file=opt$output, width=8, height=6)
+	Summary
 	ComparePlot
 dev.off()
