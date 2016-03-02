@@ -37,7 +37,7 @@ COUNTS <- read.delim(file=opt$counts, sep="\t", header=F)
 
 Summary <- summary(COUNTS)
 
-ComparePlot <- ggplot(COUNTS, aes(x=V1, y=V3, colour=V2)) + theme_classic() + geom_bar(stat = "identity") + scale_colour_brewer(palette="Set2")
+ComparePlot <- ggplot(COUNTS, aes(x=V1, y=V3, fill=V2)) + theme_classic() + geom_bar(stat = "identity", position="dodge") + scale_fill_brewer(palette="Set2")
 
 pdf(file=opt$output, width=8, height=6)
 	ComparePlot
