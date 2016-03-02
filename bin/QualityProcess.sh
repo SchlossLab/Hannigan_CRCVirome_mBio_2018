@@ -11,6 +11,11 @@
 #PBS -V
 #PBS -A schloss_lab
 
+############################
+# Load in Required Modules #
+############################
+module load R/3.2.3
+
 ##################
 # Set Script Env #
 ##################
@@ -18,11 +23,11 @@
 # Set the variables to be used in this script
 export WorkingDirectory=/mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerVirome/data
 export Output='QualitySeqs'
+export Figures=/mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerVirome/figures
 
 export MappingFile=/mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerVirome/data/NexteraXT001Map.tsv
 
-export GitBin=/home/ghannig/git/SchlossLab/bin/
-export SeqtkPath=/home/ghannig/bin/seqtk/seqtk
+export LocalBin=/mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerVirome/bin
 export CutAdapt=/mnt/EXT/Schloss-data/bin/cutadapt-1.9.1/bin/cutadapt
 export DeconsSeq=/mnt/EXT/Schloss-data/bin/deconseq-standalone-0.4.3/deconseq.pl
 export fastx=/home/ghannig/bin/fastq_quality_trimmer
@@ -107,32 +112,40 @@ for name in $(awk '{ print $2 }' ${MappingFile}); do
 		# 	./${Output}/DeconSeq/${name}_${primer}_clean.fastq \
 		# 	./${Output}/DeconSeq/${name}_${primer}_cont.fastq
 
-		mkdir ./${Output}/SequenceCounts
-		# Get raw and filtered counts
-		GetReadCount \
-			${name}_${primer} \
-			'Raw' \
-			${RawSequenceDir}/${name}*${primer}*.fastq \
-			./${Output}/SequenceCounts/RawAndFinalCounts.tsv
-		GetReadCount \
-			${name}_${primer} \
-			'Final' \
-			./${Output}/DeconSeq/${name}_${primer}_clean.fastq \
-			./${Output}/SequenceCounts/RawAndFinalCounts.tsv
-		# Get counts for mouse contamination
-		GetReadCount \
-			${name}_${primer} \
-			'Cont' \
-			./${Output}/DeconSeq/${name}_${primer}_cont.fastq \
-			./${Output}/SequenceCounts/ContaminationCounts.tsv
-		GetReadCount \
-			${name}_${primer} \
-			'Clean' \
-			./${Output}/DeconSeq/${name}_${primer}_clean.fastq \
-			./${Output}/SequenceCounts/ContaminationCounts.tsv
+		# mkdir ./${Output}/SequenceCounts
+		# # Get raw and filtered counts
+		# GetReadCount \
+		# 	${name}_${primer} \
+		# 	'Raw' \
+		# 	${RawSequenceDir}/${name}*${primer}*.fastq \
+		# 	./${Output}/SequenceCounts/RawAndFinalCounts.tsv
+		# GetReadCount \
+		# 	${name}_${primer} \
+		# 	'Final' \
+		# 	./${Output}/DeconSeq/${name}_${primer}_clean.fastq \
+		# 	./${Output}/SequenceCounts/RawAndFinalCounts.tsv
+		# # Get counts for mouse contamination
+		# GetReadCount \
+		# 	${name}_${primer} \
+		# 	'Cont' \
+		# 	./${Output}/DeconSeq/${name}_${primer}_cont.fastq \
+		# 	./${Output}/SequenceCounts/ContaminationCounts.tsv
+		# GetReadCount \
+		# 	${name}_${primer} \
+		# 	'Clean' \
+		# 	./${Output}/DeconSeq/${name}_${primer}_clean.fastq \
+		# 	./${Output}/SequenceCounts/ContaminationCounts.tsv
 	done
 done
 
+# Plot the resulting sequence count files
+Rscript ${LocalBin}/RunReadCountStats.R \
+	-c ./${Output}/SequenceCounts/RawAndFinalCounts.tsv \
+	-o ${Figures}/RawAndFinalCounts.pdf \
+	-t "Read Count Before & After QC"
 
-
+Rscript ${LocalBin}/RunReadCountStats.R \
+	-c ./${Output}/SequenceCounts/ContaminationCounts.tsv \
+	-o ${Figures}/ContaminationCounts.pdf \
+	-t "Read Count Before & After Mouse Removal"
 
