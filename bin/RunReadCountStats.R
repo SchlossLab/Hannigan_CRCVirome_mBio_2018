@@ -21,6 +21,8 @@ option_list = list(
 			help="Table with read count information", metavar="character"),
 	make_option(c("-o", "--output"), type="character", default=NULL, 
 			help="Output file for count summary", metavar="character"),
+	make_option(c("-p", "--png"), type="character", default=NULL, 
+			help="PNG output file for count summary", metavar="character"),
 	make_option(c("-t", "--title"), type="character", default=NULL,
                         help="Title for the resulting plot", metavar="character"),
 	make_option(c("-l", "--log"), action="store_true", default=FALSE,
@@ -57,5 +59,9 @@ if (opt$log) {
 }
 
 pdf(file=opt$output, width=8, height=6)
+	ComparePlot
+dev.off()
+
+png(file=opt$png, width=8, height=6)
 	ComparePlot
 dev.off()

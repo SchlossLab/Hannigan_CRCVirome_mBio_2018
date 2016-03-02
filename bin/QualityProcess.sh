@@ -124,10 +124,10 @@ export -f 16sContaminationEst
 #######################################
 # Remove Appended Files Before Adding #
 #######################################
-rm ./${Output}/SequenceCounts/RawAndFinalCounts.tsv
-rm ./${Output}/SequenceCounts/ContaminationCounts.tsv
-rm ./${Output}/SequenceCounts/PercentContamination.tsv
-rm ./${Output}/SequenceCounts/16sHits.tsv
+# rm ./${Output}/SequenceCounts/RawAndFinalCounts.tsv
+# rm ./${Output}/SequenceCounts/ContaminationCounts.tsv
+# rm ./${Output}/SequenceCounts/PercentContamination.tsv
+# rm ./${Output}/SequenceCounts/16sHits.tsv
 
 ############
 # Run Data #
@@ -154,47 +154,47 @@ for name in $(awk '{ print $2 }' ${MappingFile}); do
 		# 	./${Output}/DeconSeq/${name}_${primer}_clean.fastq \
 		# 	./${Output}/DeconSeq/${name}_${primer}_cont.fastq
 
-		mkdir ./${Output}/SequenceCounts
-		# Get raw and filtered counts
-		GetReadCount \
-			${name}_${primer} \
-			'Raw' \
-			${RawSequenceDir}/${name}*${primer}*.fastq \
-			./${Output}/SequenceCounts/RawAndFinalCounts.tsv
-		GetReadCount \
-			${name}_${primer} \
-			'Final' \
-			./${Output}/DeconSeq/${name}_${primer}_clean.fastq \
-			./${Output}/SequenceCounts/RawAndFinalCounts.tsv
+		# mkdir ./${Output}/SequenceCounts
+		# # Get raw and filtered counts
+		# GetReadCount \
+		# 	${name}_${primer} \
+		# 	'Raw' \
+		# 	${RawSequenceDir}/${name}*${primer}*.fastq \
+		# 	./${Output}/SequenceCounts/RawAndFinalCounts.tsv
+		# GetReadCount \
+		# 	${name}_${primer} \
+		# 	'Final' \
+		# 	./${Output}/DeconSeq/${name}_${primer}_clean.fastq \
+		# 	./${Output}/SequenceCounts/RawAndFinalCounts.tsv
 
-		# Get counts for mouse contamination
-		GetReadCount \
-			${name}_${primer} \
-			'Cont' \
-			./${Output}/DeconSeq/${name}_${primer}_cont.fastq \
-			./${Output}/SequenceCounts/ContaminationCounts.tsv
-		GetReadCount \
-			${name}_${primer} \
-			'Clean' \
-			./${Output}/DeconSeq/${name}_${primer}_clean.fastq \
-			./${Output}/SequenceCounts/ContaminationCounts.tsv
-		GetPercent \
-			${name}_${primer} \
-			./${Output}/DeconSeq/${name}_${primer}_clean.fastq \
-			./${Output}/DeconSeq/${name}_${primer}_cont.fastq \
-			./${Output}/SequenceCounts/PercentContamination.tsv
+		# # Get counts for mouse contamination
+		# GetReadCount \
+		# 	${name}_${primer} \
+		# 	'Cont' \
+		# 	./${Output}/DeconSeq/${name}_${primer}_cont.fastq \
+		# 	./${Output}/SequenceCounts/ContaminationCounts.tsv
+		# GetReadCount \
+		# 	${name}_${primer} \
+		# 	'Clean' \
+		# 	./${Output}/DeconSeq/${name}_${primer}_clean.fastq \
+		# 	./${Output}/SequenceCounts/ContaminationCounts.tsv
+		# GetPercent \
+		# 	${name}_${primer} \
+		# 	./${Output}/DeconSeq/${name}_${primer}_clean.fastq \
+		# 	./${Output}/DeconSeq/${name}_${primer}_cont.fastq \
+		# 	./${Output}/SequenceCounts/PercentContamination.tsv
 
-		# Convert fastq file to fasta
-		/home/ghannig/bin/fastq_to_fasta \
-		-Q 33 \
-		-i ./${Output}/DeconSeq/${name}_${primer}_clean.fastq \
-		-o ./${Output}/DeconSeq/${name}_${primer}_clean.fasta
+		# # Convert fastq file to fasta
+		# /home/ghannig/bin/fastq_to_fasta \
+		# -Q 33 \
+		# -i ./${Output}/DeconSeq/${name}_${primer}_clean.fastq \
+		# -o ./${Output}/DeconSeq/${name}_${primer}_clean.fasta
 
-		# Compare bacterial contamination
-		16sContaminationEst \
-			${name}_${primer} \
-			./${Output}/DeconSeq/${name}_${primer}_clean.fasta \
-			./${Output}/SequenceCounts/16sHits.tsv
+		# # Compare bacterial contamination
+		# 16sContaminationEst \
+		# 	${name}_${primer} \
+		# 	./${Output}/DeconSeq/${name}_${primer}_clean.fasta \
+		# 	./${Output}/SequenceCounts/16sHits.tsv
 	done
 done
 
