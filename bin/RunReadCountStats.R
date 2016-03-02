@@ -9,6 +9,7 @@
 
 library("ggplot2")
 library("RColorBrewer")
+library(optparse)
 
 #################################
 # Parse Input from Command Line #
