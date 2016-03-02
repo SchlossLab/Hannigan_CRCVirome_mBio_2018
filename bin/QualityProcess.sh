@@ -106,7 +106,7 @@ GetPercent () {
 	echo Total count is $TotalCount
 
 	# Create table with contamination information
-	awk --assign name=${1} --assign hitcount=${HitCount} -assign totalcount=${TotalCount} 'BEGIN { print name"\tPercent16sHits\t"100*hitcount/(totalcount/2) }' >> ${3}
+	awk --assign name=${1} --assign hitcount=${HitCount} --assign totalcount=${TotalCount} 'BEGIN { print name"\tPercent16sHits\t"100*hitcount/(totalcount/2) }' >> ${3}
 
 	# Remove the tmp file
 	rm ${2}.tmp
