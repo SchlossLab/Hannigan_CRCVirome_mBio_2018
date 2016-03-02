@@ -87,7 +87,7 @@ GetPercent () {
 	blastn \
 		-query ${2} \
 		-out ${2}.tmp \
-		-db ${16sRef} \
+		-db /mnt/EXT/Schloss-data/dbs/Silva_seed_v123/silva_bacteria_seed_v123 \
 		-outfmt 6 \
 		-evalue 1e-10 \
 		-max_target_seqs 1
