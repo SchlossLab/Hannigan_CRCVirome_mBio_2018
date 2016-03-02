@@ -112,29 +112,29 @@ for name in $(awk '{ print $2 }' ${MappingFile}); do
 		# 	./${Output}/DeconSeq/${name}_${primer}_clean.fastq \
 		# 	./${Output}/DeconSeq/${name}_${primer}_cont.fastq
 
-		# mkdir ./${Output}/SequenceCounts
-		# # Get raw and filtered counts
-		# GetReadCount \
-		# 	${name}_${primer} \
-		# 	'Raw' \
-		# 	${RawSequenceDir}/${name}*${primer}*.fastq \
-		# 	./${Output}/SequenceCounts/RawAndFinalCounts.tsv
-		# GetReadCount \
-		# 	${name}_${primer} \
-		# 	'Final' \
-		# 	./${Output}/DeconSeq/${name}_${primer}_clean.fastq \
-		# 	./${Output}/SequenceCounts/RawAndFinalCounts.tsv
-		# # Get counts for mouse contamination
-		# GetReadCount \
-		# 	${name}_${primer} \
-		# 	'Cont' \
-		# 	./${Output}/DeconSeq/${name}_${primer}_cont.fastq \
-		# 	./${Output}/SequenceCounts/ContaminationCounts.tsv
-		# GetReadCount \
-		# 	${name}_${primer} \
-		# 	'Clean' \
-		# 	./${Output}/DeconSeq/${name}_${primer}_clean.fastq \
-		# 	./${Output}/SequenceCounts/ContaminationCounts.tsv
+		mkdir ./${Output}/SequenceCounts
+		# Get raw and filtered counts
+		GetReadCount \
+			${name}_${primer} \
+			'Raw' \
+			${RawSequenceDir}/${name}*${primer}*.fastq \
+			./${Output}/SequenceCounts/RawAndFinalCounts.tsv
+		GetReadCount \
+			${name}_${primer} \
+			'Final' \
+			./${Output}/DeconSeq/${name}_${primer}_clean.fastq \
+			./${Output}/SequenceCounts/RawAndFinalCounts.tsv
+		# Get counts for mouse contamination
+		GetReadCount \
+			${name}_${primer} \
+			'Cont' \
+			./${Output}/DeconSeq/${name}_${primer}_cont.fastq \
+			./${Output}/SequenceCounts/ContaminationCounts.tsv
+		GetReadCount \
+			${name}_${primer} \
+			'Clean' \
+			./${Output}/DeconSeq/${name}_${primer}_clean.fastq \
+			./${Output}/SequenceCounts/ContaminationCounts.tsv
 	done
 done
 
