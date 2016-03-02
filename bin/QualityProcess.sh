@@ -67,7 +67,7 @@ GetReadCount () {
 	echo Sample Name is ${1}
 	echo Catg is ${2}
 	export LineCount=$(wc -l ${3} | sed 's/ .*//')
-	awk --assign count=$LineCount --assign name=${1} --assign catg=${2} ' BEGIN { print name"\t"catg"\t"count }' >> ${4}
+	awk --assign count=$LineCount --assign name=${1} --assign catg=${2} ' BEGIN { print name"\t"catg"\t"count/4 }' >> ${4}
 }
 
 # Get them subroutines
