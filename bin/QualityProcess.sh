@@ -102,6 +102,8 @@ GetPercent () {
 
 	export HitCount=$(wc -l ${2}.tmp2 | sed 's/ .*//')
 	export TotalCount=$(wc -l ${2} | sed 's/ .*//')
+	echo Hit count is $HitCount
+	echo Total count is $TotalCount
 
 	# Create table with contamination information
 	awk --assign name=${1} --assign hitcount=${HitCount} -assign totalcount=${TotalCount} 'BEGIN { print name"\tPercent16sHits\t"100*hitcount/(totalcount/2) }' >> ${3}
