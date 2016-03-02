@@ -31,7 +31,6 @@ export LocalBin=/mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerVirome/bi
 export CutAdapt=/mnt/EXT/Schloss-data/bin/cutadapt-1.9.1/bin/cutadapt
 export DeconsSeq=/mnt/EXT/Schloss-data/bin/deconseq-standalone-0.4.3/deconseq.pl
 export fastx=/home/ghannig/bin/fastq_quality_trimmer
-export fastq2fasta=/home/ghannig/bin/fastq_to_fasta
 
 export RawSequenceDir=/mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerVirome/data/rawFastq/NexteraXT001
 export 16sRef=/mnt/EXT/Schloss-data/dbs/Silva_seed_v123/silva_bacteria_seed_v123
@@ -184,7 +183,7 @@ for name in $(awk '{ print $2 }' ${MappingFile}); do
 			./${Output}/SequenceCounts/PercentContamination.tsv
 
 		# Convert fastq file to fasta
-		${fastq2fasta} \
+		/home/ghannig/bin/fastq_to_fasta \
 			-i ./${Output}/DeconSeq/${name}_${primer}_clean.fastq \
 			-o ./${Output}/DeconSeq/${name}_${primer}_clean.fasta
 
