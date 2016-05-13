@@ -203,24 +203,30 @@ Rscript ${LocalBin}/RunReadCountStats.R \
 	-c ./${Output}/SequenceCounts/RawAndFinalCounts.tsv \
 	-o ${Figures}/RawAndFinalCounts.pdf \
 	-p ${Figures}/RawAndFinalCounts.png
-	-t "Read Count Before & After QC"
+	-t "Read Count Before & After QC" \
+	-y "Sequence Count"
 
 Rscript ${LocalBin}/RunReadCountStats.R \
 	-c ./${Output}/SequenceCounts/ContaminationCounts.tsv \
 	-o ${Figures}/ContaminationCounts.pdf \
 	-p ${Figures}/ContaminationCounts.png \
 	-t "Read Count Before & After Mouse Removal" \
-	--log
+	--log \
+	-y "Sequence Count"
 
 Rscript ${LocalBin}/RunReadCountStats.R \
 	-c ./${Output}/SequenceCounts/PercentContamination.tsv \
 	-o ${Figures}/PercentContamination.pdf \
 	-p ${Figures}/PercentContamination.png \
-	-t "PercentContamination"
+	-t "PercentContamination" \
+	-r \
+	-y "Percent Contamination"
 
 Rscript ${LocalBin}/RunReadCountStats.R \
 	-c ./${Output}/SequenceCounts/16sHits.tsv \
 	-o ${Figures}/16sHits.pdf \
 	-p ${Figures}/16sHits.png \
-	-t "Percent Reads Mapping to 16S"
+	-t "Percent Reads Mapping to 16S" \
+	-r \
+	-y "Percent Contamination"
 

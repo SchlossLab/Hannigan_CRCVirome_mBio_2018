@@ -26,7 +26,11 @@ option_list = list(
 	make_option(c("-t", "--title"), type="character", default=NULL,
                         help="Title for the resulting plot", metavar="character"),
 	make_option(c("-l", "--log"), action="store_true", default=FALSE,
-			help="Should we use a log scale? [default %default]")
+			help="Should we use a log scale? [default %default]"),
+	make_option(c("-r", "--remove"), action="store_true", default=FALSE,
+			help="Remove negative controls from view [default %default]"),
+	make_option(c("-y", "--ylabel"), type="character", default=NULL,
+                        help="Label for y axis", metavar="character")
 ); 
 
 opt_parser = OptionParser(option_list=option_list);
@@ -37,8 +41,11 @@ opt = parse_args(opt_parser);
 #################
 
 COUNTS <- read.delim(file=opt$counts, sep="\t", header=F)
-COUNTS <- COUNTS[c(!grepl("MG100008", COUNTS$V1)),]
-COUNTS <- COUNTS[c(!grepl("MG100013", COUNTS$V1)),]
+
+if (opt$remove) {
+	COUNTS <- COUNTS[c(!grepl("MG100008", COUNTS$V1)),]
+	COUNTS <- COUNTS[c(!grepl("MG100013", COUNTS$V1)),]
+}
 
 ############
 # Run Data #
