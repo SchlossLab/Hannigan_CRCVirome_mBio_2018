@@ -202,7 +202,7 @@ done
 Rscript ${LocalBin}/RunReadCountStats.R \
 	-c ./${Output}/SequenceCounts/RawAndFinalCounts.tsv \
 	-o ${Figures}/RawAndFinalCounts.pdf \
-	-p ${Figures}/RawAndFinalCounts.png
+	-p ${Figures}/RawAndFinalCounts.png \
 	-t "Read Count Before & After QC" \
 	-y "Sequence Count"
 
