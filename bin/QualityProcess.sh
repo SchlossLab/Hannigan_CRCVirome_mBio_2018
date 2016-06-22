@@ -137,6 +137,8 @@ rm ./${Output}/SequenceCounts/16sHits.tsv
 for name in $(awk '{ print $2 }' ${MappingFile}); do
 	# Because we are dealing with both directions
 	for primer in R1 R2; do
+		echo Uncompressing files...
+		gunzip ${RawSequenceDir}/${name}*${primer}*.fastq.gz
 		echo Processing sample ${name} and primer ${primer}...
 		mkdir ./${Output}/CutAdapt
 		runCutadaptWithMap \
