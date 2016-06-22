@@ -32,7 +32,7 @@ export MappingFile=/mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerVirome
 # Dependencies
 export LocalBin=/mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerVirome/bin
 export DeconsSeq=/mnt/EXT/Schloss-data/bin/deconseq-standalone-0.4.3/deconseq.pl
-export fastx=/mnt/EXT/Schloss-data/bin/fastq_quality_trimmer
+export fastx=/home/ghannig/bin/fastq_quality_trimmer
 export CutAdapt=/mnt/EXT/Schloss-data/bin/cutadapt-1.9.1/bin/cutadapt
 
 export RawSequenceDir=/mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerVirome/data/raw/NexteraXT002
