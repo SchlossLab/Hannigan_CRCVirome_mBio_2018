@@ -67,7 +67,7 @@ runFastx () {
 
 runDeconSeq () {
 	# # This is set for mouse decontamination
-	perl ${DeconsSeq} -f "${1}" -dbs mmref -out_dir "${2}"
+	perl ${DeconsSeq} -f "${1}" -dbs hsref -out_dir "${2}"
 	mv "${2}"/*clean.fq "${3}"
 	mv "${2}"/*cont.fq "${4}"
 	rm -r "${2}"
