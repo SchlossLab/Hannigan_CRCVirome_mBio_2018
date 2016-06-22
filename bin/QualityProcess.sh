@@ -15,6 +15,7 @@
 ############################
 # Load in Required Modules #
 ############################
+# Setup the R environment
 module load R/3.2.3
 
 ##################
@@ -26,15 +27,15 @@ export WorkingDirectory=/mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerV
 export Output='QualitySeqs'
 export Figures=/mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerVirome/figures
 
-export MappingFile=/mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerVirome/data/NexteraXT001Map.tsv
+export MappingFile=/mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerVirome/data/NexteraXT002Map.tsv
 
+# Dependencies
 export LocalBin=/mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerVirome/bin
-export CutAdapt=/mnt/EXT/Schloss-data/bin/cutadapt-1.9.1/bin/cutadapt
 export DeconsSeq=/mnt/EXT/Schloss-data/bin/deconseq-standalone-0.4.3/deconseq.pl
-export fastx=/home/ghannig/bin/fastq_quality_trimmer
+export fastx=/mnt/EXT/Schloss-data/bin/fastq_quality_trimmer
+export CutAdapt=/mnt/EXT/Schloss-data/bin/cutadapt-1.9.1/bin/cutadapt
 
-export RawSequenceDir=/mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerVirome/data/rawFastq/NexteraXT001
-# export 16sRef=/mnt/EXT/Schloss-data/dbs/Silva_seed_v123/silva_bacteria_seed_v123
+export RawSequenceDir=/mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerVirome/data/raw/NexteraXT002
 
 # Make the output directory and move to the working directory
 echo Creating output directory...
@@ -52,66 +53,66 @@ runCutadaptWithMap () {
 	echo Mapping file = "${2}" #2 = full path to mapping file mapping file
 	echo Output file = "${3}" #3 = full path for output directory
 	export SAMPLEID=$(echo ${1} | sed 's/_L001.*//g')
-	export THREEPRIME=$(awk --assign sampleid=$SAMPLEID '$2 == sampleid { print $22 }' ${2})
-	export FIVEPRIME=$(awk --assign sampleid=$SAMPLEID '$2 == sampleid { print $19 }' ${2})
-	python2.7 ${CutAdapt} --error-rate=0.1 --overlap=10 -a $THREEPRIME -a $FIVEPRIME ${1} > ${3}
+	export THREEPRIME=$(awk --assign sampleid="$SAMPLEID" '$2 == sampleid { print $22 }' "${2}")
+	export FIVEPRIME=$(awk --assign sampleid=$SAMPLEID '$2 == sampleid { print $19 }' "${2}")
+	python2.7 "${CutAdapt}" --error-rate=0.1 --overlap=10 -a "$THREEPRIME" -a "$FIVEPRIME" "${1}" > "${3}"
 }
 
 runFastx () {
-	${fastx} -t 33 -Q 33 -l 150 -i ${1} -o ${2}
+	${fastx} -t 33 -Q 33 -l 150 -i "${1}" -o "${2}"
 }
 
 runDeconSeq () {
 	# # This is set for mouse decontamination
-	perl ${DeconsSeq} -f ${1} -dbs mmref -out_dir ${2}
-	mv ${2}/*clean.fq ${3}
-	mv ${2}/*cont.fq ${4}
-	rm -r ${2}
+	perl ${DeconsSeq} -f "${1}" -dbs mmref -out_dir "${2}"
+	mv "${2}"/*clean.fq "${3}"
+	mv "${2}"/*cont.fq "${4}"
+	rm -r "${2}"
 }
 
 GetReadCount () {
 	# WARNING: remove the appended file before running this through a loop
-	echo Sample Name is ${1}
-	echo Catg is ${2}
-	export LineCount=$(wc -l ${3} | sed 's/ .*//')
-	awk --assign count=$LineCount --assign name=${1} --assign catg=${2} ' BEGIN { print name"\t"catg"\t"count/4 }' >> ${4}
+	echo Sample Name is "${1}"
+	echo Catg is "${2}"
+	export LineCount=$(wc -l "${3}" | sed 's/ .*//')
+	awk --assign count="$LineCount" --assign name="${1}" --assign catg="${2}" ' BEGIN { print name"\t"catg"\t"count/4 }' >> "${4}"
 }
 
 GetPercent () {
 	echo Sample Name is ${1}
-	export Clean=$(wc -l ${2} | sed 's/ .*//')
-	export Cont=$(wc -l ${3} | sed 's/ .*//')
-	awk --assign name=${1} --assign clean=${Clean} --assign cont=${Cont} 'BEGIN { print name"\tPercentCont\t"100*cont/(clean+cont) }' >> ${4}
+	export Clean=$(wc -l "${2}" | sed 's/ .*//')
+	export Cont=$(wc -l "${3}" | sed 's/ .*//')
+	awk --assign name="${1}" --assign clean="${Clean}" --assign cont="${Cont}" 'BEGIN { print name"\tPercentCont\t"100*cont/(clean+cont) }' >> "${4}"
 }
 
 16sContaminationEst () {
 	echo Running 16S contamination estimation...
 	# Make sure input is fasta
 	blastn \
-		-query ${2} \
-		-out ${2}.tmp \
+		-query "${2}" \
+		-out "${2}".tmp \
 		-db /mnt/EXT/Schloss-data/dbs/Silva_seed_v123/silva_bacteria_seed_v123 \
 		-outfmt 6 \
 		-evalue 1e-10 \
 		-max_target_seqs 1
 
 	# Get the unique 16S hits for the sample
-	cut -f 2 ${2}.tmp \
+	cut -f 2 "${2}".tmp \
 		| sort \
 		| uniq \
-		> ${2}.tmp2
+		> "${2}".tmp2
 
-	export HitCount=$(wc -l ${2}.tmp2 | sed 's/ .*//')
-	export TotalCount=$(wc -l ${2} | sed 's/ .*//')
-	echo Hit count is $HitCount
-	echo Total count is $TotalCount
+	export HitCount=$(wc -l "${2}".tmp2 | sed 's/ .*//')
+	export TotalCount=$(wc -l "${2}" | sed 's/ .*//')
+	echo Hit count is "$HitCount"
+	echo Total count is "$TotalCount"
 
 	# Create table with contamination information
-	awk --assign name=${1} --assign hitcount=${HitCount} --assign totalcount=${TotalCount} 'BEGIN { print name"\tPercent16sHits\t"100*hitcount/(totalcount/2) }' >> ${3}
+	awk --assign name="${1}" --assign hitcount="${HitCount}" --assign totalcount="${TotalCount}" 'BEGIN { print name"\tPercent16sHits\t"100*hitcount/(totalcount/2) }' >> "${3}"
 
 	# Remove the tmp file
-	rm ${2}.tmp
-	rm ${2}.tmp2
+	rm "${2}".tmp
+	rm "${2}".tmp2
 }
 
 # Get them subroutines
@@ -122,13 +123,13 @@ export -f GetReadCount
 export -f GetPercent
 export -f 16sContaminationEst
 
-#######################################
+# ######################################
 # Remove Appended Files Before Adding #
-#######################################
-# rm ./${Output}/SequenceCounts/RawAndFinalCounts.tsv
-# rm ./${Output}/SequenceCounts/ContaminationCounts.tsv
-# rm ./${Output}/SequenceCounts/PercentContamination.tsv
-# rm ./${Output}/SequenceCounts/16sHits.tsv
+# ######################################
+rm ./${Output}/SequenceCounts/RawAndFinalCounts.tsv
+rm ./${Output}/SequenceCounts/ContaminationCounts.tsv
+rm ./${Output}/SequenceCounts/PercentContamination.tsv
+rm ./${Output}/SequenceCounts/16sHits.tsv
 
 ############
 # Run Data #
@@ -230,4 +231,3 @@ Rscript ${LocalBin}/RunReadCountStats.R \
 	-t "Percent Reads Mapping to 16S" \
 	-r \
 	-y "Percent Contamination"
-
