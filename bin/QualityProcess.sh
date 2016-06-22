@@ -53,8 +53,8 @@ runCutadaptWithMap () {
 	echo Mapping file = "${2}" #2 = full path to mapping file mapping file
 	echo Output file = "${3}" #3 = full path for output directory
 	export SAMPLEID=$(echo ${1} | sed 's/_L001.*//g')
-	export THREEPRIME=$(awk --assign sampleid="$SAMPLEID" '$2 == sampleid { print $22 }' "${2}")
-	export FIVEPRIME=$(awk --assign sampleid=$SAMPLEID '$2 == sampleid { print $19 }' "${2}")
+	export THREEPRIME=$(awk --assign sampleid="$SAMPLEID" '$2 == sampleid { print $19 }' "${2}")
+	export FIVEPRIME=$(awk --assign sampleid=$SAMPLEID '$2 == sampleid { print $16 }' "${2}")
 	python2.7 "${CutAdapt}" --error-rate=0.1 --overlap=10 -a "$THREEPRIME" -a "$FIVEPRIME" "${1}" > "${3}"
 }
 
