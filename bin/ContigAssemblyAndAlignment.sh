@@ -102,7 +102,7 @@ BowtieAlignment () {
 			${3}
 
 	# Remove the intermediate files
-	rm ./${Output}/bowtieReference/bowtieReference
+	rm -r ./${Output}/bowtieReference/
 	rm ./${Output}/tmp-bowtie.sam
 }
 
@@ -177,7 +177,7 @@ for name in $(awk '{ print $2 }' ${MappingFile}); do
 	for primer in R1 R2; do
 		echo Aligning reads from ${name}_${primer}...
 		BowtieAlignment \
-			./${Output}/${2}.fa \
+			./${Output}/NexteraXT002Contigs.fa \
 			./${Output}/SubsampledFasta/${name}_${primer}.fa
 			./${Output}/BowtieOutput/${name}_${primer}.tsv
 
