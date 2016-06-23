@@ -83,7 +83,7 @@ if (opt$mean) {
     geom_bar(position="dodge", stat="identity", width=0.25) +
     geom_errorbar(aes(ymin=mean-sem, ymax=mean+sem), width=0.25) +
     ylab(opt$title) +
-    scale_colour_brewer(palette="Set2")
+    scale_fill_brewer(palette="Set2")
 }
 
 pdf(file=opt$output, width=8, height=6)
