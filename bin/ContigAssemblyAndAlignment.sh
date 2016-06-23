@@ -1,4 +1,4 @@
-#!usr/bin/bash
+#! /bin/bash
 # Geoffrey Hannigan
 # Pat Schloss Lab
 # University of Michigan
