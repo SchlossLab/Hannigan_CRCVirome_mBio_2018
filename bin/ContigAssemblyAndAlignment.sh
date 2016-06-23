@@ -39,12 +39,12 @@ Subsampler () {
 	${LocalBin}idba-1.1.1/bin/fq2fa ${1} ./tmp.fa
 
 	# Subsample the sequences
-	${SeqtkPath} sample ./tmp.fa 60000 > ${3}
+	${SeqtkPath} sample ./tmp.fa 60000 > ${2}
 
 	# Remove samples that do no meet subsampling criteria
-	if [ $(wc -l ${3}) -ne 60000 ]; then
-		rm ${3}
-		echo Removed sample ${3} because too few sequences...
+	if [ $(wc -l ${2}) -ne 60000 ]; then
+		rm ${2}
+		echo Removed sample ${2} because too few sequences...
 	fi
 
 	# Remove tmp file
@@ -147,7 +147,6 @@ export -f Subsampler
 export -f AssembleContigs
 export -f BowtieAlignment
 export -f CalculateRelativeAbundance
-export -f FinalTablePaste
 
 # ###########
 # Run Data #
