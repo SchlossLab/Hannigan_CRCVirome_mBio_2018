@@ -76,7 +76,7 @@ if (opt$mean) {
       "V2",
       summarize,
       mean = mean(V3),
-      sem <- sd(V3)/length(V3)
+      sem = sd(V3)/length(V3)
     )
   ComparePlot <- ggplot(whyyougottabesomean, aes(x="Average", y=mean)) +
     theme_classic() +
