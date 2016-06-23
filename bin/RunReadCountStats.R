@@ -78,10 +78,11 @@ if (opt$mean) {
       mean = mean(V3),
       sem = sd(V3)/length(V3)
     )
-  ComparePlot <- ggplot(whyyougottabesomean, aes(x="Average", y=mean)) +
+  ComparePlot <- ggplot(whyyougottabesomean, aes(x="Average", y=mean, fill="lightblue")) +
     theme_classic() +
-    geom_bar(position="dodge", stat="identity", width=0.25, colour="lightblue") +
-    geom_errorbar(aes(ymin=mean-sem, ymax=mean+sem), width=0.25)
+    geom_bar(position="dodge", stat="identity", width=0.25) +
+    geom_errorbar(aes(ymin=mean-sem, ymax=mean+sem), width=0.25) +
+    ylab(opt$title)
 }
 
 pdf(file=opt$output, width=8, height=6)
