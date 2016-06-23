@@ -67,7 +67,7 @@ AssembleContigs () {
 	sed -i 's/ length.*//' ./${Output}/${2}.fa
 
 	# Calculate contig stats
-	perl ${GitBin}CalculateContigStats.pl \
+	perl ${GitBin}/CalculateContigStats.pl \
 		./${Output}/${2}.fa \
 		./${Output}/${2}-ContigStats.tsv
 
@@ -97,7 +97,7 @@ BowtieAlignment () {
 
 	# Quantify alignment hits
 	perl \
-		${GitBin}calculate_abundance_from_sam.pl \
+		${GitBin}/calculate_abundance_from_sam.pl \
 			./${Output}/tmp-bowtie.sam \
 			${3}
 
@@ -153,22 +153,22 @@ export -f CalculateRelativeAbundance
 # ###########
 # Run Data #
 # ###########
-for name in $(awk '{ print $2 }' ${MappingFile}); do
-	# Because we are dealing with both directions
-	for primer in R1 R2; do
-		echo Sumsampling sequences from ${name}_${primer}...
-		mkdir ./${Output}/SubsampledFasta
-		Subsampler \
-			${FileSource}/${name}_${primer}_clean.fastq \
-			./${Output}/SubsampledFasta/${name}_${primer}.fa
-	done
-done
+# for name in $(awk '{ print $2 }' ${MappingFile}); do
+# 	# Because we are dealing with both directions
+# 	for primer in R1 R2; do
+# 		echo Sumsampling sequences from ${name}_${primer}...
+# 		mkdir ./${Output}/SubsampledFasta
+# 		Subsampler \
+# 			${FileSource}/${name}_${primer}_clean.fastq \
+# 			./${Output}/SubsampledFasta/${name}_${primer}.fa
+# 	done
+# done
 
-echo Assembling contigs...
-cat ./${Output}/SubsampledFasta/* > ./${Output}/TotalSeqs.fa
-AssembleContigs \
-	./${Output}/TotalSeqs.fa \
-	"NexteraXT002Contigs" \
+# echo Assembling contigs...
+# cat ./${Output}/SubsampledFasta/* > ./${Output}/TotalSeqs.fa
+# AssembleContigs \
+# 	./${Output}/TotalSeqs.fa \
+# 	"NexteraXT002Contigs" \
 
 mkdir ./${Output}/BowtieOutput
 
