@@ -11,6 +11,7 @@ library("ggplot2")
 library("RColorBrewer")
 library("optparse")
 library("gridExtra")
+library("plyr")
 
 #################################
 # Parse Input from Command Line #
@@ -30,8 +31,10 @@ option_list <- list(
   make_option(c("-r", "--remove"), action = "store_true", default = FALSE,
       help = "Remove negative controls from view [default %default]"),
   make_option(c("-y", "--ylabel"), type = "character", default = NULL,
-      help = "Label for y axis", metavar = "character")
-); 
+      help = "Label for y axis", metavar = "character"),
+  make_option(c("-m", "--mean"), type = "store_true", default=FALSE,
+      help = "Specify whether mean and std dev should be calculated", metavar="character")
+);
 
 opt_parser = OptionParser(option_list=option_list);
 opt = parse_args(opt_parser);
@@ -53,11 +56,11 @@ if (opt$remove) {
 
 Summary <- summary(COUNTS)
 
-ComparePlot <- ggplot(COUNTS, aes(x=V1, y=V3, fill=V2)) + 
-  theme_classic() + 
-  geom_bar(stat = "identity", position="dodge") + 
-  scale_fill_brewer(palette="Set2") + 
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)) + 
+ComparePlot <- ggplot(COUNTS, aes(x=V1, y=V3, fill=V2)) +
+  theme_classic() +
+  geom_bar(stat = "identity", position="dodge") +
+  scale_fill_brewer(palette="Set2") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
   ylab(opt$title) +
   xlab("Samples") +
   coord_flip() +
@@ -65,6 +68,20 @@ ComparePlot <- ggplot(COUNTS, aes(x=V1, y=V3, fill=V2)) +
 
 if (opt$log) {
    ComparePlot <- ComparePlot + scale_y_log10()
+}
+
+if (opt$mean) {
+  whyyougottabesomean <- ddply(
+      COUNTS,
+      "V2",
+      summarize,
+      mean = mean(V3),
+      sem <- sd(V3)/length(V3)
+    )
+  ComparePlot <- ggplot(whyyougottabesomean, aes(x="Average", y=mean)) +
+    theme_classic() +
+    geom_bar(position="dodge") +
+    geom_errorbar(sem, position="dodge", width=0.25)
 }
 
 pdf(file=opt$output, width=8, height=6)
