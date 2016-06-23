@@ -32,7 +32,7 @@ option_list <- list(
       help = "Remove negative controls from view [default %default]"),
   make_option(c("-y", "--ylabel"), type = "character", default = NULL,
       help = "Label for y axis", metavar = "character"),
-  make_option(c("-m", "--mean"), type = "store_true", default=FALSE,
+  make_option(c("-m", "--mean"), action = "store_true", default=FALSE,
       help = "Specify whether mean and std dev should be calculated", metavar="character")
 );
 
