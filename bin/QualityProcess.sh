@@ -243,7 +243,8 @@ Rscript ${LocalBin}/RunReadCountStats.R \
 	-p ${Figures}/16sHitsMean.png \
 	-t "Percent Reads Mapping to 16S" \
 	-y "Percent Contamination" \
-	-m
+	-m \
+	-r
 
 Rscript ${LocalBin}/RunReadCountStats.R \
 	-c ./${Output}/SequenceCounts/PercentContamination.tsv \
@@ -251,4 +252,5 @@ Rscript ${LocalBin}/RunReadCountStats.R \
 	-p ${Figures}/PercentContaminationMean.png \
 	-t "PercentContamination" \
 	-y "Percent Contamination" \
-	-m
+	-m \
+	-r
