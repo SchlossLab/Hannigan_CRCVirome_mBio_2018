@@ -100,7 +100,7 @@ BowtieAlignment () {
 
 	# Remove the intermediate files
 	rm -r ./${Output}/bowtieReference/
-	# rm ./${Output}/tmp-bowtie.sam
+	rm ./${Output}/tmp-bowtie.sam
 }
 
 CalculateRelativeAbundance () {
@@ -171,7 +171,7 @@ mkdir ./${Output}/BowtieOutput
 
 for name in $(awk '{ print $2 }' ${MappingFile}); do
 	# Because we are dealing with both directions
-	for primer in R1 R2; do
+	for primer in R2; do
 		echo Aligning reads from ${name}_${primer}...
 		BowtieAlignment \
 			./${Output}/NexteraXT002Contigs.fa \
@@ -181,12 +181,12 @@ for name in $(awk '{ print $2 }' ${MappingFile}); do
 		CalculateRelativeAbundance \
 			${name}_${primer} \
 			./${Output}/NexteraXT002Contigs-ContigStats.tsv \
-			./${Output}/BowtieOutput/${name}_${primer}-relabund.tsv
+			./${Output}/BowtieOutput/${name}_${primer}.tsv
 	done
 done
 
 
 paste \
 	./${Output}/NexteraXT002Contigs-MasterList.tsv \
-	./${Output}/BowtieOutput/*-relabund.tsv \
+	./${Output}/BowtieOutput/*-AbundanceOnMasterForMerge.tsv \
 	> ./${Output}/ContigRelativeAbundanceTable.tsv
