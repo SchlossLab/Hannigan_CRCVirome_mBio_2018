@@ -46,8 +46,8 @@ opt = parse_args(opt_parser);
 COUNTS <- read.delim(file=opt$counts, sep="\t", header=F)
 
 if (opt$remove) {
-  COUNTS <- COUNTS[c(!grepl("MG100008", COUNTS$V1)),]
-  COUNTS <- COUNTS[c(!grepl("MG100013", COUNTS$V1)),]
+  COUNTS <- COUNTS[c(!grepl("MG100028", COUNTS$V1)),]
+  COUNTS <- COUNTS[c(!grepl("MG100018", COUNTS$V1)),]
 }
 
 ############
