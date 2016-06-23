@@ -128,7 +128,7 @@ CalculateRelativeAbundance () {
 		'FNR==NR {a[$1]=$2;next}\
 		{ print $1"\t"a[$1] }' \
 		./${Output}/${1}-rpkm-parsed.tsv \
-		./${Output}/MasterContigList.tsv \
+		./${Output}/NexteraXT002Contigs-MasterList.tsv \
 	| sed '/[0-9]\t[0-9]/!s/$/0/' \
 	| sed '1 s/\t0//' \
 	| sed '1 s/0$//' \
