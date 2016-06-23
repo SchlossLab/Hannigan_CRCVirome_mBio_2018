@@ -80,7 +80,7 @@ if (opt$mean) {
     )
   ComparePlot <- ggplot(whyyougottabesomean, aes(x="Average", y=mean)) +
     theme_classic() +
-    geom_bar(fill="blue", position="dodge", stat="identity", width=0.25) +
+    geom_bar(fill="lightblue", position="dodge", stat="identity", width=0.25) +
     geom_errorbar(aes(ymin=mean-sem, ymax=mean+sem), width=0.25) +
     ylab(opt$title)
 }
