@@ -42,11 +42,13 @@ Subsampler () {
 	${SeqtkPath} sample ./tmp.fa 60000 > ${2}
 
 	# Remove samples that do no meet subsampling criteria
-	if [ $(wc -l ${2}) -ne 60000 ]; then
+	export WordCount=$(wc -l ${2} | sed 's/ .*//')
+	echo Count is ${WordCount}
+	if [ ${WordCount} -ne 120000 ]
+		then
+		echo Remove sample ${2} because too few sequences...
 		rm ${2}
-		echo Removed sample ${2} because too few sequences...
 	fi
-
 	# Remove tmp file
 	rm ./tmp.fa
 }
