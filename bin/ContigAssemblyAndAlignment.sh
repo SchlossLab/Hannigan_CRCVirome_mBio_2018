@@ -21,7 +21,7 @@ export Output='ContigsAndAlignments'
 export FileSource=/mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerVirome/data/QualitySeqs/DeconSeq
 export MappingFile=/mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerVirome/data/NexteraXT002Map.tsv
 
-export GitBin=/home/ghannig/git/SchlossLab/bin/
+export GitBin=/mnt/EXT/Schloss-data/ghannig/OpenMetagenomeToolkit/pakbin
 export SeqtkPath=/home/ghannig/bin/seqtk/seqtk
 export LocalBin=/home/ghannig/bin/
 
