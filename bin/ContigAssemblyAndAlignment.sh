@@ -11,6 +11,8 @@
 #PBS -V
 #PBS -A schloss_lab
 
+module load perl
+
 # Use this shell script to subsample and prepare C diff
 # infection dataset for analysis on PMACS.
 
@@ -96,8 +98,7 @@ BowtieAlignment () {
 		-N 1
 
 	# Quantify alignment hits
-	perl \
-		${GitBin}/calculate_abundance_from_sam.pl ./${Output}/tmp-bowtie.sam ${3}
+	perl ${GitBin}/calculate_abundance_from_sam.pl ./${Output}/tmp-bowtie.sam ${3}
 
 	# Remove the intermediate files
 	rm -r ./${Output}/bowtieReference/
