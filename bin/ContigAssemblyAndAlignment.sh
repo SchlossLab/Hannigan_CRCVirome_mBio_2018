@@ -11,8 +11,6 @@
 #PBS -V
 #PBS -A schloss_lab
 
-module load perl
-
 # Use this shell script to subsample and prepare C diff
 # infection dataset for analysis on PMACS.
 
@@ -177,7 +175,7 @@ for name in $(awk '{ print $2 }' ${MappingFile}); do
 		echo Aligning reads from ${name}_${primer}...
 		BowtieAlignment \
 			./${Output}/NexteraXT002Contigs.fa \
-			./${Output}/SubsampledFasta/${name}_${primer}.fa
+			./${Output}/SubsampledFasta/${name}_${primer}.fa \
 			./${Output}/BowtieOutput/${name}_${primer}.tsv
 
 		CalculateRelativeAbundance \
