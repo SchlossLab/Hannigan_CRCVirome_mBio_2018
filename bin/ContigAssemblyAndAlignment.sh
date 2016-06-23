@@ -71,7 +71,7 @@ AssembleContigs () {
 		./${Output}/${2}.fa \
 		./${Output}/${2}-ContigStats.tsv
 
-	sed -i 's/>//g' ./${Output}/${2}-ContigStatsTotal.tsv
+	sed -i 's/>//g' ./${Output}/${2}-ContigStats.tsv
 
 	# Make master contig ID list
 	sed -n 1~2p ./${Output}/${2}.fa \
@@ -183,7 +183,7 @@ for name in $(awk '{ print $2 }' ${MappingFile}); do
 
 		CalculateRelativeAbundance \
 			${name}_${primer} \
-			./${Output}/NexteraXT002Contigs-ContigStatsTotal.tsv \
+			./${Output}/NexteraXT002Contigs-ContigStats.tsv \
 			./${Output}/BowtieOutput/${name}_${primer}-relabund.tsv
 	done
 done
