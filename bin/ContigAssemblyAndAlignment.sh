@@ -97,13 +97,11 @@ BowtieAlignment () {
 
 	# Quantify alignment hits
 	perl \
-		${GitBin}/calculate_abundance_from_sam.pl \
-			./${Output}/tmp-bowtie.sam \
-			${3}
+		${GitBin}/calculate_abundance_from_sam.pl ./${Output}/tmp-bowtie.sam ${3}
 
 	# Remove the intermediate files
 	rm -r ./${Output}/bowtieReference/
-	rm ./${Output}/tmp-bowtie.sam
+	# rm ./${Output}/tmp-bowtie.sam
 }
 
 CalculateRelativeAbundance () {
