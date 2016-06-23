@@ -54,17 +54,17 @@ Subsampler () {
 }
 
 AssembleContigs () {
-	# Assemble the contigs
-	${LocalBin}idba-1.1.1/bin/idba_ud \
-		--pre_correction \
-		-l ${1} \
-		-o ./${Output}/TotalContigs
+	# # Assemble the contigs
+	# ${LocalBin}idba-1.1.1/bin/idba_ud \
+	# 	--pre_correction \
+	# 	-l ${1} \
+	# 	-o ./${Output}/TotalContigs
 
-	# Pull out the contig fasta files
-	mv ./${Output}/TotalContigs/contig.fa ./${Output}/${2}.fa
+	# # Pull out the contig fasta files
+	# mv ./${Output}/TotalContigs/contig.fa ./${Output}/${2}.fa
 
-	# Cut down the names of the contigs
-	sed -i 's/ length.*//' ./${Output}/${2}.fa
+	# # Cut down the names of the contigs
+	# sed -i 's/ length.*//' ./${Output}/${2}.fa
 
 	# Calculate contig stats
 	perl ${GitBin}/CalculateContigStats.pl \
@@ -164,11 +164,11 @@ export -f CalculateRelativeAbundance
 # 	done
 # done
 
-# echo Assembling contigs...
-# cat ./${Output}/SubsampledFasta/* > ./${Output}/TotalSeqs.fa
-# AssembleContigs \
-# 	./${Output}/TotalSeqs.fa \
-# 	"NexteraXT002Contigs" \
+echo Assembling contigs...
+cat ./${Output}/SubsampledFasta/* > ./${Output}/TotalSeqs.fa
+AssembleContigs \
+	./${Output}/TotalSeqs.fa \
+	"NexteraXT002Contigs" \
 
 mkdir ./${Output}/BowtieOutput
 
