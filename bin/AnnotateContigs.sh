@@ -23,6 +23,7 @@ export Output='ContigAnnotations'
 
 export FileSource=/mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerVirome/data/ContigsAndAlignments/NexteraXT002Contigs.fa
 export ReferenceFile=/mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ConjunctisViribus/data/phageSVAnospace.fa
+export RelAbundFile=/mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerVirome/data/ContigsAndAlignments/ContigRelativeAbundanceTable.tsv
 
 export GitBin=/mnt/EXT/Schloss-data/ghannig/OpenMetagenomeToolkit/pakbin
 export SeqtkPath=/home/ghannig/bin/seqtk/seqtk
@@ -56,8 +57,17 @@ AnnotateBlast () {
     	-max_target_seqs 1
 
     # Clean up the output
-    sed -i 's/_phage.*/_phage/' ./${Output}/${3}-blastn.tsv
+    sed -i 's/_[pP]hage.*/_phage/' ./${Output}/${3}-blastn.tsv
+
+    # Annotate the rel abund table
+    awk 'NR==FNR { a[$1]=$2; next} $1 in a {print a[$1]"\t"$1}' \
+    		./${Output}/${3}-blastn.tsv \
+    		${4} \
+    	| cut -f 1,3- |
+    	> ${5}
 }
+
+
 
 export -f AnnotateBlast
 
@@ -68,4 +78,6 @@ export -f AnnotateBlast
 AnnotateBlast \
 	${ReferenceFile} \
 	${FileSource} \
-	"NexteraXT002"
+	"NexteraXT002" \
+	${RelAbundFile} \
+	./${Output}/AnnotatedContigRelAbund.tsv
