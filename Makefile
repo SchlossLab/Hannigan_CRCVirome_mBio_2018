@@ -8,4 +8,5 @@
 ./QualitySeqs/SequenceCounts/16sHits.tsv ./QualitySeqs/DeconSeq ./figures:./data/NexteraXT002Map.tsv ./data/raw/NexteraXT002
 	bash ./bin/QualityProcess.sh
 
-
+./data/ContigsAndAlignments/ContigRelativeAbundanceTable.tsv:./data/QualitySeqs/DeconSeq ./data/NexteraXT002Map.tsv
+	bash ./bin/ContigAssemblyAndAlignment.sh
