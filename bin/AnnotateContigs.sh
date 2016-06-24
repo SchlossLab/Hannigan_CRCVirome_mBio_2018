@@ -60,7 +60,7 @@ AnnotateBlast () {
     sed -i 's/_[pP]hage.*/_phage/' ./${Output}/${3}-blastn.tsv
 
     # Annotate the rel abund table
-    awk 'NR==FNR { a[$1]=$2; next} $1 in a {print a[$1]"\t"$1}' \
+    awk 'NR==FNR { a[$1]=$2; next} $1 in a {print a[$1]"\t"$0}' \
     		./${Output}/${3}-blastn.tsv \
     		${4} \
     	| cut -f 1,3- \
