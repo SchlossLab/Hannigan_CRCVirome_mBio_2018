@@ -54,17 +54,17 @@ Subsampler () {
 }
 
 AssembleContigs () {
-	# # Assemble the contigs
-	# ${LocalBin}idba-1.1.1/bin/idba_ud \
-	# 	--pre_correction \
-	# 	-l ${1} \
-	# 	-o ./${Output}/TotalContigs
+	# Assemble the contigs
+	${LocalBin}idba-1.1.1/bin/idba_ud \
+		--pre_correction \
+		-l ${1} \
+		-o ./${Output}/TotalContigs
 
-	# # Pull out the contig fasta files
-	# mv ./${Output}/TotalContigs/contig.fa ./${Output}/${2}.fa
+	# Pull out the contig fasta files
+	mv ./${Output}/TotalContigs/contig.fa ./${Output}/${2}.fa
 
-	# # Cut down the names of the contigs
-	# sed -i 's/ length.*//' ./${Output}/${2}.fa
+	# Cut down the names of the contigs
+	sed -i 's/ length.*//' ./${Output}/${2}.fa
 
 	# Calculate contig stats
 	perl ${GitBin}/CalculateContigStats.pl \
@@ -147,43 +147,43 @@ export -f AssembleContigs
 export -f BowtieAlignment
 export -f CalculateRelativeAbundance
 
-# ###########
-# Run Data #
-# ###########
-# for name in $(awk '{ print $2 }' ${MappingFile}); do
-# 	# Because we are dealing with both directions
-# 	for primer in R1 R2; do
-# 		echo Sumsampling sequences from ${name}_${primer}...
-# 		mkdir ./${Output}/SubsampledFasta
-# 		Subsampler \
-# 			${FileSource}/${name}_${primer}_clean.fastq \
-# 			./${Output}/SubsampledFasta/${name}_${primer}.fa
-# 	done
-# done
+###########
+Run Data #
+###########
+for name in $(awk '{ print $2 }' ${MappingFile}); do
+	# Because we are dealing with both directions
+	for primer in R1 R2; do
+		echo Sumsampling sequences from ${name}_${primer}...
+		mkdir ./${Output}/SubsampledFasta
+		Subsampler \
+			${FileSource}/${name}_${primer}_clean.fastq \
+			./${Output}/SubsampledFasta/${name}_${primer}.fa
+	done
+done
 
-# echo Assembling contigs...
-# cat ./${Output}/SubsampledFasta/* > ./${Output}/TotalSeqs.fa
-# AssembleContigs \
-# 	./${Output}/TotalSeqs.fa \
-# 	"NexteraXT002Contigs" \
+echo Assembling contigs...
+cat ./${Output}/SubsampledFasta/* > ./${Output}/TotalSeqs.fa
+AssembleContigs \
+	./${Output}/TotalSeqs.fa \
+	"NexteraXT002Contigs" \
 
-# mkdir ./${Output}/BowtieOutput
+mkdir ./${Output}/BowtieOutput
 
-# for name in $(awk '{ print $2 }' ${MappingFile}); do
-# 	# Because we are dealing with both directions
-# 	for primer in R2; do
-# 		echo Aligning reads from ${name}_${primer}...
-# 		BowtieAlignment \
-# 			./${Output}/NexteraXT002Contigs.fa \
-# 			./${Output}/SubsampledFasta/${name}_${primer}.fa \
-# 			./${Output}/BowtieOutput/${name}_${primer}.tsv
+for name in $(awk '{ print $2 }' ${MappingFile}); do
+	# Because we are dealing with both directions
+	for primer in R2; do
+		echo Aligning reads from ${name}_${primer}...
+		BowtieAlignment \
+			./${Output}/NexteraXT002Contigs.fa \
+			./${Output}/SubsampledFasta/${name}_${primer}.fa \
+			./${Output}/BowtieOutput/${name}_${primer}.tsv
 
-# 		CalculateRelativeAbundance \
-# 			${name}_${primer} \
-# 			./${Output}/NexteraXT002Contigs-ContigStats.tsv \
-# 			./${Output}/BowtieOutput/${name}_${primer}.tsv
-# 	done
-# done
+		CalculateRelativeAbundance \
+			${name}_${primer} \
+			./${Output}/NexteraXT002Contigs-ContigStats.tsv \
+			./${Output}/BowtieOutput/${name}_${primer}.tsv
+	done
+done
 
 
 paste \
