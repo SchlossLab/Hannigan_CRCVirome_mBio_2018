@@ -161,32 +161,32 @@ export -f CalculateRelativeAbundance
 # 	done
 # done
 
-echo Assembling contigs...
-cat ./${Output}/SubsampledFasta/* > ./${Output}/TotalSeqs.fa
-AssembleContigs \
-	./${Output}/TotalSeqs.fa \
-	"NexteraXT002Contigs" \
+# echo Assembling contigs...
+# cat ./${Output}/SubsampledFasta/* > ./${Output}/TotalSeqs.fa
+# AssembleContigs \
+# 	./${Output}/TotalSeqs.fa \
+# 	"NexteraXT002Contigs" \
 
-mkdir ./${Output}/BowtieOutput
+# mkdir ./${Output}/BowtieOutput
 
-for name in $(awk '{ print $2 }' ${MappingFile}); do
-	# Because we are dealing with both directions
-	for primer in R2; do
-		echo Aligning reads from ${name}_${primer}...
-		BowtieAlignment \
-			./${Output}/NexteraXT002Contigs.fa \
-			./${Output}/SubsampledFasta/${name}_${primer}.fa \
-			./${Output}/BowtieOutput/${name}_${primer}.tsv
+# for name in $(awk '{ print $2 }' ${MappingFile}); do
+# 	# Because we are dealing with both directions
+# 	for primer in R2; do
+# 		echo Aligning reads from ${name}_${primer}...
+# 		BowtieAlignment \
+# 			./${Output}/NexteraXT002Contigs.fa \
+# 			./${Output}/SubsampledFasta/${name}_${primer}.fa \
+# 			./${Output}/BowtieOutput/${name}_${primer}.tsv
 
-		CalculateRelativeAbundance \
-			${name}_${primer} \
-			./${Output}/NexteraXT002Contigs-ContigStats.tsv \
-			./${Output}/BowtieOutput/${name}_${primer}.tsv
-	done
-done
+# 		CalculateRelativeAbundance \
+# 			${name}_${primer} \
+# 			./${Output}/NexteraXT002Contigs-ContigStats.tsv \
+# 			./${Output}/BowtieOutput/${name}_${primer}.tsv
+# 	done
+# done
 
 
 paste \
 	./${Output}/NexteraXT002Contigs-MasterList.tsv \
-	./${Output}/BowtieOutput/*-AbundanceOnMasterForMerge.tsv \
+	./${Output}/*-AbundanceOnMasterForMerge.tsv \
 	> ./${Output}/ContigRelativeAbundanceTable.tsv
