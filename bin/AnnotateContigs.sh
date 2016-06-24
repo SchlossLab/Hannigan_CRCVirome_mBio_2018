@@ -63,7 +63,7 @@ AnnotateBlast () {
     awk 'NR==FNR { a[$1]=$2; next} $1 in a {print a[$1]"\t"$1}' \
     		./${Output}/${3}-blastn.tsv \
     		${4} \
-    	| cut -f 1,3- |
+    	| cut -f 1,3- \
     	> ${5}
 }
 
