@@ -52,8 +52,11 @@ AnnotateBlast () {
     	-out ./${Output}/${3}-blastn.tsv \
     	-db ./${Output}/PhageReference \
     	-outfmt 6 \
-    	-evalue 1e-5 \
+    	-evalue 1e-3 \
     	-max_target_seqs 1
+
+    # Clean up the output
+    sed -i 's/_phage.*/_phage/' ./${Output}/${3}-blastn.tsv
 }
 
 export -f AnnotateBlast
