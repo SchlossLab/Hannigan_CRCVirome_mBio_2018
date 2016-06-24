@@ -28,6 +28,11 @@ export GitBin=/mnt/EXT/Schloss-data/ghannig/OpenMetagenomeToolkit/pakbin
 export SeqtkPath=/home/ghannig/bin/seqtk/seqtk
 export LocalBin=/home/ghannig/bin/
 
+# Make the output directory and move to the working directory
+echo Creating output directory...
+cd ${WorkingDirectory}
+mkdir ./${Output}
+
 ###################
 # Set Subroutines #
 ###################
