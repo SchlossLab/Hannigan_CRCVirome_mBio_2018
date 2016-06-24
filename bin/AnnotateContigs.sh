@@ -64,7 +64,17 @@ AnnotateBlast () {
     		./${Output}/${3}-blastn.tsv \
     		${4} \
     	| cut -f 1,3- \
-    	> ${5}
+    	> ./${Output}/tmprelabund.tsv
+
+    # Get header
+    head -n 1 ${4} > ./${Output}/tmpheader.tsv
+
+    # Put them together
+    cat ./${Output}/tmpheader.tsv ./${Output}/tmprelabund.tsv > ${5}
+
+    # Clean up
+    rm ./${Output}/tmpheader.tsv
+    rm ./${Output}/tmprelabund.tsv
 }
 
 
