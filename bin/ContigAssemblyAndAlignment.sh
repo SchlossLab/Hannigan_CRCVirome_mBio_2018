@@ -190,3 +190,10 @@ paste \
 	./${Output}/NexteraXT002Contigs-MasterList.tsv \
 	./${Output}/*-AbundanceOnMasterForMerge.tsv \
 	> ./${Output}/ContigRelativeAbundanceTable.tsv
+
+############
+# Clean Up #
+############
+rm ./${Output}/*AbundanceOnMasterForMerge.tsv
+rm ./${Output}/*AbundanceOnMaster.tsv
+rm ./${Output}/*-rpkm*
