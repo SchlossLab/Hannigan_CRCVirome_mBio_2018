@@ -24,7 +24,9 @@ Sequencing library preparations were done using the Illumina **NexteraXT** prep 
 ###Aims
 #### 1. Identify Specific Viruses Associated with Colon Cancer
 *Rationale*: Viruses have causative roles in a variety of cancers, including human papillomavirus and human polyomavirus. This is because viruses can silence and/or mutate host genes that alter host functionality.
+
 *Hypothesis*: A subset of gut viruses are associated with colon cancer.
+
 *Approach*: I will identify viruses using assembled contigs from the total virus dataset. Viruses will be identified as eukaryotic viruses and phages using both my ORF taxonomic annotation approach and my newest netowrk prediction model. "Virus-Cancer Association" will be defined as a statistically significant increase in relative abundance in the cancer/ademona samples comapared to the healthy controls. Abundance will be calculated by quantifying reads that map to contigs.
 
 2. **What virus community signatures are associated with colon cancer, and how do these compare to the bacterial communities?** We know that there are bacterial community signatures associated with colon cancer developement and presence. What is the virome diversity associated with colon cancer? It will also be important to assess how these trends compare to the bacterial community signatures. In many cases, lower bacterial diversity has been associated with higher viral diversity in disease states.
