@@ -23,12 +23,27 @@ Sequencing library preparations were done using the Illumina **NexteraXT** prep 
 
 ###Aims
 #### 1. Identify Specific Viruses Associated with Colon Cancer
-*Rationale*: Viruses have causative roles in a variety of cancers, including human papillomavirus and human polyomavirus. This is because viruses can silence and/or mutate host genes that alter host functionality.
+*Rationale*: Viruses have causative roles in a variety of cancers, including human papillomavirus and human polyomavirus. This is because viruses can silence and/or mutate host genes that alter host functionality. Colon cancer may also have a virus association.
 
 *Hypothesis*: A subset of gut viruses are associated with colon cancer.
 
 *Approach*: I will identify viruses using assembled contigs from the total virus dataset. Viruses will be identified as eukaryotic viruses and phages using both my ORF taxonomic annotation approach and my newest netowrk prediction model. "Virus-Cancer Association" will be defined as a statistically significant increase in relative abundance in the cancer/ademona samples comapared to the healthy controls. Abundance will be calculated by quantifying reads that map to contigs.
 
-2. **What virus community signatures are associated with colon cancer, and how do these compare to the bacterial communities?** We know that there are bacterial community signatures associated with colon cancer developement and presence. What is the virome diversity associated with colon cancer? It will also be important to assess how these trends compare to the bacterial community signatures. In many cases, lower bacterial diversity has been associated with higher viral diversity in disease states.
+#### 2. Identify virus diversity signatures that are associated with colon cancer.
 
-3. **Can we construct an accurate predictive model using virome data, and can this supplement models using bacterial data?** We can construct models for predicting and classifying colon cancer based on bacterial community information. We will try this with the virus community data, compare it's accuracy to that of bacterial community models, and evaluate the extent to which they supplement each other.
+*Rationale*: Bacterial community signatures, including diversity, are associated with colon cancer developement and progression. Previous studies have indicated that altered bacterial diversity indicates an altered diversity in other microbial communities, including fungi and viruses. Often decreased bacterial diversity is associated with increased phage/virus diversity. It is worth noting that my preliminary data actually suggests the opposite to be true, and disease is associated with decreased viral diversity, which suggests a unique virus diversity signature (compared to the few other studies).
+
+*Hypotheses*: Virome diversity is greater in colon cancer specimines compared to healthy controls.
+
+*Approach*: I will evaluate virus diversity using three techniques. I will first be using a relative abundance table of contig abundance in each sample to calculate the alpha diversity associated with each sample, and the beta diversity dissimilarities between samples. Because this is a reference independent approach, I will supplement it with a reference dependent approach where contig "OTUs" will be defined by their taxonomic identifications. Finally I will use operational protein families (OPFs) instead of contigs to calculate the functional diversity, which is becoming th estandard in the field anyways.
+
+#### 3. Classify colon cancer samples using a virus-based machine learning algorithm
+
+*Rationale*: Bactieral community signatures have been used to classify stool samples as healthy, cancerous, or pre-cancerous with high accuracy in previous studies from our lab. By comparing the performance of virus models to bacterial models, we can begin to understand which microbial communities are most highly associated with cancer. That high association will suggest the microbial community is more involved in cancer biologically, although it is an admitedly tenuous link that will inform further studies. A better algorithm that incorporates virus information will also set a precedence for using virus signatures in predictive models, and an improved model would have therapeutic benefits.
+
+*Hypothesis*: A virome-based classification model is more accurate than the bacterial alternative, and the two together will outperform an individual model.
+
+*Approach*: I will use two apporaches to constructing classification models from the dataset. I will use the existing random forest protocol as well as generating and evaluating a set of classification models using the [Superlearner](https://cran.r-project.org/web/packages/SuperLearner/vignettes/SuperLearnerPresent.pdf) CRAN package (evaluated many approaches to dataset classification). I will compare the performance of the virus and bacterial models, as wel as compare those two to a model containing both datasets.
+
+###Other Points
+I also want to run through this data using my new network modeling approach, and compare community dynamics between the disease states. This might be worth also including in the predictive models.
