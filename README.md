@@ -17,10 +17,15 @@ The samples were archived at -20C and are able to be used for virome and whole m
 ###Processing and Sequencing Approach
 I used my optimized virome purification protocol with some modifications for human samples. This approach will only look at genomic DNA from virus like particles (VLPs) and will not detect genomes integrated into host cell genomes. In other words, it is evaluating the *actively infecting* virome. The **Powersoil** plate extraction protocol was used for the whole metagenome processing, which is all of the DNA contents within the stool.
 
+[Virome Extraction Protocol](https://github.com/Microbiology/HanniganNotebook/blob/master/notebook/protocols/protocols/ColonCancerFecalViromePurification.md)
+
 Sequencing library preparations were done using the Illumina **NexteraXT** prep kit. The samples will be sequenced on the HiSeq 4000 with one lane devoted to the virome library and the other devoted to the whole metagenome library.
 
-###Analytical Questions
-1. **What specific gut viruses are associated with colon cancer?** We know that viruses have causative roles in a variety of cancers, and this may be the case in colon cancer. Here we will evaluate what viruses are in higher abundance in colon cancer cases and may therefore play a role in cancer developement.
+###Aims
+#### 1. Identify Specific Viruses Associated with Colon Cancer
+*Rationale*: Viruses have causative roles in a variety of cancers, including human papillomavirus and human polyomavirus. This is because viruses can silence and/or mutate host genes that alter host functionality.
+*Hypothesis*: A subset of gut viruses are associated with colon cancer.
+*Approach*: I will identify viruses using assembled contigs from the total virus dataset. Viruses will be identified as eukaryotic viruses and phages using both my ORF taxonomic annotation approach and my newest netowrk prediction model. "Virus-Cancer Association" will be defined as a statistically significant increase in relative abundance in the cancer/ademona samples comapared to the healthy controls. Abundance will be calculated by quantifying reads that map to contigs.
 
 2. **What virus community signatures are associated with colon cancer, and how do these compare to the bacterial communities?** We know that there are bacterial community signatures associated with colon cancer developement and presence. What is the virome diversity associated with colon cancer? It will also be important to assess how these trends compare to the bacterial community signatures. In many cases, lower bacterial diversity has been associated with higher viral diversity in disease states.
 
