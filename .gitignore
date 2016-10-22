@@ -1,3 +1,5 @@
 # Files to ignore in github repo
 # Ignore the data files
 data/**
+!data/metadata/
+!data/metadata/**
