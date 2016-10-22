@@ -4,7 +4,7 @@
 # Pat Schloss Lab
 # University of Michigan
 
-for file in $(./data/raw/NexteraXT003/*); do
+for file in $(ls ./data/raw/NexteraXT003/*); do
 	filename=$(echo ${file} | sed 's/_*//')
 	echo File is ${file}
 	echo File name is ${filename}
