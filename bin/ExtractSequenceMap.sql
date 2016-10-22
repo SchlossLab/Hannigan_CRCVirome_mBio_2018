@@ -8,4 +8,4 @@ WHERE SampleTracking.Index1=IndexPrimer001.Index1
       AND SampleTracking.Index2=IndexPrimer002.Index2
       AND SampleTracking.SchlossID="NexteraXT003"
       AND SampleTracking.UniqueSampleID=PureViromeTracking.UniqueSampleID
-INTO OUTFILE '/Users/Hannigan/git/Hannigan-2016-ColonCancerVirome/data/NexteraXT002Map2.tsv';
+INTO OUTFILE '/Users/Hannigan/git/Hannigan-2016-ColonCancerVirome/data/NexteraXT003Map.tsv';
