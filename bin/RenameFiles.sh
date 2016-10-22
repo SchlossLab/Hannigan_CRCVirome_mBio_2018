@@ -11,7 +11,7 @@ for file in $(ls ./data/raw/NexteraXT003/*); do
 	echo File is ${file}
 	echo File name is ${filename}
 	# Get the alternate name to use for replacing
-	altname=$(awk -v name=${file} '$13 == name {print $2}' ${metadata})
+	altname=$(awk -v name=${filename} '$13 == name {print $2}' ${metadata})
 	echo Alternate file name is ${altname}
 	# Now actually replace the file name
 	newname=$(echo ${file} | sed "s/$filename/$altname/" | sed 's/_[ATGC].*R/R/' | sed 's/_001//')
