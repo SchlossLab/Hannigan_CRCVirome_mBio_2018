@@ -1,0 +1,6 @@
+#! /bin/bash
+
+echo Rendering now...
+
+pandoc ./manuscript.md -f markdown -t latex -o ./manuscript.pdf --biblio=citations.bib --csl=/Users/Hannigan/git/styles/nature.csl
+
