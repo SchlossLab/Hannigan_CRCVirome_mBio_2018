@@ -5,7 +5,7 @@
 # University of Michigan
 
 for file in $(ls ./data/raw/NexteraXT003/*); do
-	filename=$(echo ${file} | sed 's/_*//')
+	filename=$(echo ${file} | sed 's/*\///g' | sed 's/_*//')
 	echo File is ${file}
 	echo File name is ${filename}
 	# Get the alternate name to use for replacing
