@@ -16,5 +16,5 @@ for file in $(ls ./data/raw/NexteraXT003/*); do
 	# Now actually replace the file name
 	newname=$(echo ${file} | sed "s/$filename/$altname/" | sed 's/_[ATGC].*R/_R/' | sed 's/_001//')
 	echo New file is ${newname}
-	# mv ${file} ${newname}
+	mv ${file} ${newname}
 done
