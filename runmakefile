@@ -13,11 +13,5 @@
 #PBS -V
 #PBS -A schloss_lab
 
-# Set the proper R module
-module load R/3.2.3
-
-# Set working directory
-cd /mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerVirome || exit
-
 # Run make
 make print
