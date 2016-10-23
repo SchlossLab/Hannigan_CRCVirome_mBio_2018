@@ -28,7 +28,7 @@ runCutadaptWithMap () {
 	echo Input fastq = "${1}" #1 = full path to fastq file to be trimmed
 	echo Mapping file = "${2}" #2 = full path to mapping file mapping file
 	echo Output file = "${3}" #3 = full path for output directory
-	export SAMPLEID=$(echo ${1} | sed 's/_R.*//g')
+	export SAMPLEID=$(echo ${1} | sed 's/_R.*//g' | sed 's/.*\///g')
 	export THREEPRIME=$(awk --assign sampleid="$SAMPLEID" '$2 == sampleid { print $19 }' ${2})
 	export FIVEPRIME=$(awk --assign sampleid=$SAMPLEID '$2 == sampleid { print $16 }' ${2})
 	echo Sample ID is ${SAMPLEID}...
