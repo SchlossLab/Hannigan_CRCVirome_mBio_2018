@@ -85,4 +85,4 @@ runDeconSeq \
 echo PROGRESS: Cleaning up directory
 rm ${Uncompressedfilename}.fastx
 
-gzip ${Inputfile}
+gzip ${Uncompressedfilename}
