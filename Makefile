@@ -14,7 +14,7 @@ DATENAME := $(shell date | sed 's/ /_/g' | sed 's/\:/\./g')
 # Quality Control #
 ###################
 
-${SAMPLELIST}: ./data/QC/%_R1.fastq ./data/QC/%_R2.fastq: \
+${SAMPLELIST}: ./data/QC/%_R1.fastq ./data/QC/%_R2.fastq sampleqc: \
 			./data/raw/NexteraXT003/%_R1.fastq.gz \
 			./data/raw/NexteraXT003/%_R2.fastq.gz \
 			./data/metadata/NexteraXT003Map.tsv \
