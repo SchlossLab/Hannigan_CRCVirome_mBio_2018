@@ -66,7 +66,7 @@ echo PROGRESS: Cutting adapters
 runCutadaptWithMap \
 	${Uncompressedfilename} \
 	${MappingFile} \
-	> ${Uncompressedfilename}.cutadapt
+	${Uncompressedfilename}.cutadapt
 
 echo PROGRESS: Quality trimming reads
 runFastx \
