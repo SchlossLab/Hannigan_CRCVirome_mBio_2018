@@ -13,5 +13,8 @@
 #PBS -V
 #PBS -A schloss_lab
 
+# Print working directory
+echo Working in $(pwd)
+
 # Run make
 make -j print
