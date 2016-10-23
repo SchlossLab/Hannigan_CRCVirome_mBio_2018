@@ -68,21 +68,21 @@ runCutadaptWithMap \
 	${MappingFile} \
 	${Uncompressedfilename}.cutadapt
 
-echo PROGRESS: Quality trimming reads
-runFastx \
-	${Uncompressedfilename}.cutadapt \
-	${Uncompressedfilename}.fastx
+# echo PROGRESS: Quality trimming reads
+# runFastx \
+# 	${Uncompressedfilename}.cutadapt \
+# 	${Uncompressedfilename}.fastx
 
-rm ${Uncompressedfilename}.cutadapt
+# rm ${Uncompressedfilename}.cutadapt
 
-echo PROGRESS: Decontaminating human reads
-runDeconSeq \
-	${Uncompressedfilename}.fastx \
-	${Uncompressedfilename}.output \
-	${Outputfilename} \
-	${Uncompressedfilename}.cont
+# echo PROGRESS: Decontaminating human reads
+# runDeconSeq \
+# 	${Uncompressedfilename}.fastx \
+# 	${Uncompressedfilename}.output \
+# 	${Outputfilename} \
+# 	${Uncompressedfilename}.cont
 
-echo PROGRESS: Cleaning up directory
-rm ${Uncompressedfilename}.fastx
+# echo PROGRESS: Cleaning up directory
+# rm ${Uncompressedfilename}.fastx
 
-gzip ${Uncompressedfilename}
+# gzip ${Uncompressedfilename}
