@@ -58,6 +58,7 @@ export -f runDeconSeq
 # Run Data #
 ############
 # Decompress file
+echo PROGRESS: Decompressing file
 gunzip ${Inputfile}
 export Uncompressedfilename=$(echo ${Inputfile} | sed 's/.gz//')
 
@@ -81,6 +82,7 @@ runDeconSeq \
 	${Outputfilename} \
 	${Uncompressedfilename}.cont
 
+echo PROGRESS: Cleaning up directory
 rm ${Uncompressedfilename}.fastx
 
 gzip ${Inputfile}
