@@ -27,4 +27,4 @@ module load concoct/0.4.0
 cd /mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerVirome || exit
 
 # Run make
-make -j print
+make print

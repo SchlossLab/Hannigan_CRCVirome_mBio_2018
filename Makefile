@@ -32,7 +32,7 @@ print: $(SAMPLELIST)
 
 $(SAMPLELIST): data/QC/%_R1.fastq: data/raw/NexteraXT003/%_R1.fastq.gz
 	echo $(shell date)  :  Performing QC and contig alignment on samples $@ >> ${DATENAME}.makelog
-	mkdir ./data/QC
+	mkdir -p ./data/QC
 	bash ./bin/QualityProcess.sh \
 		$< \
 		data/metadata/NexteraXT003Map.tsv \
