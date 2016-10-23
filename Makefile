@@ -7,7 +7,7 @@
 # Set General Variables 
 #
 
-SAMPLELIST := $(shell awk '{ print $$3 }' ./data/PublishedDatasets/metadatatable.tsv | sort | uniq)
+SAMPLELIST := $(shell awk '{ print $$2 }' ./data/metadata/NexteraXT003Map.tsv | sort | uniq)
 DATENAME := $(shell date | sed 's/ /_/g' | sed 's/\:/\./g')
 
 ###################
