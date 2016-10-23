@@ -1,0 +1,30 @@
+#! /bin/bash
+# runmakefile
+# Geoffrey Hannigan
+# Pat Schloss Lab
+# University of Michigan
+# Use this to submit the makefile to the server
+
+#PBS -N runmakefile
+#PBS -q first
+#PBS -l nodes=1:ppn=2,mem=40gb
+#PBS -l walltime=600:00:00
+#PBS -j oe
+#PBS -V
+#PBS -A schloss_lab
+
+# Set the proper R module
+module load R/3.2.3
+# Load perl modules
+module load perl/5.22.1
+module load perl-modules/5.22.1
+# Load modules for concoct
+# Python is a module dependency
+module load python/2.7.10
+module load concoct/0.4.0
+
+# Set working directory
+cd /mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerVirome || exit
+
+# Run make
+make -j print
