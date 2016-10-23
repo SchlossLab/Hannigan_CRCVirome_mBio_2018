@@ -14,4 +14,4 @@
 #PBS -A schloss_lab
 
 # Run make
-make print
+make -j print
