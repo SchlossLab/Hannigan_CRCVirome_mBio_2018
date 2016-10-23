@@ -15,13 +15,6 @@
 
 # Set the proper R module
 module load R/3.2.3
-# Load perl modules
-module load perl/5.22.1
-module load perl-modules/5.22.1
-# Load modules for concoct
-# Python is a module dependency
-module load python/2.7.10
-module load concoct/0.4.0
 
 # Set working directory
 cd /mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerVirome || exit
