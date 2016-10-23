@@ -13,6 +13,8 @@
 #PBS -V
 #PBS -A schloss_lab
 
+cd /mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerVirome || exit
+
 # Print working directory
 echo Working in $(pwd)
 
