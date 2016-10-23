@@ -3,18 +3,29 @@
 # Geoffrey Hannigan
 # Pat Schloss Lab
 
-#PBS -N ContigAssemblyAndAlignment
-#PBS -q first
-#PBS -l nodes=1:ppn=1,mem=40gb
-#PBS -l walltime=500:00:00
-#PBS -j oe
-#PBS -V
-#PBS -A schloss_lab
+#
+# Set General Variables 
+#
 
-# Run quality control processes
-# I know it's hardcoded now but the refactoring can wait for another time
-./QualitySeqs/SequenceCounts/16sHits.tsv ./QualitySeqs/DeconSeq ./figures:./data/NexteraXT002Map.tsv ./data/raw/NexteraXT002
-	bash ./bin/QualityProcess.sh
+SAMPLELIST := $(shell awk '{ print $$3 }' ./data/PublishedDatasets/metadatatable.tsv | sort | uniq)
+DATENAME := $(shell date | sed 's/ /_/g' | sed 's/\:/\./g')
 
-./data/ContigsAndAlignments/ContigRelativeAbundanceTable.tsv:./data/QualitySeqs/DeconSeq ./data/NexteraXT002Map.tsv
-	bash ./bin/ContigAssemblyAndAlignment.sh
+###################
+# Quality Control #
+###################
+
+${SAMPLELIST}: ./data/QC/%_R1.fastq ./data/QC/%_R2.fastq: \
+			./data/raw/NexteraXT003/%_R1.fastq.gz \
+			./data/raw/NexteraXT003/%_R2.fastq.gz \
+			./data/metadata/NexteraXT003Map.tsv \
+			./bin/QualityProcess.sh
+	echo $(shell date)  :  Performing QC and contig alignment on samples $@ >> ${DATENAME}.makelog
+	mkdir ./data/QC
+	bash ./bin/QualityProcess.sh \
+		$<1 \
+		./data/metadata/NexteraXT003Map.tsv \
+		$@1
+	bash ./bin/QualityProcess.sh \
+		$<2 \
+		./data/metadata/NexteraXT003Map.tsv \
+		$@2
