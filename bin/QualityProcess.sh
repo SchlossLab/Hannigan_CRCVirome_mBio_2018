@@ -61,6 +61,7 @@ export -f runDeconSeq
 echo PROGRESS: Decompressing file
 gunzip ${Inputfile}
 export Uncompressedfilename=$(echo ${Inputfile} | sed 's/.gz//')
+echo PROGRESS: Uncompressed file name is ${Uncompressedfilename}
 
 echo PROGRESS: Cutting adapters
 runCutadaptWithMap \
@@ -68,21 +69,19 @@ runCutadaptWithMap \
 	${MappingFile} \
 	${Uncompressedfilename}.cutadapt
 
-# echo PROGRESS: Quality trimming reads
-# runFastx \
-# 	${Uncompressedfilename}.cutadapt \
-# 	${Uncompressedfilename}.fastx
+echo PROGRESS: Quality trimming reads
+runFastx \
+	${Uncompressedfilename}.cutadapt \
+	${Uncompressedfilename}.fastx
 
-# rm ${Uncompressedfilename}.cutadapt
+rm ${Uncompressedfilename}.cutadapt
 
-# echo PROGRESS: Decontaminating human reads
-# runDeconSeq \
-# 	${Uncompressedfilename}.fastx \
-# 	${Uncompressedfilename}.output \
-# 	${Outputfilename} \
-# 	${Uncompressedfilename}.cont
+echo PROGRESS: Decontaminating human reads
+runDeconSeq \
+	${Uncompressedfilename}.fastx \
+	${Uncompressedfilename}.output \
+	${Outputfilename} \
+	${Uncompressedfilename}.cont
 
-# echo PROGRESS: Cleaning up directory
-# rm ${Uncompressedfilename}.fastx
-
-# gzip ${Uncompressedfilename}
+echo PROGRESS: Cleaning up directory
+rm ${Uncompressedfilename}.fastx
