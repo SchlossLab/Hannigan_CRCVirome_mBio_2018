@@ -96,3 +96,11 @@ $(DECON_R2): data/HumanDecon/%_R2.fastq: data/QC/%_R2.fastq
 
 # $(SAMPLELIST_R1): data/QC/%_R1.fastq data/QC/%_R2.fastq : data/raw/NexteraXT003/%_R1.fastq
 
+
+
+#################
+# Bacterial 16S #
+#################
+# Download the 16S reads from the SRA
+
+

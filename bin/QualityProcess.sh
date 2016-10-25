@@ -41,18 +41,9 @@ runFastx () {
 	${fastx} -t 33 -Q 30 -l 75 -i "${1}" -o "${2}"
 }
 
-runDeconSeq () {
-	# # This is set for human decontamination
-	perl ${DeconsSeq} -f "${1}" -dbs hsref -out_dir "${2}"
-	mv "${2}"/*clean.fq "${3}"
-	mv "${2}"/*cont.fq "${4}"
-	rm -r "${2}"
-}
-
 # Export functions
 export -f runCutadaptWithMap
 export -f runFastx
-export -f runDeconSeq
 
 ############
 # Run Data #

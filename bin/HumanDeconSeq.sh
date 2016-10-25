@@ -26,9 +26,9 @@ export CutAdapt=/mnt/EXT/Schloss-data/bin/cutadapt-1.9.1/bin/cutadapt
 runDeconSeq () {
 	# # This is set for human decontamination
 	perl ${DeconsSeq} -f "${1}" -dbs hsref -out_dir "${2}"
-	mv "${2}"/*clean.fq "${3}" | echo [ASSEMBLY SUBROUTINE FAIL]: "${1}"
-	mv "${2}"/*cont.fq "${4}" | echo [ASSEMBLY SUBROUTINE FAIL]: "${1}"
-	rm -rf "${2}"
+	mv "${2}"/*clean.fq "${3}" | echo [ASSEMBLY CLEAN MOVE FAIL]: "${1}"
+	mv "${2}"/*cont.fq "${4}" | echo [ASSEMBLY CONT MOVE FAIL]: "${1}"
+	# rm -rf "${2}"
 }
 
 export -f runDeconSeq
