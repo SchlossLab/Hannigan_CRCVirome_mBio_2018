@@ -19,4 +19,4 @@ cd /mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerVirome || exit
 echo Working in $(pwd)
 
 # Run make
-make -j print
+make -j humandeconseq
