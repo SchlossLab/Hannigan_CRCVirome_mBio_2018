@@ -31,9 +31,9 @@ runDeconSeq () {
 	echo Contaminated reads "${4}"
 
 	perl ${DeconsSeq} -f "${1}" -dbs hsref -out_dir "${2}"
-	cp "${2}"/*clean.fq "${3}" | echo [ASSEMBLY CLEAN MOVE FAIL]: "${3}"
-	cp "${2}"/*cont.fq "${4}" | echo [ASSEMBLY CONT MOVE FAIL]: "${4}"
-	# rm -rf "${2}"
+	mv "${2}"/*clean.fq "${3}"
+	mv "${2}"/*cont.fq "${4}"
+	rm -rf "${2}"
 }
 
 export -f runDeconSeq
@@ -48,4 +48,4 @@ runDeconSeq \
 	${Inputfile} \
 	${Inputfile}.output \
 	${Outputfilename} \
-	test.out
+	${Outputfilename}.cont
