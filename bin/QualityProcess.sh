@@ -38,7 +38,7 @@ runCutadaptWithMap () {
 }
 
 runFastx () {
-	${fastx} -t 33 -Q 30 -l 100 -i "${1}" -o "${2}"
+	${fastx} -t 33 -Q 30 -l 75 -i "${1}" -o "${2}"
 }
 
 runDeconSeq () {
@@ -72,16 +72,7 @@ runCutadaptWithMap \
 echo PROGRESS: Quality trimming reads
 runFastx \
 	${Uncompressedfilename}.cutadapt \
-	${Uncompressedfilename}.fastx
-
-rm ${Uncompressedfilename}.cutadapt
-
-echo PROGRESS: Decontaminating human reads
-runDeconSeq \
-	${Uncompressedfilename}.fastx \
-	${Uncompressedfilename}.output \
-	${Outputfilename} \
-	${Uncompressedfilename}.cont
+	${Outputfilename}
 
 echo PROGRESS: Cleaning up directory
-rm ${Uncompressedfilename}.fastx
+rm ${Uncompressedfilename}.cutadapt
