@@ -25,10 +25,10 @@ export CutAdapt=/mnt/EXT/Schloss-data/bin/cutadapt-1.9.1/bin/cutadapt
 
 runDeconSeq () {
 	# This is set for human decontamination
-	echo Input is ${1}
-	echo Output is ${2}
-	echo Output filename is ${3}
-	echo Contaminated reads are going to ${4}
+	echo Input is "${1}"
+	echo Output is "${2}"
+	echo Output filename is "${3}"
+	echo Contaminated reads are going to "${4}"
 	perl ${DeconsSeq} -f "${1}" -dbs hsref -out_dir "${2}"
 	cp "${2}"/*clean.fq "${3}" | echo [ASSEMBLY CLEAN MOVE FAIL]: "${3}"
 	cp "${2}"/*cont.fq "${4}" | echo [ASSEMBLY CONT MOVE FAIL]: "${4}"
@@ -42,6 +42,7 @@ export -f runDeconSeq
 ############
 
 echo PROGRESS: Decontaminating human reads
+
 runDeconSeq \
 	${Inputfile} \
 	${Inputfile}.output \
