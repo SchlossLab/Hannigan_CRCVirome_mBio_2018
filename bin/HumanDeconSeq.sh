@@ -10,7 +10,7 @@
 
 # Set the variables to be used in this script
 export Inputfile=$1
-export Outputfilename=$3
+export Outputfilename=$2
 
 # Dependencies
 export DeconsSeq=/mnt/EXT/Schloss-data/bin/deconseq-standalone-0.4.3/deconseq.pl
