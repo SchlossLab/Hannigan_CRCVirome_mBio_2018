@@ -31,9 +31,9 @@ runDeconSeq () {
 	echo Contaminated reads "${4}"
 
 	perl ${DeconsSeq} -f "${1}" -dbs hsref -out_dir "${2}"
-	mv "${2}"/*clean.fq "${3}"
-	mv "${2}"/*cont.fq "${4}"
-	rm -rf "${2}"
+	cp "${2}"/*clean.fq "${3}"
+	cp "${2}"/*cont.fq "${4}"
+	# rm -rf "${2}"
 }
 
 export -f runDeconSeq
