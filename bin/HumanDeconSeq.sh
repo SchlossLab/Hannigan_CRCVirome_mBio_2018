@@ -47,4 +47,4 @@ runDeconSeq \
 	${Inputfile} \
 	${Inputfile}.output \
 	${Outputfilename} \
-	${Inputfile}.cont
+	./test.out
