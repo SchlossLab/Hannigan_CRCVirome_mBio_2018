@@ -13,6 +13,9 @@
 #PBS -V
 #PBS -A schloss_lab
 
+# Load in modules
+module load gcc/4.6.4
+
 cd /mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerVirome || exit
 
 # Print working directory
