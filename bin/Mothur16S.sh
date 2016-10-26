@@ -21,7 +21,7 @@ export REF=data/references
 
 echo PROGRESS: Copying samples to new directory.
 for file in "${SampleDir}"/*; do
-	filename=$(echo ${file} | sed 's/\-/_/g')
+	filename=$(echo ${file} | sed 's/.*\///g' | sed 's/\-/_/g')
 	cp ${file} ${WORKDIR}/${filename}
 done
 
