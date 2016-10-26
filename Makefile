@@ -102,5 +102,9 @@ $(DECON_R2): data/HumanDecon/%_R2.fastq: data/QC/%_R2.fastq
 # Bacterial 16S #
 #################
 # Download the 16S reads from the SRA
-
+mothurproc :
+	mkdir -p ./data/mothur16S
+	bash ./bin/Mothur16S.sh \
+		./data/mothur16S \
+		./data/raw/Zackular_16S
 
