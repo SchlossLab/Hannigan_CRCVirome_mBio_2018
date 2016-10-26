@@ -7,7 +7,7 @@
 
 #PBS -N runmakefile
 #PBS -q first
-#PBS -l nodes=1:ppn=2,mem=40gb
+#PBS -l nodes=4:ppn=2,mem=40gb
 #PBS -l walltime=600:00:00
 #PBS -j oe
 #PBS -V
@@ -19,4 +19,4 @@ cd /mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerVirome || exit
 echo Working in $(pwd)
 
 # Run make
-make -j humandeconseq
+make -j 8 humandeconseq
