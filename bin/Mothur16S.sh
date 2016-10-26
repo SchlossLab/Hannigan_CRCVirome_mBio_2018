@@ -20,7 +20,10 @@ export REF=data/references
 ################
 
 echo PROGRESS: Copying samples to new directory.
-cp ${SampleDir}/* ${WORKDIR}
+for file in "${SampleDir}"/*; do
+	filename=$(echo ${file} | sed 's/\-/_/g')
+	cp ${file} ${WORKDIR}/${filename}
+done
 
 echo PROGRESS: Running Mothur.
 
