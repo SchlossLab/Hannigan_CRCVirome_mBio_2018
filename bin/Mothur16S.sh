@@ -37,7 +37,7 @@ $MothurPath "#make.file(inputdir=${WORKDIR});
 	summary.seqs(fasta=current, name=current);
 	count.seqs(name=current, group=current);
 	summary.seqs(fasta=current, count=current);
-	align.seqs(fasta=stability.trim.contigs.good.unique.fasta, reference=../references/silva.v4.align);
+	align.seqs(fasta=stability.trim.contigs.good.unique.fasta, reference=data/references/silva.v4.align);
 	summary.seqs(fasta=current, count=current);
 	screen.seqs(fasta=current, count=current, summary=current, start=1968, end=11550, maxhomop=8);
 	summary.seqs(fasta=current,count=current);
@@ -47,7 +47,7 @@ $MothurPath "#make.file(inputdir=${WORKDIR});
 	chimera.uchime(fasta=current, count=current, dereplicate=t);
 	remove.seqs(fasta=current, accnos=current);
 	summary.seqs(fasta=current,count=current);
-	classify.seqs(fasta=current, count=current, reference=../references/trainset14_032015.pds.fasta, taxonomy=../references/trainset14_032015.pds.tax, cutoff=80);
+	classify.seqs(fasta=current, count=current, reference=data/references/trainset14_032015.pds.fasta, taxonomy=data/references/trainset14_032015.pds.tax, cutoff=80);
 	remove.lineage(fasta=current, count=current, taxonomy=current, taxon=Chloroplast-Mitochondria-unknown-Archaea-Eukaryota)"
 
 # echo PROGRESS: Formatting files.
