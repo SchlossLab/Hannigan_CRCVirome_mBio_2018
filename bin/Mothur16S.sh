@@ -52,21 +52,21 @@ $MothurPath "#make.file(inputdir=${WORKDIR});
 	get.groups(fasta=current, count=current, groups=mock1-mock2-mock5-mock6-mock7);
 	seq.error(fasta=current, count=current, reference=$REF/HMP_MOCK.fasta, aligned=F)"
 
-# echo PROGRESS: Formatting files.
+echo PROGRESS: Formatting files.
 
-# mv ${WORKDIR}/stability.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.fasta ${WORKDIR}/unmatched.fasta
-# mv ${WORKDIR}/stability.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.count_table ${WORKDIR}/unmatched.count_table
-# mv ${WORKDIR}/stability.trim.contigs.good.unique.good.filter.unique.precluster.pick.pds.wang.pick.taxonomy ${WORKDIR}/unmatched.taxonomy
+mv ${WORKDIR}/stability.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.fasta ${WORKDIR}/unmatched.fasta
+mv ${WORKDIR}/stability.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.count_table ${WORKDIR}/unmatched.count_table
+mv ${WORKDIR}/stability.trim.contigs.good.unique.good.filter.unique.precluster.pick.pds.wang.pick.taxonomy ${WORKDIR}/unmatched.taxonomy
 
-# # Move Error analysis to error directory
+# Move Error analysis to error directory
 
-# mv ${WORKDIR}/stability.*.error.* ${WORKDIR}/error_analysis/
-# mv ${WORKDIR}/stability.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.pick.count_table ${WORKDIR}/error_analysis/
-# mv ${WORKDIR}/stability.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.fasta ${WORKDIR}/error_analysis/
+mv ${WORKDIR}/stability.*.error.* ${WORKDIR}/error_analysis/
+mv ${WORKDIR}/stability.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.pick.count_table ${WORKDIR}/error_analysis/
+mv ${WORKDIR}/stability.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.pick.fasta ${WORKDIR}/error_analysis/
 
-# echo PROGRESS: Splitting file for clustering.
+echo PROGRESS: Splitting file for clustering.
 
-# # Split the files for clustering
+# Split the files for clustering
 
-# $mothurRv "#cluster.split(fasta=${WORKDIR}/unmatched.fasta, count=${WORKDIR}/unmatched.count_table, taxonomy=${WORKDIR}/unmatched.taxonomy, splitmethod=classify, taxlevel=5, cutoff=0.1, cluster=F, processors=4)"
+$mothurRv "#cluster.split(fasta=${WORKDIR}/unmatched.fasta, count=${WORKDIR}/unmatched.count_table, taxonomy=${WORKDIR}/unmatched.taxonomy, splitmethod=classify, taxlevel=5, cutoff=0.1, cluster=F, processors=4)"
 
