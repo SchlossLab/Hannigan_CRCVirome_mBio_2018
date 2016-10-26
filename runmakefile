@@ -5,7 +5,7 @@
 # University of Michigan
 # Use this to submit the makefile to the server
 
-#PBS -N runmakefile
+#PBS -N runmakefile-CRC
 #PBS -q first
 #PBS -l nodes=4:ppn=2,mem=40gb
 #PBS -l walltime=600:00:00
@@ -22,4 +22,4 @@ cd /mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerVirome || exit
 echo Working in $(pwd)
 
 # Run make
-make mothurproc
+make -j 8 humandeconseq
