@@ -97,5 +97,6 @@ mothurproc :
 	mkdir -p ./data/mothur16S
 	bash ./bin/Mothur16S.sh \
 		./data/mothur16S \
-		./data/raw/Zackular_16S
+		./data/raw/Zackular_16S \
+		./data/references
 
