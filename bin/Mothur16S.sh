@@ -41,7 +41,7 @@ $MothurPath "#make.file(inputdir=${WORKDIR});
 	summary.seqs(fasta=current, count=current);
 	screen.seqs(fasta=current, count=current, summary=current, start=1968, end=11550, maxhomop=8);
 	summary.seqs(fasta=current,count=current);
-	filter.seqs(fasta=current, vertical=T, trump=.);
+	filter.seqs(fasta=stability.trim.contigs.good.unique.good.align, vertical=T, trump=.);
 	unique.seqs(fasta=current, count=current);
 	pre.cluster(fasta=current, count=current, diffs=2);
 	chimera.uchime(fasta=current, count=current, dereplicate=t);
