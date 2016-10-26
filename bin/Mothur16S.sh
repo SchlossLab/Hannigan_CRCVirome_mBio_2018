@@ -13,6 +13,8 @@ export WORKDIR=$1
 export SampleDir=$2
 export ReferenceDirectory=$3
 
+echo Reference directory is ${ReferenceDirectory}
+
 export MothurPath=/mnt/EXT/Schloss-data/bin/mothur
 
 ################
