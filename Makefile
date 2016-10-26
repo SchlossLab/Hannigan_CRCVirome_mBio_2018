@@ -3,14 +3,6 @@
 # Geoffrey Hannigan
 # Pat Schloss Lab
 
-objects = foo.o bar.o
-
-all: $(objects)
-
-$(objects): %.o:
-	$(CC) -c $(CFLAGS) test.c -o out.o
-
-
 ###################
 # Quality Control #
 ###################
@@ -78,25 +70,24 @@ $(DECON_R2): data/HumanDecon/%_R2.fastq: data/QC/%_R2.fastq
 		$< \
 		$@
 
-# ###################
-# # Contig Assembly #
-# ###################
+###################
+# Contig Assembly #
+###################
 
-# SAMPLELIST_R1 := $(shell awk '{ print $$2 }' ./data/metadata/NexteraXT003Map.tsv \
-# 	| sort \
-# 	| uniq \
-# 	| sed 's/$$/_R1.fastq/' \
-# 	| sed 's/^/data\/contigs\//')
+CONTIGS_R1 := $(shell awk '{ print $$2 }' ./data/metadata/NexteraXT003Map.tsv \
+	| sort \
+	| uniq \
+	| sed 's/$$/.fastq/' \
+	| sed 's/^/data\/contigs\//')
 
-# SAMPLELIST_R2 := $(shell awk '{ print $$2 }' ./data/metadata/NexteraXT003Map.tsv \
-# 	| sort \
-# 	| uniq \
-# 	| sed 's/$$/_R2.fastq/' \
-# 	| sed 's/^/data\/contigs\//')
+assemblecontigs: $(CONTIGS_R1)
 
-# $(SAMPLELIST_R1): data/QC/%_R1.fastq data/QC/%_R2.fastq : data/raw/NexteraXT003/%_R1.fastq
-
-
+$(CONTIGS_R1): data/contigs/%.fastq : data/HumanDecon/%_R1.fastq
+	mkdir -p ./data/contigs
+	bash ./bin/ContigAssembly.sh \
+		$< \
+		$(subst R1,R2,$<) \
+		$@
 
 #################
 # Bacterial 16S #
