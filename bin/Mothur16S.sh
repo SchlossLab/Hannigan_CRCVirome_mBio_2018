@@ -25,9 +25,9 @@ cp ${SampleDir}/* ${WORKDIR}
 echo PROGRESS: Running Mothur.
 
 # Section from Mothur MiSeq SOP
-# Adapted from Baxter, Sze, Shloss
+# Adapted from Baxter, Sze, Schloss
 $MothurPath "#make.file(inputdir=${WORKDIR});
-	make.contigs(file=current}, processors=8);
+	make.contigs(file=current, processors=8);
 	summary.seqs(fasta=current);
 	screen.seqs(fasta=current, group=current, summary=current, maxambig=0, maxlength=275);
 	summary.seqs(fasta=current);
