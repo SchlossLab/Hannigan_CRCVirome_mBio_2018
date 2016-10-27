@@ -49,7 +49,7 @@ $MothurPath "#make.file(inputdir=${WORKDIR});
 	summary.seqs(fasta=current,count=current);
 	classify.seqs(fasta=current, count=current, reference=data/references/trainset14_032015.pds.fasta, taxonomy=data/references/trainset14_032015.pds.tax, cutoff=80);
 	remove.lineage(fasta=current, count=current, taxonomy=current, taxon=Chloroplast-Mitochondria-unknown-Archaea-Eukaryota);
-	get.groups(fasta=current, count=current, groups=mock1-mock2-mock5-mock6-mock7);
+	get.groups(fasta=current, count=current, groups=mock1-mock2);
 	seq.error(fasta=current, count=current, reference=$REF/HMP_MOCK.fasta, aligned=F)"
 
 echo PROGRESS: Formatting files.
