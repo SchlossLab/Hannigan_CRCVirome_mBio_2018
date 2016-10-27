@@ -98,3 +98,7 @@ mothurproc :
 	bash ./bin/Mothur16S.sh \
 		./data/mothur16S \
 		./data/raw/Zackular_16S
+
+mothurcluster :
+	bash ./bin/Mothur16S.sh \
+		./data/mothur16S
