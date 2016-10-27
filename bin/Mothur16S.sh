@@ -50,4 +50,4 @@ $MothurPath "#make.file(inputdir=${WORKDIR});
 	classify.seqs(fasta=current, count=current, reference=data/references/trainset14_032015.pds.fasta, taxonomy=data/references/trainset14_032015.pds.tax, cutoff=80);
 	remove.lineage(fasta=current, count=current, taxonomy=current, taxon=Chloroplast-Mitochondria-unknown-Archaea-Eukaryota);
 	get.groups(fasta=current, count=current, groups=mock1-mock2);
-	seq.error(fasta=current, count=current, reference=$REF/HMP_MOCK.fasta, aligned=F)"
+	seq.error(fasta=current, count=current, reference=data/references/HMP_MOCK.fasta, aligned=F)"
