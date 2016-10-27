@@ -13,6 +13,8 @@ export FileR1=${1}
 export FileR2=${2}
 export OutputDirectory=${3}
 
+export megahitvar=/home/ghannig/bin/megahit/megahit
+
 ###################
 # Set Subroutines #
 ###################
@@ -24,11 +26,11 @@ PairedAssembleContigs () {
 	python ${megahitvar} \
 		-1 "${1}" \
 		-2 "${2}" \
-		--min-contig-len 2500 \
+		--min-contig-len 1000 \
 		--k-min 21 \
 		--k-max 101\
 		--k-step 20 \
-		-t 8 \
+		-t 4 \
 		-o "${3}"
 }
 
