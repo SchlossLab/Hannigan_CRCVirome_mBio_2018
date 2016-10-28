@@ -135,6 +135,13 @@ $(MOVE_CONTIGS): data/contigfastq/%.fastq :
 		--no_total_coverage \
 		--iterations 50
 
+#################
+# Identify OPFs #
+#################
+./data/totalopfs.fa : ./data/totalcontigs.fa
+	bash ./bin/ClusterOPFs.sh \
+		$< \
+		$@
 
 #################
 # Bacterial 16S #
