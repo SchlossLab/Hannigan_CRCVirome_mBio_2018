@@ -50,7 +50,7 @@ EstablishOpfs () {
 	mmseqs createdb ${1} DB
 
 	mkdir ./tmp
-    mmseqs clustlinear DB clu tmp
+    mmseqs cluster DB clu tmp
 
     # Convert to fasta
     mmseqs createseqfiledb DB clu clu_seq 
