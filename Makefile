@@ -101,10 +101,35 @@ $(MOVE_CONTIGS): data/contigfastq/%.fastq :
 	mkdir -p data/contigfastq
 	cp $(subst contigfastq,contigs,$@)/final.contigs.fa $@
 
+# Merge the contigs into a master file
+./data/totalcontigs.fa :
+	cat ./data/contigfastq/* > $@
+	
+
+###############################
+# Contig Abundance Per Sample #
+###############################
+
+
 #####################
 # Contig Clustering #
 #####################
-
+./data/ContigClustersPhage \
+./data/ContigClustersPhage/clustering_gt1000.csv : \
+			./data/TotalCatContigsPhage.fa \
+			./data/ContigRelAbundForConcoctPhage.tsv
+	echo $(shell date)  :  Clustering phage contigs using CONCOCT >> ${DATENAME}.makelog
+	mkdir ./data/ContigClustersPhage
+	concoct \
+		--coverage_file ./data/ContigRelAbundForConcoctPhage.tsv \
+		--composition_file ./data/TotalCatContigsPhage.fa \
+		--clusters 500 \
+		--kmer_length 5 \
+		--length_threshold 1000 \
+		--read_length 150 \
+		--basename ./data/ContigClustersPhage/ \
+		--no_total_coverage \
+		--iterations 50
 
 
 #################
