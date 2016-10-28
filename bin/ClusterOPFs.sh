@@ -50,7 +50,7 @@ EstablishOpfs () {
 	mmseqs createdb ${1} DB
 
 	mkdir ./tmp
-    mmseqs cluster -e 0.00001 --min-seq-id 0.7 DB clu tmp
+    mmseqs cluster DB clu tmp -e 0.00001 --min-seq-id 0.7 
 
     # Convert to fasta
     mmseqs createseqfiledb DB clu clu_seq 
@@ -71,10 +71,10 @@ export -f EstablishOpfs
 ################
 echo Predicting ORFs...
 
-PredictOrfs \
-	${ContigsFile} \
-	./data/tmp-opfs/ContigOrfs.fa \
-	|| exit
+# PredictOrfs \
+# 	${ContigsFile} \
+# 	./data/tmp-opfs/ContigOrfs.fa \
+# 	|| exit
 
 EstablishOpfs \
 	ContigOrfs.fa \
