@@ -80,7 +80,15 @@ CONTIGS_R1 := $(shell awk '{ print $$2 }' ./data/metadata/NexteraXT003Map.tsv \
 	| sed 's/$$/.fastq/' \
 	| sed 's/^/data\/contigs\//')
 
+MOVE_CONTIGS := $(shell awk '{ print $$2 }' ./data/metadata/NexteraXT003Map.tsv \
+	| sort \
+	| uniq \
+	| sed 's/$$/.fastq/' \
+	| sed 's/^/data\/contigfastq\//')
+
 assemblecontigs: $(CONTIGS_R1)
+
+movecontigs: $(MOVE_CONTIGS)
 
 $(CONTIGS_R1): data/contigs/%.fastq : data/HumanDecon/%_R1.fastq
 	mkdir -p ./data/contigs
@@ -88,6 +96,14 @@ $(CONTIGS_R1): data/contigs/%.fastq : data/HumanDecon/%_R1.fastq
 		$< \
 		$(subst R1,R2,$<) \
 		$@
+
+$(MOVE_CONTIGS): data/contigfastq/%.fastq :
+	mkdir -p data/contigfastq
+	cp $(subst contigfastq,contigs,$@)/final.contigs.fa $@
+
+#####################
+# Contig Clustering #
+#####################
 
 
 

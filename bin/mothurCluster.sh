@@ -26,7 +26,7 @@ $MothurPath "#cluster.split(file=$WORKDIR/unmatched.file, processors=1);
 	remove.groups(shared=current, groups=mock1-mock2)"
 
 # Rename data files
-mv $WORKDIR/unmatched.an.unique_list.0.03.pick.shared $WORKDIR/final.shared
-mv $WORKDIR/*.cons.taxonomy $WORKDIR/final.taxonomy
-mv $WORKDIR/*0.03.rep.fasta $WORKDIR/final.rep.seqs
-mv $WORKDIR/*.0.03.rep.count_table $WORKDIR/final.rep.count_table
+cp ./unmatched.opti_mcc.unique_list.0.03.pick.shared ./final.shared
+cp ./*.cons.taxonomy ./final.taxonomy
+cp ./*0.03.rep.fasta ./final.rep.seqs
+cp ./*.0.03.rep.count_table ./final.rep.count_table
