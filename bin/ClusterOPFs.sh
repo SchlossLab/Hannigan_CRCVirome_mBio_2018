@@ -50,7 +50,7 @@ EstablishOpfs () {
 	mmseqs createdb ${1} DB
 
 	mkdir ./tmp
-    mmseqs cluster --min-seq-id 0.7 DB clu tmp
+    mmseqs cluster -e 0.0000000001 --min-seq-id 0.7 DB clu tmp
 
     # Convert to fasta
     mmseqs createseqfiledb DB clu clu_seq 
