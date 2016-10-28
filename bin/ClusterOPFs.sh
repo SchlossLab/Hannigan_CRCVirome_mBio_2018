@@ -71,10 +71,10 @@ export -f EstablishOpfs
 ################
 echo Predicting ORFs...
 
-# PredictOrfs \
-# 	${ContigsFile} \
-# 	./data/tmp-opfs/ContigOrfs.fa \
-# 	|| exit
+PredictOrfs \
+	${ContigsFile} \
+	./data/tmp-opfs/ContigOrfs.fa \
+	|| exit
 
 EstablishOpfs \
 	ContigOrfs.fa \
