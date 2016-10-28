@@ -104,12 +104,17 @@ $(MOVE_CONTIGS): data/contigfastq/%.fastq :
 # Merge the contigs into a master file
 ./data/totalcontigs.fa :
 	cat ./data/contigfastq/* > $@
-	
 
 ###############################
 # Contig Abundance Per Sample #
 ###############################
-
+./data/ContigRelAbundForGraph.tsv : \
+			./data/totalcontigs.fa \
+			./bin/CreateContigRelAbundTable.sh
+	bash ./bin/CreateContigRelAbundTable.sh \
+		./data/totalcontigs.fa \
+		./data/HumanDecon \
+		./data/ContigRelAbundForGraph.tsv
 
 #####################
 # Contig Clustering #
