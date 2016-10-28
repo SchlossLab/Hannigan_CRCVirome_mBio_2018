@@ -19,7 +19,7 @@ export MothurPath=/mnt/EXT/Schloss-data/bin/mothur
 
 echo PROGRESS: Clustering OTUs
 
-$mothurRv "#cluster.split(file=$WORKDIR/unmatched.file, processors=1);
+$MothurPath "#cluster.split(file=$WORKDIR/unmatched.file, processors=1);
 	make.shared(list=current, count=$WORKDIR/unmatched.count_table, label=0.03);
 	classify.otu(list=current, count=current, taxonomy=$WORKDIR/unmatched.taxonomy, label=0.03);
 	get.oturep(fasta=$WORKDIR/unmatched.fasta, count=current, list=current, label=0.03, method=abundance);
