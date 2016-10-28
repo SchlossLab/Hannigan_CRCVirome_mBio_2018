@@ -24,3 +24,9 @@ $MothurPath "#cluster.split(file=$WORKDIR/unmatched.file, processors=1);
 	classify.otu(list=current, count=current, taxonomy=$WORKDIR/unmatched.taxonomy, label=0.03);
 	get.oturep(fasta=$WORKDIR/unmatched.fasta, count=current, list=current, label=0.03, method=abundance);
 	remove.groups(shared=current, groups=mock1-mock2)"
+
+# Rename data files
+mv $WORKDIR/unmatched.an.unique_list.0.03.pick.shared $WORKDIR/final.shared
+mv $WORKDIR/*.cons.taxonomy $WORKDIR/final.taxonomy
+mv $WORKDIR/*0.03.rep.fasta $WORKDIR/final.rep.seqs
+mv $WORKDIR/*.0.03.rep.count_table $WORKDIR/final.rep.count_table
