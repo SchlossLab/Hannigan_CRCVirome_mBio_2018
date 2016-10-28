@@ -55,10 +55,10 @@ EstablishOpfs () {
     # Convert to fasta
     mmseqs createseqfiledb DB clu clu_seq 
     mmseqs result2flat DB DB clu_seq clu_seq.fasta
-    cp clu_seq.fasta ${2}
 
     # Back out of the directory
-    cd .. || exit
+    cd ../.. || exit
+    cp ./data/tmp-opfs/clu_seq.fasta ${2}
 }
 
 # Export the subroutines
@@ -71,11 +71,11 @@ export -f EstablishOpfs
 ################
 echo Predicting ORFs...
 
-PredictOrfs \
-	${ContigsFile} \
-	./data/tmp-opfs/ContigOrfs.fa \
-	|| exit
+# PredictOrfs \
+# 	${ContigsFile} \
+# 	./data/tmp-opfs/ContigOrfs.fa \
+# 	|| exit
 
 EstablishOpfs \
-	./data/tmp-opfs/ContigOrfs.fa \
+	ContigOrfs.fa \
 	${Output}
