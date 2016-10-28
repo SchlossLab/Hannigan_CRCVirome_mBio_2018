@@ -109,8 +109,7 @@ $(MOVE_CONTIGS): data/contigfastq/%.fastq :
 # Contig Abundance Per Sample #
 ###############################
 ./data/ContigRelAbundForGraph.tsv : \
-			./data/totalcontigs.fa \
-			./bin/CreateContigRelAbundTable.sh
+			./data/totalcontigs.fa
 	bash ./bin/CreateContigRelAbundTable.sh \
 		./data/totalcontigs.fa \
 		./data/HumanDecon \
