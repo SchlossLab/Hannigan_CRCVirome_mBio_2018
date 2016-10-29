@@ -53,8 +53,8 @@ EstablishOpfs () {
     mmseqs cluster DB clu tmp -e 0.00001 --min-seq-id 0.6
 
     # Convert to fasta
-    mmseqs createseqfiledb DB clu clu_seq 
-    mmseqs result2flat clu_seq test-clu_seq.fasta
+    mmseqs createseqfiledb DB clu clu_seq
+    mmseqs result2flat DB DB clu_seq clu_seq.fasta
 
     # Back out of the directory
     cd ../.. || exit
@@ -71,10 +71,10 @@ export -f EstablishOpfs
 ################
 echo Predicting ORFs...
 
-PredictOrfs \
-	${ContigsFile} \
-	./data/tmp-opfs/ContigOrfs.fa \
-	|| exit
+# PredictOrfs \
+# 	${ContigsFile} \
+# 	./data/tmp-opfs/ContigOrfs.fa \
+# 	|| exit
 
 EstablishOpfs \
 	ContigOrfs.fa \
