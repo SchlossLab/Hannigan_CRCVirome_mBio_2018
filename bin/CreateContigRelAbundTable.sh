@@ -75,3 +75,5 @@ ls ${FastaSequences}/*_R2.fastq | sed "s/.*\///g" | xargs -I {} --max-procs=32 b
 echo Catting files...
 
 cat ${FastaSequences}/*-noheader-forcat > ${MasterOutput}
+
+sed -i 's/_R2.fastq//' ${MasterOutput}
