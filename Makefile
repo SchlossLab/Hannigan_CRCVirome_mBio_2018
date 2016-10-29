@@ -104,6 +104,7 @@ $(MOVE_CONTIGS): data/contigfastq/%.fastq :
 # Merge the contigs into a master file
 ./data/totalcontigs.fa :
 	cat ./data/contigfastq/* > $@
+	sed -i 's/ /_/g' $@
 
 ###############################
 # Contig Abundance Per Sample #
