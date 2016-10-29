@@ -34,6 +34,7 @@ PredictOrfs () {
 
 	sed -i 's/\*//g' "${2}"
 	sed -i 's/\/n//g' "${2}"
+	sed -i 's/ /_/g' "${2}"
 }
 
 EstablishOpfs () {
@@ -55,26 +56,27 @@ EstablishOpfs () {
     # Convert to fasta
     mmseqs createseqfiledb DB clu clu_seq
     mmseqs result2flat DB DB clu_seq clu_seq.fasta
+    mmseqs createtsv DB DB clu clu.tsv
 
     # Back out of the directory
     cd ../.. || exit
     cp ./data/tmp-opfs/clu_seq.fasta ${2}
+    cp ./data/tmp-opfs/clu.tsv ${2}.tsv
 }
 
 # Export the subroutines
 export -f PredictOrfs
 export -f EstablishOpfs
 
-
 ################
 # Predict ORFs #
 ################
 echo Predicting ORFs...
 
-# PredictOrfs \
-# 	${ContigsFile} \
-# 	./data/tmp-opfs/ContigOrfs.fa \
-# 	|| exit
+PredictOrfs \
+	${ContigsFile} \
+	./data/tmp-opfs/ContigOrfs.fa \
+	|| exit
 
 EstablishOpfs \
 	ContigOrfs.fa \
