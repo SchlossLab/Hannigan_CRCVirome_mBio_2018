@@ -148,6 +148,14 @@ $(MOVE_CONTIGS): data/contigfastq/%.fastq :
 		$< \
 		$@
 
+############################
+# OPF Abundance Per Sample #
+############################
+orfalign:
+	bash ./bin/getOrfAbundance.sh \
+		./data/tmp-opfs/ContigOrfs.fa
+		./data/HumanDecon
+
 #################
 # Bacterial 16S #
 #################
@@ -165,3 +173,9 @@ precluster :
 mothurcluster :
 	bash ./bin/mothurCluster.sh \
 		./data/mothur16S
+
+###############################
+# 16S Classification Modeling #
+###############################
+
+
