@@ -37,6 +37,8 @@ GetOrfHits () {
 		-o ${FastaSequences}/${1}.diamondout
 }
 
+export -f GetOrfHits
+
 ################
 # Run Analysis #
 ################
