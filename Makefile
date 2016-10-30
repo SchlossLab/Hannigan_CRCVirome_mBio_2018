@@ -123,7 +123,7 @@ $(MOVE_CONTIGS): data/contigfastq/%.fastq :
 	Rscript ./bin/ReshapeAlignedAbundance.R \
 		-i ./data/ContigRelAbundForGraph.tsv \
 		-o ./data/ContigAbundForConcoct.tsv \
-		-p 0.95
+		-p 0.99
 
 ./data/ContigClustersPhage \
 ./data/ContigClustersPhage/clustering_gt1000.csv : \
