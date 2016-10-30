@@ -153,7 +153,7 @@ $(MOVE_CONTIGS): data/contigfastq/%.fastq :
 ############################
 orfalign:
 	bash ./bin/getOrfAbundance.sh \
-		./data/tmp-opfs/ContigOrfs.fa
+		./data/tmp-opfs/ContigOrfs.fa \
 		./data/HumanDecon
 
 #################
