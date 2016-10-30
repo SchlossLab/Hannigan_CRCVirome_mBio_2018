@@ -119,6 +119,12 @@ $(MOVE_CONTIGS): data/contigfastq/%.fastq :
 #####################
 # Contig Clustering #
 #####################
+./data/ContigAbundForConcoct.tsv: ./data/ContigRelAbundForGraph.tsv
+Rscript ./bin/ReshapeAlignedAbundance.R \
+		-i ./data/ContigRelAbundForGraph.tsv \
+		-o ./data/ContigAbundForConcoct.tsv \
+		-p 1.0
+
 ./data/ContigClustersPhage \
 ./data/ContigClustersPhage/clustering_gt1000.csv : \
 			./data/TotalCatContigsPhage.fa \
