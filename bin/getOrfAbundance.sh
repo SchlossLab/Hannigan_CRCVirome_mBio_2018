@@ -42,6 +42,7 @@ export -f GetOrfHits
 ################
 # Run Analysis #
 ################
+mkdir -p ./data/tmporfabund
 
 # Create diamond database
 echo Creating Database...
