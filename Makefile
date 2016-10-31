@@ -156,6 +156,11 @@ orfalign:
 		./data/tmp-opfs/ContigOrfsNoSpec.fa \
 		./data/HumanDecon
 
+./data/orfabund.tsv:
+	bash ./bin/catOrfAbundance.sh \
+		./data/HumanDecon \
+		./data/orfabund.tsv
+
 #################
 # Bacterial 16S #
 #################
