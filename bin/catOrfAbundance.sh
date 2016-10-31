@@ -18,7 +18,7 @@ mkdir -p ./${Output}
 #################
 rm -f ${MasterOutput}
 
-for file in $2/*.diamondout; do
+for file in $(ls $2/*.diamondout); do
 	sampleID=$(echo $file | sed 's/.*\///g' | sed 's/_R2\.fastq\.diamondout//')
 	echo Sample ID is ${sampleID}
 	#Save a file with abundance \t ORF ID
