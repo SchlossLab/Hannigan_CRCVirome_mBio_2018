@@ -50,6 +50,6 @@ ${diamondpath}diamond makedb \
 	--in "${OrfFile}" \
 	-d ${tmpfile}/diamonddatabase
 
-# ls ${FastaSequences}/*_R2.fastq | sed "s/.*\///g" | xargs -I {} --max-procs=32 bash -c 'GetOrfHits "$@"' _ {}
+ls ${FastaSequences}/*_R2.fastq | sed "s/.*\///g" | xargs -I {} --max-procs=32 bash -c 'GetOrfHits "$@"' _ {}
 
 
