@@ -123,7 +123,7 @@ $(MOVE_CONTIGS): data/contigfastq/%.fastq :
 	Rscript ./bin/ReshapeAlignedAbundance.R \
 		-i ./data/ContigRelAbundForGraph.tsv \
 		-o ./data/ContigAbundForConcoct.tsv \
-		-p 0.25
+		-p 0.5
 
 ./data/ContigClusters/clustering_gt1000.csv : \
 			./data/totalcontigs.fa \
@@ -133,7 +133,7 @@ $(MOVE_CONTIGS): data/contigfastq/%.fastq :
 		--coverage_file ./data/ContigAbundForConcoct.tsv \
 		--composition_file ./data/totalcontigs.fa \
 		--clusters 500 \
-		--kmer_length 5 \
+		--kmer_length 4 \
 		--length_threshold 1000 \
 		--read_length 150 \
 		--basename ./data/ContigClusters/ \
