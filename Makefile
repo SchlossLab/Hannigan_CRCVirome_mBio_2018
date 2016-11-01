@@ -160,7 +160,7 @@ $(MOVE_CONTIGS): data/contigfastq/%.fastq :
 		$@
 
 ############################
-# OPF Abundance Per Sample #
+# ORF Abundance Per Sample #
 ############################
 orfalign:
 	bash ./bin/getOrfAbundance.sh \
@@ -171,6 +171,19 @@ orfalign:
 	bash ./bin/catOrfAbundance.sh \
 		./data/HumanDecon \
 		./data/orfabund.tsv
+
+#######################
+# OPF Abundance Table #
+#######################
+./data/ClusteredOpfAbund.tsv : \
+			./data/totalopfs.fa.tsv \
+			./data/orfabund.tsv
+	cut -f 2,1 ./data/totalopfs.fa.tsv > ./data/OpfClusters.tsv
+	cut -f 2,1,3 ./data/orfabund.tsv > ./data/orfabundOrdered.tsv
+	bash ./bin/ClusterContigAbund.sh \
+		./data/orfabundOrdered.tsv \
+		./data/OpfClusters.tsv \
+		./data/ClusteredOpfAbund.tsv
 
 #################
 # Bacterial 16S #
