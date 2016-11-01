@@ -215,6 +215,18 @@ mothurcluster :
 		--subsample 10000 \
 		--out ./figures/diversity-alpha-ogu.pdf
 
+#######################
+# OPF Alpha Diversity #
+#######################
+./figures/diversity-alpha-opf.pdf : \
+			./data/ClusteredOpfAbund.tsv \
+			./data/metadata/NexteraXT003Map.tsv
+	Rscript ./bin/diversity-alpha.R \
+		--input ./data/ClusteredOpfAbund.tsv \
+		--metadata ./data/metadata/NexteraXT003Map.tsv \
+		--subsample 10000 \
+		--out ./figures/diversity-alpha-opf.pdf
+
 ###############################
 # 16S Classification Modeling #
 ###############################
