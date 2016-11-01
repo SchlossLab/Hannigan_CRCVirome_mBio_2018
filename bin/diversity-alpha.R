@@ -47,7 +47,9 @@ opt <- parse_args(opt_parser);
 # Run Analysis #
 ################
 input <- read.delim(opt$input, header=TRUE, sep="\t")
+head(input)
 datadisease <- read.delim(opt$metadata, header=FALSE, sep="\t")[,c(2,30)]
+head(datadisease)
 
 # Format for vegan
 inputcast <- dcast(input, V2 ~ V1, value.var = "sum")
