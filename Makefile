@@ -140,6 +140,17 @@ $(MOVE_CONTIGS): data/contigfastq/%.fastq :
 		--no_total_coverage \
 		--iterations 50
 
+############################
+# Cluster Contig Abundance #
+############################
+./data/ClusteredContigAbund.tsv : \
+			./data/ContigRelAbundForGraph.tsv \
+			./data/ContigClusters/clustering_gt1000.csv
+	bash ./bin/ClusterContigAbund.sh \
+		./data/ContigRelAbundForGraph.tsv \
+		./data/ContigClusters/clustering_gt1000.csv \
+		./data/ClusteredContigAbund.tsv
+
 #################
 # Identify OPFs #
 #################
