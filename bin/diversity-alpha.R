@@ -87,7 +87,7 @@ richplot <- ggplot(mergedrich, aes(x=V30, y=Rich, fill=V30)) +
     ylab("Richness")
 pairwise.wilcox.test(x=mergedrich$Rich, g=mergedrich$V30, p.adjust.method="bonferroni")
 
-pdf(opt$out, height=6, width=8)
+pdf(opt$out, height=4.5, width=6)
     shannonplot
     richplot
 dev.off()
