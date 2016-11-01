@@ -29,7 +29,7 @@ option_list <- list(
     help = "Metadata table with disease states.",
     metavar = "character"),
   make_option(c("-s", "--subsample"),
-    type = "character",
+    type = "integer",
     default = 10000,
     help = "Metadata table with disease states.",
     metavar = "character"),
