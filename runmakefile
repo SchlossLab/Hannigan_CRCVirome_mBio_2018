@@ -31,4 +31,4 @@ cd /mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerVirome || exit
 echo Working in $(pwd)
 
 # Run make
-make ./data/totalopfs.fa
+make ./figures/diversity-alpha-opf.pdf
