@@ -20,11 +20,11 @@ AnnotateCollapseClusters () {
 
 	# Replace occurences
 	awk -F "\t" 'FNR==NR { a[$1] = $2; next } {print "Cluster_"a[$1]"\t"$3"\t"$2}' \
-		./data/${OutputName}/ContClust.tsv \
+		./data/${OutputName}/ContigClust.tsv \
 		${FileToAnnotate} \
 		> ./data/${OutputName}/tmpAnnotations.tsv
 
-	Rscript ./bin/CollapseGeneScores.R \
+	Rscript ./bin/CollapseContigAbund.R \
 		-i ./data/${OutputName}/tmpAnnotations.tsv \
 		-o ./data/${OutputName}/tmpAnnotations2.tsv
 
