@@ -178,8 +178,8 @@ orfalign:
 ./data/ClusteredOpfAbund.tsv : \
 			./data/totalopfs.fa.tsv \
 			./data/orfabund.tsv
-	cut -f 2,1 ./data/totalopfs.fa.tsv > ./data/OpfClusters.tsv
-	cut -f 2,1,3 ./data/orfabund.tsv > ./data/orfabundOrdered.tsv
+	$(shell awk '{ print $$2"\t"$$1 }' ./data/metadata/NexteraXT003Map.tsv > ./data/OpfClusters.tsv)
+	$(shell awk '{ print $$2"\t"$$1"\t"$$3 }' ./data/orfabund.tsv > ./data/orfabundOrdered.tsv)
 	bash ./bin/ClusterContigAbund.sh \
 		./data/orfabundOrdered.tsv \
 		./data/OpfClusters.tsv \
