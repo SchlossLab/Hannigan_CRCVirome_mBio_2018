@@ -35,6 +35,7 @@ PredictOrfs () {
 	sed -i 's/\*//g' "${2}"
 	sed -i 's/\/n//g' "${2}"
 	sed -i 's/ /_/g' "${2}"
+	sed -i 's/[^>^0-9^A-Z^a-z]/_/g' "${2}"
 }
 
 EstablishOpfs () {
