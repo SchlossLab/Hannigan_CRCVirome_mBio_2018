@@ -71,7 +71,8 @@ shannonplot <- ggplot(mergedshannon, aes(x=V30, y=ShannonDiv, fill=V30)) +
     theme(legend.position="none") +
     geom_boxplot(notch=TRUE) +
     xlab("Health Status") +
-    ylab("Shannon Diversity")
+    ylab("Shannon Diversity") +
+    scale_fill_manual(values = wes_palette("Royal1"))
 pairwise.wilcox.test(x=mergedshannon$ShannonDiv, g=mergedshannon$V30, p.adjust.method="bonferroni")
 
 inputrich <- data.frame(rownames(inputcast), rarefy(inputcast, sample=opt$subsample))
@@ -84,7 +85,8 @@ richplot <- ggplot(mergedrich, aes(x=V30, y=Rich, fill=V30)) +
     geom_boxplot(notch=TRUE) +
     # geom_segment(x=1, xend=3, y=150, yend=150) + annotate("text", x=2, y=152, label="*", size=10) +
     xlab("Health Status") +
-    ylab("Richness")
+    ylab("Richness") +
+    scale_fill_manual(values = wes_palette("Royal1"))
 pairwise.wilcox.test(x=mergedrich$Rich, g=mergedrich$V30, p.adjust.method="bonferroni")
 
 pdf(opt$out, height=4.5, width=6)
