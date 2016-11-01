@@ -190,6 +190,18 @@ mothurcluster :
 	bash ./bin/mothurCluster.sh \
 		./data/mothur16S
 
+#######################
+# OGU Alpha Diversity #
+#######################
+./figures/diversity-alpha-ogu.pdf : \
+			./data/ClusteredContigAbund.tsv \
+			./data/metadata/NexteraXT003Map.tsv
+	Rscript ./bin/diversity-alpha.R \
+		--input ./data/ClusteredContigAbund.tsv \
+		--metadata ./data/metadata/NexteraXT003Map.tsv \
+		--subsample 10000 \
+		--out ./figures/diversity-alpha-ogu.pdf
+
 ###############################
 # 16S Classification Modeling #
 ###############################
