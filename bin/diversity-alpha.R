@@ -16,7 +16,6 @@ library("reshape2")
 library("wesanderson")
 library("vegan")
 library("plyr")
-library("pgirmess")
 
 option_list <- list(
   make_option(c("-i", "--input"),
