@@ -8,14 +8,17 @@
 ###################
 
 write("Collapsing Contig Counts", stderr())
+set.seed(1234)
 
 library("optparse")
 library("plyr")
+library("dplyr")
 library("ggplot2")
-library("caret")
-library("plotROC")
+# library("caret")
+# library("plotROC")
 library("reshape2")
 library("wesanderson")
+library("AUCRF")
 
 option_list <- list(
   make_option(c("-i", "--input"),
@@ -37,20 +40,18 @@ opt <- parse_args(opt_parser);
 # Set Subroutines #
 ###################
 processmothurotus <- function(x, removeclass="none") {
-    # Remove excess columns
-    removecols <- x[,-c(1,3)]
     # Clean up disease classes
-    removecols$Group <- sub("[0-9]+", "", removecols$Group, perl=TRUE)
+    x$Group <- sub("[0-9]+", "", x$Group, perl=TRUE)
     if (removeclass != "none") {
-        removecols <- removecols[-which(removecols$Group %in% removeclass),]
+        x <- x[-which(x$Group %in% removeclass),]
     }
-    return(removecols)
+    return(x)
 }
 
 caretmodel <- function(x) {
   fitControl <- trainControl(method = "repeatedcv",
-    number = 10,
-    repeats = 25,
+    number = 5,
+    repeats = 10,
     classProbs = TRUE,
     summaryFunction = twoClassSummary,
     savePredictions = TRUE)
@@ -71,17 +72,18 @@ plotscree <- function(x) {
         ylab("Percent Variance Explained")
 }
 
-################
-# Run Analysis #
-################
-input <- read.delim(opt$input, head = FALSE, sep = "\t")
-
+#######
+# PCA #
+#######
 input <- read.delim("./final.shared", header=TRUE, sep="\t")
-
-procinput <- processmothurotus(input)
+# Calculate as relative abundance
+inputmelt <- melt(input[-c(1,3)])
+# Get relative abundance
+inputrelabund <- data.frame(inputmelt %>% group_by(Group) %>% mutate(RelAbund = 100 * value / sum(value)))
+relabundcast <- dcast(inputrelabund, Group ~ variable, value.var = "RelAbund")
 
 # Compare healthy to cancer
-inputnoademona <- processmothurotus(input, removeclass="Adenoma")
+inputnoademona <- processmothurotus(relabundcast, removeclass="Adenoma")
 # pca to reduce dimentions
 inputtrans <- t(inputnoademona)
 colnames(inputtrans) <- inputtrans[1,]
@@ -95,8 +97,6 @@ pcadf$Group <- sub(".[0-9]+", "", rownames(pcadf), perl=TRUE)
 outmodel <- caretmodel(pcadf)
 plot(outmodel)
 
-# outmodel <- caretmodel(inputnoademona)
-
 # Plot the ROC curve
 ggplot(outmodel$pred, aes(d = obs, m = Healthy)) +
     geom_roc(n.cuts = 0, color = wes_palette("Royal1")[2]) +
@@ -109,14 +109,45 @@ ggplot(outmodel$pred, aes(d = obs, m = Healthy)) +
     ylab("Sensitivity") +
     xlab(paste("Inverse Specificity"))
 
-# # Test
-# set.seed(2529)
-# D.ex <- rbinom(200, size = 1, prob = .5)
-# M1 <- rnorm(200, mean = D.ex, sd = .65)
-# M2 <- rnorm(200, mean = D.ex, sd = 1.5)
 
-# test <- data.frame(D = D.ex, D.str = c("Healthy", "Ill")[D.ex + 1], 
-#                    M1 = M1, M2 = M2, stringsAsFactors = FALSE)
 
-# basicplot <- ggplot(test, aes(d = D, m = M1)) + geom_roc()
-# basicplot
+#######################
+# Abundance Reduction #
+#######################
+inputnoademona <- processmothurotus(relabundcast, removeclass="Adenoma")
+lowabundgone = inputnoademona[,c(TRUE, sapply(inputnoademona[-1], median) > 0.01)]
+
+correlationMatrix <- cor(lowabundgone[,-1])
+highlyCorrelated <- findCorrelation(correlationMatrix, cutoff=0.75) + 1
+lowabundcor <- lowabundgone[,-c(highlyCorrelated)]
+outmodellowabund <- caretmodel(lowabundcor)
+plot(outmodellowabund)
+
+ggplot(outmodellowabund$pred, aes(d = obs, m = Healthy)) +
+    geom_roc(n.cuts = 0, color = wes_palette("Royal1")[2]) +
+    theme_classic() +
+    theme(
+      axis.line.x = element_line(colour = "black"),
+      axis.line.y = element_line(colour = "black")
+    ) +
+    geom_segment(aes(x = 0, y = 0, xend = 1, yend = 1), linetype=2, colour=wes_palette("Royal1")[1]) +
+    ylab("Sensitivity") +
+    xlab(paste("Inverse Specificity"))
+
+
+
+#################################
+# Recursive Feature Elimination #
+#################################
+inputnoademona <- processmothurotus(relabundcast, removeclass="Adenoma")
+control <- rfeControl(functions=rfFuncs, method="cv", number=10)
+results <- rfe(lowabundgone[,-1], lowabundgone[,1], rfeControl=control)
+plot(results, type=c("g", "o"))
+
+inputnoademona <- processmothurotus(relabundcast, removeclass="Adenoma")
+lowabundgone = inputnoademona[,c(TRUE, sapply(inputnoademona[-1], median) > 0.1)]
+lowabundgone$Group <- factor(lowabundgone$Group)
+fit_les_model <- AUCRF(Group~., data=lowabundgone, pdel=0.05, ranking='MDA')
+
+
+
