@@ -89,7 +89,7 @@ richplot <- ggplot(mergedrich, aes(x=V30, y=Rich, fill=V30)) +
     scale_fill_manual(values = alpha(wes_palette("Royal1"), 0.75))
 pairwise.wilcox.test(x=mergedrich$Rich, g=mergedrich$V30, p.adjust.method="bonferroni")
 
-pdf(opt$out, height=4.5, width=6)
+pdf(opt$out, height=4.5, width=3)
     shannonplot
     richplot
 dev.off()
