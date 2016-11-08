@@ -14,11 +14,10 @@ library("optparse")
 library("plyr")
 library("dplyr")
 library("ggplot2")
-# library("caret")
-# library("plotROC")
+library("caret")
+library("plotROC")
 library("reshape2")
 library("wesanderson")
-library("AUCRF")
 
 option_list <- list(
   make_option(c("-i", "--input"),
@@ -50,12 +49,12 @@ processmothurotus <- function(x, removeclass="none") {
 
 caretmodel <- function(x) {
   fitControl <- trainControl(method = "repeatedcv",
-    number = 5,
-    repeats = 10,
+    repeats = 5,
+    number=5,
     classProbs = TRUE,
     summaryFunction = twoClassSummary,
     savePredictions = TRUE)
-  model <- train(Group~., data=x, trControl=fitControl, method="rf", metric="ROC")
+  model <- train(Group~., data=x, trControl=fitControl, method="rf", metric="ROC", tuneLength=5)
   return(model)
 }
 
@@ -75,7 +74,7 @@ plotscree <- function(x) {
 #######
 # PCA #
 #######
-input <- read.delim("./final.shared", header=TRUE, sep="\t")
+input <- read.delim("./data/mothur16S/final.shared", header=TRUE, sep="\t")
 # Calculate as relative abundance
 inputmelt <- melt(input[-c(1,3)])
 # Get relative abundance
@@ -114,16 +113,14 @@ ggplot(outmodel$pred, aes(d = obs, m = Healthy)) +
 #######################
 # Abundance Reduction #
 #######################
-inputnoademona <- processmothurotus(relabundcast, removeclass="Adenoma")
-lowabundgone = inputnoademona[,c(TRUE, sapply(inputnoademona[-1], median) > 0.01)]
+# Filter by presence/absence
+pasubset <- inputnoademona[,c(colSums(inputnoademona != 0) > 30)]
+subsetmodel <- caretmodel(pasubset)
+subsetmodel
+plot(subsetmodel)
 
-correlationMatrix <- cor(lowabundgone[,-1])
-highlyCorrelated <- findCorrelation(correlationMatrix, cutoff=0.75) + 1
-lowabundcor <- lowabundgone[,-c(highlyCorrelated)]
-outmodellowabund <- caretmodel(lowabundcor)
-plot(outmodellowabund)
-
-ggplot(outmodellowabund$pred, aes(d = obs, m = Healthy)) +
+# Plot the ROC curve
+ggplot(subsetmodel$pred, aes(d = obs, m = Healthy)) +
     geom_roc(n.cuts = 0, color = wes_palette("Royal1")[2]) +
     theme_classic() +
     theme(
@@ -133,7 +130,6 @@ ggplot(outmodellowabund$pred, aes(d = obs, m = Healthy)) +
     geom_segment(aes(x = 0, y = 0, xend = 1, yend = 1), linetype=2, colour=wes_palette("Royal1")[1]) +
     ylab("Sensitivity") +
     xlab(paste("Inverse Specificity"))
-
 
 
 #################################
