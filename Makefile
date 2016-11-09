@@ -212,7 +212,7 @@ mothurcluster :
 	Rscript ./bin/diversity-alpha.R \
 		--input ./data/ClusteredContigAbund.tsv \
 		--metadata ./data/metadata/NexteraXT003Map.tsv \
-		--subsample 10000 \
+		--subsample 100000 \
 		--out ./figures/diversity-alpha-ogu.pdf
 
 #######################
@@ -224,8 +224,16 @@ mothurcluster :
 	Rscript ./bin/diversity-alpha.R \
 		--input ./data/ClusteredOpfAbund.tsv \
 		--metadata ./data/metadata/NexteraXT003Map.tsv \
-		--subsample 10000 \
+		--subsample 100000 \
 		--out ./figures/diversity-alpha-opf.pdf
+
+####################
+# Sequencing Depth #
+####################
+./data/ProjectSeqDepth.tsv :
+	bash ./bin/getPairedCount.sh \
+		./data/HumanDecon \
+		./data/ProjectSeqDepth.tsv
 
 ###############################
 # 16S Classification Modeling #
