@@ -14,9 +14,12 @@ export tmpdir=./data/tmp-counts
 mkdir -p ${tmpdir}
 
 wc -l ${SequencingFileDirectory}/*_R1.fastq > ${tmpdir}/rawcounts.tsv
-sed 's/^ *//g' ${tmpdir}/rawcounts.tsv > ${tmpdir}/rawcountsformat.tsv
-sed -i 's/ */\t/g' ${tmpdir}/rawcountsformat.tsv
-sed -i 's/\t.*\//\t/g' ${tmpdir}/rawcountsformat.tsv
-sed -i 's/_R1.fastq//' ${tmpdir}/rawcountsformat.tsv
-awk '{ print $1/2"\t"$2 }' ${tmpdir}/rawcountsformat.tsv > ${Output}
+sed 's/^ *//g' ${tmpdir}/rawcounts.tsv \
+	| grep -v total \
+	| sed 's/ \+/\t/g' \
+	| sed 's/\t.*\//\t/g' \
+	| sed 's/_R1.fastq//' \
+	| awk '{ print $1/2"\t"$2 }' \
+	> ${Output}
+
 # rm -rf ${tmpdir}
