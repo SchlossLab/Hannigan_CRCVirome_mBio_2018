@@ -227,6 +227,30 @@ mothurcluster :
 		--subsample 100000 \
 		--out ./figures/diversity-alpha-opf.pdf
 
+#######################
+# OGU Beta Diversity #
+#######################
+./figures/diversity-beta-ogu.pdf : \
+			./data/ClusteredContigAbund.tsv \
+			./data/metadata/NexteraXT003Map.tsv
+	Rscript ./bin/diversity-beta.R \
+		--input ./data/ClusteredContigAbund.tsv \
+		--metadata ./data/metadata/NexteraXT003Map.tsv \
+		--subsample 100000 \
+		--out ./figures/diversity-beta-ogu.pdf
+
+#######################
+# OPF Beta Diversity #
+#######################
+./figures/diversity-beta-opf.pdf : \
+			./data/ClusteredOpfAbund.tsv \
+			./data/metadata/NexteraXT003Map.tsv
+	Rscript ./bin/diversity-beta.R \
+		--input ./data/ClusteredOpfAbund.tsv \
+		--metadata ./data/metadata/NexteraXT003Map.tsv \
+		--subsample 100000 \
+		--out ./figures/diversity-beta-opf.pdf
+
 ####################
 # Sequencing Depth #
 ####################

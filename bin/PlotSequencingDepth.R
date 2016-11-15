@@ -15,6 +15,11 @@ library("wesanderson")
 
 
 option_list <- list(
+  make_option(c("-i", "--input"),
+    type = "character",
+    default = NULL,
+    help = "Input count file.",
+    metavar = "character"),
   make_option(c("-m", "--metadata"),
     type = "character",
     default = NULL,
@@ -33,7 +38,9 @@ opt <- parse_args(opt_parser);
 ################
 # Run Analysis #
 ################
+input - read.delim("./data/ProjectSeqDepth.tsv", header=FALSE, sep="\t")
 metadata <- read.delim("./data/metadata/NexteraXT003Map.tsv", header=FALSE, sep="\t")[,c(2,26,27,30)]
+head(input)
 head(metadata)
 
 
