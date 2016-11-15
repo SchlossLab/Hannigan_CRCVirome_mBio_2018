@@ -47,10 +47,8 @@ opt <- parse_args(opt_parser);
 ################
 # Run Analysis #
 ################
-input <- read.delim(opt$input, header=TRUE, sep="\t")
-head(input)
-datadisease <- read.delim(opt$metadata, header=FALSE, sep="\t")[,c(2,30)]
-head(datadisease)
+input <- read.delim("./data/ClusteredOpfAbund.tsv", header=TRUE, sep="\t")
+datadisease <- read.delim("./data/metadata/NexteraXT003Map.tsv", header=FALSE, sep="\t")[,c(2,30)]
 
 # Format for vegan
 inputcast <- dcast(input, V2 ~ V1, value.var = "sum")
@@ -60,9 +58,8 @@ inputcast <- inputcast[,-1]
 
 castsum <- rowSums(inputcast)
 
-inputcast <- rrarefy(inputcast, sample=opt$subsample)
-inputcast <- inputcast[c(rowSums(inputcast) %in% opt$subsample),]
-head(inputcast)
+inputcast <- rrarefy(inputcast, sample=10000)
+inputcast <- inputcast[c(rowSums(inputcast) %in% 10000),]
 
 # Make the distance matrix
 castdist <- as.data.frame(as.matrix(vegdist(inputcast, method="bray")))
@@ -84,7 +81,6 @@ mergedist <- merge(catdistnames, datadisease, by.x="names", by.y="V2")
 dist <- vegdist(inputcast, method="bray")
 mod <- betadisper(dist, mergedist[,length(mergedist)])
 anova(mod)
-plot(mod)
 permutest(mod, pairwise = TRUE)
 mod.HSD <- TukeyHSD(mod)
 
