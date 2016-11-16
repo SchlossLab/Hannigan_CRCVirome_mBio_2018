@@ -26,7 +26,7 @@ Stool samples were collected in accordance with our approaved IRB protocol. The 
 
 Virus DNA was purified according to previous studies. Briefly, the stool was resuspended in saline magnesium buffer by rigorous vortexing. Bacteria, human, and other non-viral cells were removed by filtering through a 0.22µm filter, followed by cell lysis with chloroform and degredation of the released genomic DNA with DNase **(Figure \ref{sampleproc})**. The resulting genomic DNA was used to prepare a sequencing library with the NexteraXT preparation kit, and was sequenced on the Illumina HiSeq2500 platform. To accomodate the low concentration of input DNA, we used the NexteraXT protocol with 18 PCR cycles instead of 12. Each run was performed with a blank control to detect any contaminants from reagents. Only one of the controls detected DNA, which was of a minimal concentration, indicating successful sequencing of VLP genomic DNA over potential contaminants **(Figure \ref{qualcontrol})**.
 
-![VLP genomic DNA yield from all sequenced samples. Each bar represents a sample which is grouped and colored by its associated disease group.\label{qualcontrol}](../figures/qualitycontrol.pdf){ width=60% }
+![Basic Quality Control Metrics. A) VLP genomic DNA yield from all sequenced samples. Each bar represents a sample which is grouped and colored by its associated disease group. B) Sequence yield following quality control including quality score filtering and human decontamintion. Dashed line represents the subsampling depth used in the study.\label{qualcontrol}](../figures/qualitycontrol.pdf){ width=100% }
 
 ## The Community Landscape of the Colorectal Cancer Virome
 
@@ -45,6 +45,7 @@ We built and tested random forest models based on virus and bacteria communtiy s
 ![ROC curve from a random forest model built on virus (red) and bacteria (grey) community abundance data. \label{predmodel}](../figures/predmodel-viromebacteria.pdf){ width=70% }
 
 Try adding more information to the ROC curve:
+
 * Diversity
 * Metadata
 * Whole Shotgun

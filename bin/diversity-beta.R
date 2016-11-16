@@ -34,6 +34,11 @@ option_list <- list(
     default = 10000,
     help = "Metadata table with disease states.",
     metavar = "character"),
+  make_option(c("-d", "--divmetric"),
+    type = "integer",
+    default = "bray",
+    help = "Metadata table with disease states.",
+    metavar = "character"),
   make_option(c("-o", "--out"),
     type = "character",
     default = NULL,
@@ -47,8 +52,8 @@ opt <- parse_args(opt_parser);
 ################
 # Run Analysis #
 ################
-input <- read.delim("./data/ClusteredOpfAbund.tsv", header=TRUE, sep="\t")
-datadisease <- read.delim("./data/metadata/NexteraXT003Map.tsv", header=FALSE, sep="\t")[,c(2,30)]
+input <- read.delim(opt$input, header=TRUE, sep="\t")
+datadisease <- read.delim(opt$metadata, header=FALSE, sep="\t")[,c(2,30)]
 
 # Format for vegan
 inputcast <- dcast(input, V2 ~ V1, value.var = "sum")
@@ -58,11 +63,11 @@ inputcast <- inputcast[,-1]
 
 castsum <- rowSums(inputcast)
 
-inputcast <- rrarefy(inputcast, sample=10000)
-inputcast <- inputcast[c(rowSums(inputcast) %in% 10000),]
+inputcast <- rrarefy(inputcast, sample=opt$subsample)
+inputcast <- inputcast[c(rowSums(inputcast) %in% opt$subsample),]
 
 # Make the distance matrix
-castdist <- as.data.frame(as.matrix(vegdist(inputcast, method="bray")))
+castdist <- as.data.frame(as.matrix(vegdist(inputcast, method=opt$divmetric)))
 ORD_NMDS <- metaMDS(castdist,k=2)
 ORD_FIT = data.frame(MDS1 = ORD_NMDS$points[,1], MDS2 = ORD_NMDS$points[,2])
 ORD_FIT$SampleID <- rownames(ORD_FIT)
@@ -78,7 +83,7 @@ plotnmds <- ggplot(NMDS_AND_MAP, aes(x=MDS1, y=MDS2, colour=V30)) +
 catdistnames <- castdist
 catdistnames$names <- row.names(catdistnames)
 mergedist <- merge(catdistnames, datadisease, by.x="names", by.y="V2")
-dist <- vegdist(inputcast, method="bray")
+dist <- vegdist(inputcast, method=opt$divmetric)
 mod <- betadisper(dist, mergedist[,length(mergedist)])
 anova(mod)
 permutest(mod, pairwise = TRUE)

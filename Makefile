@@ -239,6 +239,16 @@ mothurcluster :
 		--subsample 100000 \
 		--out ./figures/diversity-beta-ogu.pdf
 
+./figures/diversity-betajaccard-ogu.pdf : \
+			./data/ClusteredContigAbund.tsv \
+			./data/metadata/NexteraXT003Map.tsv
+	Rscript ./bin/diversity-beta.R \
+		--input ./data/ClusteredContigAbund.tsv \
+		--metadata ./data/metadata/NexteraXT003Map.tsv \
+		--subsample 100000 \
+		--divmetric jaccard \
+		--out ./figures/diversity-betajaccard-ogu.pdf
+
 #######################
 # OPF Beta Diversity #
 #######################
