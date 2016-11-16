@@ -7,7 +7,7 @@
 # Set Environment #
 ###################
 
-write("Calculating alpha diversity", stderr())
+write("Calculating beta diversity", stderr())
 
 library("optparse")
 library("ggplot2")
@@ -35,7 +35,7 @@ option_list <- list(
     help = "Metadata table with disease states.",
     metavar = "character"),
   make_option(c("-d", "--divmetric"),
-    type = "integer",
+    type = "character",
     default = "bray",
     help = "Metadata table with disease states.",
     metavar = "character"),
