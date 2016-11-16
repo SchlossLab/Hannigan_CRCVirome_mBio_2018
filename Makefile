@@ -261,6 +261,16 @@ mothurcluster :
 		--subsample 100000 \
 		--out ./figures/diversity-beta-opf.pdf
 
+./figures/diversity-betajaccard-opf.pdf : \
+			./data/ClusteredOpfAbund.tsv \
+			./data/metadata/NexteraXT003Map.tsv
+	Rscript ./bin/diversity-beta.R \
+		--input ./data/ClusteredOpfAbund.tsv \
+		--metadata ./data/metadata/NexteraXT003Map.tsv \
+		--subsample 100000 \
+		--divmetric jaccard \
+		--out ./figures/diversity-betajaccard-opf.pdf
+
 ####################
 # Sequencing Depth #
 ####################
