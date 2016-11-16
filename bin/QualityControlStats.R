@@ -42,8 +42,8 @@ opt <- parse_args(opt_parser);
 ################
 # Run Analysis #
 ################
-input <- read.delim("./data/ProjectSeqDepth.tsv", header=FALSE, sep="\t")
-metadata <- read.delim("./data/metadata/NexteraXT003Map.tsv", header=FALSE, sep="\t")[,c(2,26,27,30)]
+input <- read.delim(opt$input, header=FALSE, sep="\t")
+metadata <- read.delim(opt$metadata, header=FALSE, sep="\t")[,c(2,26,27,30)]
 head(metadata)
 
 # DNA concentration
@@ -76,13 +76,11 @@ depthplot <- ggplot(inputmerge, aes(x = V2, y = V1, fill = V30)) +
     scale_fill_manual(values = wes_palette("Royal1")[c(1,2,4,3)]) +
     ylab("VLP Genomic DNA Yield (ng/uL)") +
     xlab("") +
-    geom_hline(yintercept = 10000, linetype="dashed")
+    geom_hline(yintercept = opt$sdepth, linetype="dashed")
 
 gridplot <- plot_grid(dnaconcplot, depthplot, labels = c("A", "B"))
-gridplot
 
 
-
-pdf("./figures/qualitycontrol.pdf", height=4, width=10)
+pdf(opt$out, height=4, width=10)
     gridplot
 dev.off()

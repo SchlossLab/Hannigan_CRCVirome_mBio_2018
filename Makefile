@@ -279,6 +279,13 @@ mothurcluster :
 		./data/HumanDecon \
 		./data/ProjectSeqDepth.tsv
 
+./figures/qualitycontrol.pdf :
+	Rscript ./bin/QualityControlStats.R \
+		--input ./data/ProjectSeqDepth.tsv \
+		--metadata ./data/metadata/NexteraXT003Map.tsv \
+		--out ./figures/qualitycontrol.pdf \
+		--sdepth 100000
+
 ###############################
 # 16S Classification Modeling #
 ###############################
