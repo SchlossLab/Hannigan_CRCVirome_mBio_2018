@@ -258,7 +258,7 @@ mothurcluster :
 	Rscript ./bin/diversity-beta.R \
 		--input ./data/ClusteredOpfAbund.tsv \
 		--metadata ./data/metadata/NexteraXT003Map.tsv \
-		--subsample 100000 \
+		--subsample 50000 \
 		--out ./figures/diversity-beta-opf.pdf
 
 ./figures/diversity-betajaccard-opf.pdf : \
@@ -267,7 +267,7 @@ mothurcluster :
 	Rscript ./bin/diversity-beta.R \
 		--input ./data/ClusteredOpfAbund.tsv \
 		--metadata ./data/metadata/NexteraXT003Map.tsv \
-		--subsample 100000 \
+		--subsample 50000 \
 		--divmetric jaccard \
 		--out ./figures/diversity-betajaccard-opf.pdf
 
