@@ -6,7 +6,7 @@
 
 export metadata=$1
 
-for file in $(ls ./data/raw/NexteraXT003/*); do
+for file in $(ls ./data/raw/NexteraXT004/*); do
 	filename=$(echo ${file} | sed 's/.*\///g' | sed 's/_.*//')
 	echo File is ${file}
 	echo File name is ${filename}
