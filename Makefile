@@ -4,9 +4,10 @@
 # Pat Schloss Lab
 
 ############################################# METADATA ############################################
+metadatafiles = ./data/metadata/NexteraXT003Map.tsv ./data/metadata/NexteraXT004Map.tsv
 
 # Make a master metadata file
-./data/metadata/MasterMeta.tsv : ./data/metadata/NexteraXT003Map.tsv ./data/metadata/NexteraXT004Map.tsv
+./data/metadata/MasterMeta.tsv : $(metadatafiles)
 	cat ./data/metadata/NexteraXT003Map.tsv ./data/metadata/NexteraXT004Map.tsv > ./data/metadata/MasterMeta.tsv
 
 ######################################### QUALITY CONTROL #########################################
@@ -14,24 +15,35 @@
 ###################
 # Quality Control #
 ###################
+setfile1: ./data/metadata/MasterMeta.tsv
+	$(eval SAMPLELIST_R1 := $(shell awk '{ print $$2 }' ./data/metadata/MasterMeta.tsv \
+		| sort \
+		| uniq \
+		| sed 's/$$/_R1.fastq/' \
+		| sed 's/^/data\/QC\//'))
+	echo 'variable1 = $(SAMPLELIST_R1)' > $@
 
-SAMPLELIST_R1 := $(shell awk '{ print $$2 }' ./data/metadata/MasterMeta.tsv \
-	| sort \
-	| uniq \
-	| sed 's/$$/_R1.fastq/' \
-	| sed 's/^/data\/QC\//')
-
-SAMPLELIST_R2 := $(shell awk '{ print $$2 }' ./data/metadata/MasterMeta.tsv \
-	| sort \
-	| uniq \
-	| sed 's/$$/_R2.fastq/' \
-	| sed 's/^/data\/QC\//')
+setfile2: ./data/metadata/MasterMeta.tsv
+	$(eval SAMPLELIST_R2 = $(shell awk '{ print $$2 }' ./data/metadata/MasterMeta.tsv \
+		| sort \
+		| uniq \
+		| sed 's/$$/_R2.fastq/' \
+		| sed 's/^/data\/QC\//'))
+	echo 'variable2 = $(SAMPLELIST_R2)' > $@
 
 DATENAME := $(shell date | sed 's/ /_/g' | sed 's/\:/\./g')
 
-runqc: $(SAMPLELIST_R1) $(SAMPLELIST_R2)
+runqc:
 
-$(SAMPLELIST_R1): data/QC/%_R1.fastq: data/raw/NexteraXT003/%_R1.fastq
+include setfile1
+include setfile2
+
+runqc: $(variable1) $(variable2)
+
+$(variable): data/QC/%_R1.fastq:
+	echo Target is $@
+
+$(variable1): data/QC/%_R1.fastq: data/raw/%_R1.fastq
 	echo $(shell date)  :  Performing QC and contig alignment on samples $@ >> ${DATENAME}.makelog
 	mkdir -p ./data/QC
 	bash ./bin/QualityProcess.sh \
@@ -39,7 +51,7 @@ $(SAMPLELIST_R1): data/QC/%_R1.fastq: data/raw/NexteraXT003/%_R1.fastq
 		data/metadata/MasterMeta.tsv \
 		$@
 
-$(SAMPLELIST_R2): data/QC/%_R2.fastq: data/raw/NexteraXT003/%_R2.fastq
+$(variable2): data/QC/%_R2.fastq: data/raw/%_R2.fastq
 	echo $(shell date)  :  Performing QC and contig alignment on samples $@ >> ${DATENAME}.makelog
 	mkdir -p ./data/QC
 	bash ./bin/QualityProcess.sh \
@@ -50,17 +62,19 @@ $(SAMPLELIST_R2): data/QC/%_R2.fastq: data/raw/NexteraXT003/%_R2.fastq
 #########################
 # Human Decontamination #
 #########################
-DECON_R1 := $(shell awk '{ print $$2 }' ./data/metadata/MasterMeta.tsv \
-	| sort \
-	| uniq \
-	| sed 's/$$/_R1.fastq/' \
-	| sed 's/^/data\/HumanDecon\//')
+setfile3: ./data/metadata/MasterMeta.tsv
+	$(DECON_R1 = $(shell awk '{ print $$2 }' ./data/metadata/MasterMeta.tsv \
+		| sort \
+		| uniq \
+		| sed 's/$$/_R1.fastq/' \
+		| sed 's/^/data\/HumanDecon\//'))
 
-DECON_R2 := $(shell awk '{ print $$2 }' ./data/metadata/MasterMeta.tsv \
-	| sort \
-	| uniq \
-	| sed 's/$$/_R2.fastq/' \
-	| sed 's/^/data\/HumanDecon\//')
+setfile4: ./data/metadata/MasterMeta.tsv
+	$(DECON_R2 = $(shell awk '{ print $$2 }' ./data/metadata/MasterMeta.tsv \
+		| sort \
+		| uniq \
+		| sed 's/$$/_R2.fastq/' \
+		| sed 's/^/data\/HumanDecon\//'))
 
 humandeconseq: $(DECON_R1) $(DECON_R2)
 
@@ -81,18 +95,19 @@ $(DECON_R2): data/HumanDecon/%_R2.fastq: data/QC/%_R2.fastq
 ###################
 # Contig Assembly #
 ###################
+setfile5: ./data/metadata/MasterMeta.tsv
+	$(CONTIGS_R1 = $(shell awk '{ print $$2 }' ./data/metadata/MasterMeta.tsv \
+		| sort \
+		| uniq \
+		| sed 's/$$/.fastq/' \
+		| sed 's/^/data\/contigs\//'))
 
-CONTIGS_R1 := $(shell awk '{ print $$2 }' ./data/metadata/MasterMeta.tsv \
-	| sort \
-	| uniq \
-	| sed 's/$$/.fastq/' \
-	| sed 's/^/data\/contigs\//')
-
-MOVE_CONTIGS := $(shell awk '{ print $$2 }' ./data/metadata/MasterMeta.tsv \
-	| sort \
-	| uniq \
-	| sed 's/$$/.fastq/' \
-	| sed 's/^/data\/contigfastq\//')
+setfile6: ./data/metadata/MasterMeta.tsv
+	$(MOVE_CONTIGS = $(shell awk '{ print $$2 }' ./data/metadata/MasterMeta.tsv \
+		| sort \
+		| uniq \
+		| sed 's/$$/.fastq/' \
+		| sed 's/^/data\/contigfastq\//'))
 
 assemblecontigs: $(CONTIGS_R1)
 

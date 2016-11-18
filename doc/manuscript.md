@@ -11,6 +11,11 @@ I think I want this paper to be more focused. Instead of a general survey of the
 
 General Landscape -> Networking -> Predictive Modeling
 
+# Working Hypothesis
+Like bacteria, it is more of the minor players of the community that make that difference instead of major abundances.
+
+What viruses are always present in cancer but not in healthy?
+
 # Introduction
 Colorectal cancer is a common and severe disease that is the second leading cause of cancer-related deaths in the United States. The US National Cancer Institute estimates over 1.5 million Americans will be diagnosed with colorectal cancer in 2016, and over 500,000 Americans will have died from the disease [@Howlader:2016ed].
 
@@ -28,14 +33,12 @@ Virus DNA was purified according to previous studies. Briefly, the stool was res
 
 ![Basic Quality Control Metrics. A) VLP genomic DNA yield from all sequenced samples. Each bar represents a sample which is grouped and colored by its associated disease group. B) Sequence yield following quality control including quality score filtering and human decontamintion. Dashed line represents the subsampling depth used in the study.\label{qualcontrol}](../figures/qualitycontrol.pdf){ width=100% }
 
-## The Community Landscape of the Colorectal Cancer Virome
-
-### Changes in Genomic and Functional Diversity in Colorectal Cancer
-We used beta-diversity to evaluate the differences in the communities between disease states. This allowed us to see how similar the communities were to each other. We utilized the Bray-Curtis dissimilarity metric to evaluate the differences between community states. There was no observable clustering using NMDS ordination **(Figure \ref{betaogu} A)**. An anosim test with a post hoc multivariate Tukey test was used to calculate the statistical significance of the differences between the disease groups based on the variance around the centroids of the sample clusters **(Figure \ref{betaogu} B)**. There were no significant differences between the disease groups, although there was a strongly significant difference between the negative controls and the rest of the study groups. This further confirms the quality of our sample set.
+## Changes in Genomic and Functional Diversity in Colorectal Cancer
+We used beta-diversity to evaluate the differences in the communities between disease states. This allowed us to see how similar the communities were to each other. We utilized the Bray-Curtis dissimilarity metric to evaluate the differences between community states. There was no observable clustering using NMDS ordination **(Figure \ref{betaogu} A)**. An anosim test with a post hoc multivariate Tukey test was used to calculate the statistical significance of the differences between the disease groups based on the variance around the centroids of the sample clusters **(Figure \ref{betaogu} B)**. There were no significant differences between the disease groups, although there was a strongly significant difference between the negative controls and the rest of the study groups. This further supports the quality of our sample set.
 
 ![Beta-diversity comparing disease states of the colorectal virome from stool samples. A) NMDS ordination of community samples, colored by disease state. B) Differences in means between disease group centroids with 95% confidence intervals based on an anosim test with a post hoc multivariate Tukey test. Comparisons in which the intervals cross the zero mean difference line (dashed line) were not significantly different.\label{betaogu}](../figures/diversity-beta-ogu.pdf){ width=100% }
 
-### The Colorectal Cancer Phage-Bacteria Network
+## The Colorectal Cancer Phage-Bacteria Network
 
 ## Cancer classification using virus-based machine learning
 Previous work has shown that 16S rRNA community signatures are effective for classifying stool samples as coming from healthy, pre-cancerous, or cancerous individuals[@Zackular:2014fba; @Baxter:2016dj]. This is valuable because it presents a potential alternative screening approach to the invasive colonoscopy. This approach supplements other screening tests such as FIT. The exceptional performance of bacterial signatures in these predictive models suggests a role for bacteria in colorectal cancer. We built off of these findings by evaluating the ability of virus community signatures to classify stool samples and compared performance to models built using bacterial data.
