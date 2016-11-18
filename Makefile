@@ -43,7 +43,7 @@ runqc: $(variable1) $(variable2)
 $(variable): data/QC/%_R1.fastq:
 	echo Target is $@
 
-$(variable1): data/QC/%_R1.fastq: data/raw/%_R1.fastq
+$(variable1): data/QC/%_R1.fastq: data/raw/hiseqcat/%_R1.fastq
 	echo $(shell date)  :  Performing QC and contig alignment on samples $@ >> ${DATENAME}.makelog
 	mkdir -p ./data/QC
 	bash ./bin/QualityProcess.sh \
@@ -51,7 +51,7 @@ $(variable1): data/QC/%_R1.fastq: data/raw/%_R1.fastq
 		data/metadata/MasterMeta.tsv \
 		$@
 
-$(variable2): data/QC/%_R2.fastq: data/raw/%_R2.fastq
+$(variable2): data/QC/%_R2.fastq: data/raw/hiseqcat/%_R2.fastq
 	echo $(shell date)  :  Performing QC and contig alignment on samples $@ >> ${DATENAME}.makelog
 	mkdir -p ./data/QC
 	bash ./bin/QualityProcess.sh \
