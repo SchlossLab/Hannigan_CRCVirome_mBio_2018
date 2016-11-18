@@ -63,29 +63,36 @@ $(variable2): data/QC/%_R2.fastq: data/raw/hiseqcat/%_R2.fastq
 # Human Decontamination #
 #########################
 setfile3: ./data/metadata/MasterMeta.tsv
-	$(DECON_R1 = $(shell awk '{ print $$2 }' ./data/metadata/MasterMeta.tsv \
+	$(eval DECON_R1 = $(shell awk '{ print $$2 }' ./data/metadata/MasterMeta.tsv \
 		| sort \
 		| uniq \
 		| sed 's/$$/_R1.fastq/' \
 		| sed 's/^/data\/HumanDecon\//'))
+	echo 'variable3 = $(DECON_R1)' > $@
 
 setfile4: ./data/metadata/MasterMeta.tsv
-	$(DECON_R2 = $(shell awk '{ print $$2 }' ./data/metadata/MasterMeta.tsv \
+	$(eval DECON_R2 = $(shell awk '{ print $$2 }' ./data/metadata/MasterMeta.tsv \
 		| sort \
 		| uniq \
 		| sed 's/$$/_R2.fastq/' \
 		| sed 's/^/data\/HumanDecon\//'))
+	echo 'variable4 = $(DECON_R2)' > $@
 
-humandeconseq: $(DECON_R1) $(DECON_R2)
+humandeconseq:
 
-$(DECON_R1): data/HumanDecon/%_R1.fastq: data/QC/%_R1.fastq
+include setfile3
+include setfile4
+
+humandeconseq: $(variable3) $(variable4)
+
+$(variable3): data/HumanDecon/%_R1.fastq: data/QC/%_R1.fastq
 	echo $(shell date)  :  Performing HumanDecon and contig alignment on samples $@ >> ${DATENAME}.makelog
 	mkdir -p ./data/HumanDecon
 	bash ./bin/HumanDeconSeq.sh \
 		$< \
 		$@
 
-$(DECON_R2): data/HumanDecon/%_R2.fastq: data/QC/%_R2.fastq
+$(variable4): data/HumanDecon/%_R2.fastq: data/QC/%_R2.fastq
 	echo $(shell date)  :  Performing HumanDecon and contig alignment on samples $@ >> ${DATENAME}.makelog
 	mkdir -p ./data/HumanDecon
 	bash ./bin/HumanDeconSeq.sh \
