@@ -103,7 +103,7 @@ $(variable4): data/HumanDecon/%_R2.fastq: data/QC/%_R2.fastq
 # Contig Assembly #
 ###################
 setfile5: ./data/metadata/MasterMeta.tsv
-	$(CONTIGS_R1 = $(shell awk '{ print $$2 }' ./data/metadata/MasterMeta.tsv \
+	$(eval CONTIGS_R1 = $(shell awk '{ print $$2 }' ./data/metadata/MasterMeta.tsv \
 		| sort \
 		| uniq \
 		| sed 's/$$/.fastq/' \
@@ -111,7 +111,7 @@ setfile5: ./data/metadata/MasterMeta.tsv
 	echo 'variable5 = $(CONTIGS_R1)' > $@
 
 setfile6: ./data/metadata/MasterMeta.tsv
-	$(MOVE_CONTIGS = $(shell awk '{ print $$2 }' ./data/metadata/MasterMeta.tsv \
+	$(eval MOVE_CONTIGS = $(shell awk '{ print $$2 }' ./data/metadata/MasterMeta.tsv \
 		| sort \
 		| uniq \
 		| sed 's/$$/.fastq/' \
