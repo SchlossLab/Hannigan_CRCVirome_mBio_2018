@@ -108,6 +108,7 @@ setfile5: ./data/metadata/MasterMeta.tsv
 		| uniq \
 		| sed 's/$$/.fastq/' \
 		| sed 's/^/data\/contigs\//'))
+	echo 'variable5 = $(DECON_R1)' > $@
 
 setfile6: ./data/metadata/MasterMeta.tsv
 	$(MOVE_CONTIGS = $(shell awk '{ print $$2 }' ./data/metadata/MasterMeta.tsv \
@@ -115,19 +116,28 @@ setfile6: ./data/metadata/MasterMeta.tsv
 		| uniq \
 		| sed 's/$$/.fastq/' \
 		| sed 's/^/data\/contigfastq\//'))
+	echo 'variable6 = $(DECON_R1)' > $@
 
-assemblecontigs: $(CONTIGS_R1)
+assemblecontigs:
 
-movecontigs: $(MOVE_CONTIGS)
+include setfile5
 
-$(CONTIGS_R1): data/contigs/%.fastq : data/HumanDecon/%_R1.fastq
+assemblecontigs: $(variable5)
+
+movecontigs:
+
+include setfile6
+
+movecontigs: $(variable6)
+
+$(variable5): data/contigs/%.fastq : data/HumanDecon/%_R1.fastq
 	mkdir -p ./data/contigs
 	bash ./bin/ContigAssembly.sh \
 		$< \
 		$(subst R1,R2,$<) \
 		$@
 
-$(MOVE_CONTIGS): data/contigfastq/%.fastq :
+$(variable6): data/contigfastq/%.fastq :
 	mkdir -p data/contigfastq
 	cp $(subst contigfastq,contigs,$@)/final.contigs.fa $@
 
