@@ -108,7 +108,7 @@ setfile5: ./data/metadata/MasterMeta.tsv
 		| uniq \
 		| sed 's/$$/.fastq/' \
 		| sed 's/^/data\/contigs\//'))
-	echo 'variable5 = $(DECON_R1)' > $@
+	echo 'variable5 = $(CONTIGS_R1)' > $@
 
 setfile6: ./data/metadata/MasterMeta.tsv
 	$(MOVE_CONTIGS = $(shell awk '{ print $$2 }' ./data/metadata/MasterMeta.tsv \
@@ -116,7 +116,7 @@ setfile6: ./data/metadata/MasterMeta.tsv
 		| uniq \
 		| sed 's/$$/.fastq/' \
 		| sed 's/^/data\/contigfastq\//'))
-	echo 'variable6 = $(DECON_R1)' > $@
+	echo 'variable6 = $(MOVE_CONTIGS)' > $@
 
 assemblecontigs:
 
