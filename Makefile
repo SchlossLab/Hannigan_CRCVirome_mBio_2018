@@ -203,7 +203,7 @@ include setfile9
 
 $(variable9): data/virusseqsfastq/%_R2.fastq : data/HumanDecon/%_R2.fastq
 	mkdir -p data/virusseqsfastq
-	cp $< $@
+	cp $< data/virusseqsfastq/%_R2.fastq
 
 virusabundance : \
 			./data/totalcontigsvirus.fa \
@@ -228,7 +228,7 @@ include setfile10
 
 $(variable10): data/bacteriaseqsfastq/%_R2.fastq : data/HumanDecon/%_R2.fastq
 	mkdir -p data/bacteriaseqsfastq
-	cp $< $@
+	cp $< data/bacteriaseqsfastq/%_R2.fastq
 
 bacteriaabundance : \
 			./data/totalcontigsbacteria.fa \
