@@ -164,8 +164,8 @@ contigpairs:
 	include setfile8
 
 contigpairs:
-	rm ./data/totalcontigsvirus.fa
-	rm ./data/totalcontigsbacteria.fa
+	rm -f ./data/totalcontigsvirus.fa
+	rm -f ./data/totalcontigsbacteria.fa
 
 contigpairs: $(variable7) $(variable8)
 
