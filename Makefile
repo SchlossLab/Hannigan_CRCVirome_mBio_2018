@@ -143,27 +143,39 @@ $(variable6): data/contigfastq/%.fastq :
 
 ############################################# CONTIGS #############################################
 # Get a master file for bacterial and viral contigs
-VIRUS_CONTIGS := $(shell awk '{ print $$2 }' ./data/metadata/NexteraXT003Map.tsv \
-	| sort \
-	| uniq \
-	| sed 's/$$/.fastq/' \
-	| sed 's/^/data\/makerecorddump\//')
+setfile7: ./data/metadata/MasterMeta.tsv
+	$(eval VIRUS_CONTIGS := $(shell awk '{ print $$2 }' ./data/metadata/NexteraXT003Map.tsv \
+		| sort \
+		| uniq \
+		| sed 's/$$/.fastq/' \
+		| sed 's/^/data\/makerecorddump\//'))
+	echo 'variable7 = $(VIRUS_CONTIGS)' > $@
 
-BACTERIA_CONTIGS := $(shell awk '{ print $$2 }' ./data/metadata/NexteraXT004Map.tsv \
-	| sort \
-	| uniq \
-	| sed 's/$$/.fastq/' \
-	| sed 's/^/data\/makerecorddump\//')
+setfile8: ./data/metadata/MasterMeta.tsv
+	$(eval BACTERIA_CONTIGS := $(shell awk '{ print $$2 }' ./data/metadata/NexteraXT004Map.tsv \
+		| sort \
+		| uniq \
+		| sed 's/$$/.fastq/' \
+		| sed 's/^/data\/makerecorddump\//'))
+	echo 'variable8 = $(BACTERIA_CONTIGS)' > $@
 
-contigpairs: $(VIRUS_CONTIGS) $(BACTERIA_CONTIGS)
+contigpairs:
+	include setfile7
+	include setfile8
 
-$(VIRUS_CONTIGS): data/makerecorddump/%.fastq : data/contigfastq/%.fastq
+contigpairs:
+	rm ./data/totalcontigsvirus.fa
+	rm ./data/totalcontigsbacteria.fa
+
+contigpairs: $(variable7) $(variable8)
+
+$(variable7): data/makerecorddump/%.fastq : data/contigfastq/%.fastq
 	mkdir -p data/makerecorddump
 	touch $@
 	cat $< >> ./data/totalcontigsvirus.fa
 	sed -i 's/ /_/g' ./data/totalcontigsvirus.fa
 
-$(BACTERIA_CONTIGS): data/makerecorddump/%.fastq : data/contigfastq/%.fastq
+$(variable8): data/makerecorddump/%.fastq : data/contigfastq/%.fastq
 	mkdir -p data/makerecorddump
 	touch $@
 	cat $< >> ./data/totalcontigsbacteria.fa
