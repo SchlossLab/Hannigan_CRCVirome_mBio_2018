@@ -236,7 +236,7 @@ bacteriaabundance : \
 	bash ./bin/CreateContigRelAbundTable.sh \
 		./data/totalcontigsbacteria.fa \
 		./data/bacteriaseqsfastq \
-		./data/ContigRelAbundForGraphVirus.tsv
+		./data/ContigRelAbundForGraphBacteria.tsv
 
 ######################################## CONTIG CLUSTERING ########################################
 
