@@ -163,7 +163,7 @@ contigpairs:
 	include setfile7
 	include setfile8
 
-contigpairs:
+cleancontigpairs:
 	rm -f ./data/totalcontigsvirus.fa
 	rm -f ./data/totalcontigsbacteria.fa
 
