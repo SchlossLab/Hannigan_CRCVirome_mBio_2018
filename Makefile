@@ -201,7 +201,7 @@ virusabundance:
 
 include setfile9
 
-$(variable9): data/virusseqsfastq/%.fastq : data/HumanDecon/%.fastq
+$(variable9): data/virusseqsfastq/%_R2.fastq : data/HumanDecon/%_R2.fastq
 	mkdir -p data/virusseqsfastq
 	cp $< $@
 
@@ -226,7 +226,7 @@ bacteriaabundance:
 
 include setfile10
 
-$(variable10): data/bacteriaseqsfastq/%.fastq : data/HumanDecon/%.fastq
+$(variable10): data/bacteriaseqsfastq/%_R2.fastq : data/HumanDecon/%_R2.fastq
 	mkdir -p data/bacteriaseqsfastq
 	cp $< $@
 
