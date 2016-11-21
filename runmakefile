@@ -27,4 +27,5 @@ cd /mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerVirome || exit
 echo Working in $(pwd)
 
 # Run make
-make -j 4 assemblecontigs
+make -j 8 virusabundance
+make -j 8 bacteriaabundance
