@@ -142,6 +142,7 @@ $(variable6): data/contigfastq/%.fastq :
 	cp $(subst contigfastq,contigs,$@)/final.contigs.fa $@
 
 ############################################# CONTIGS #############################################
+
 # Get a master file for bacterial and viral contigs
 setfile7: ./data/metadata/MasterMeta.tsv
 	$(eval VIRUS_CONTIGS := $(shell awk '{ print $$2 }' ./data/metadata/NexteraXT003Map.tsv \
@@ -182,15 +183,35 @@ $(variable8): data/makerecorddump/%.fastq : data/contigfastq/%.fastq
 	cat $< >> ./data/totalcontigsbacteria.fa
 	sed -i 's/ /_/g' ./data/totalcontigsbacteria.fa
 
-# ###############################
-# # Contig Abundance Per Sample #
-# ###############################
-# ./data/ContigRelAbundForGraph.tsv : \
-# 			./data/totalcontigs.fa
-# 	bash ./bin/CreateContigRelAbundTable.sh \
-# 		./data/totalcontigs.fa \
-# 		./data/HumanDecon \
-# 		./data/ContigRelAbundForGraph.tsv
+######################################### CONTIG ABUNDANCE ########################################
+
+###############################
+# Contig Abundance Per Sample #
+###############################
+# Viruses
+setfile9: ./data/metadata/MasterMeta.tsv
+	$(eval VIRUS_MOVE = $(shell awk '{ print $$2 }' ./data/metadata/MasterMeta.tsv \
+		| sort \
+		| uniq \
+		| sed 's/$$/.fastq/' \
+		| sed 's/^/data\/virusseqsfastq\//'))
+	echo 'variable9 = $(VIRUS_MOVE)' > $@
+
+virusabundance:
+
+include setfile9
+
+$(variable9): data/virusseqsfastq/%.fastq : data/HumanDecon/%.fastq
+	mkdir -p data/virusseqsfastq
+	cp $< $@
+
+./data/ContigRelAbundForGraphVirus.tsv : \
+			./data/totalcontigsvirus.fa \
+			$(variable9)
+	bash ./bin/CreateContigRelAbundTable.sh \
+		./data/totalcontigsvirus.fa \
+		./data/virusseqsfastq \
+		./data/ContigRelAbundForGraphVirus.tsv
 
 # #####################
 # # Contig Clustering #
