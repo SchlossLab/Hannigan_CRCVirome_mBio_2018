@@ -160,8 +160,9 @@ setfile8: ./data/metadata/MasterMeta.tsv
 	echo 'variable8 = $(BACTERIA_CONTIGS)' > $@
 
 contigpairs:
-	include setfile7
-	include setfile8
+
+include setfile7
+include setfile8
 
 cleancontigpairs:
 	rm -f ./data/totalcontigsvirus.fa
