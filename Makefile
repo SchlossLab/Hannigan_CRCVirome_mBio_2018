@@ -193,7 +193,7 @@ setfile9: ./data/metadata/MasterMeta.tsv
 	$(eval VIRUS_MOVE = $(shell awk '{ print $$2 }' ./data/metadata/NexteraXT003Map.tsv \
 		| sort \
 		| uniq \
-		| sed 's/$$/.fastq/' \
+		| sed 's/$$/_R2.fastq/' \
 		| sed 's/^/data\/virusseqsfastq\//'))
 	echo 'variable9 = $(VIRUS_MOVE)' > $@
 
@@ -218,7 +218,7 @@ setfile10: ./data/metadata/MasterMeta.tsv
 	$(eval BACTERIA_MOVE = $(shell awk '{ print $$2 }' ./data/metadata/NexteraXT004Map.tsv \
 		| sort \
 		| uniq \
-		| sed 's/$$/.fastq/' \
+		| sed 's/$$/_R2.fastq/' \
 		| sed 's/^/data\/bacteriaseqsfastq\//'))
 	echo 'variable10 = $(BACTERIA_MOVE)' > $@
 
