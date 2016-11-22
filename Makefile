@@ -221,13 +221,13 @@ include setfile9_1
 
 virusabund: $(variable9_1)
 
-./data/virusbowtieReference/bowtieReference : ./data/totalcontigsvirus.fa
+./data/virusbowtieReference/bowtieReference.1.bt2 : ./data/totalcontigsvirus.fa
 	mkdir -p ./data/virusbowtieReference
 	bowtie2-build \
 		-q ./data/totalcontigsvirus.fa \
 		./data/virusbowtieReference/bowtieReference
 
-$(variable9_1): data/virusseqsfastq/%_R2.fastq-noheader-forcat : data/virusseqsfastq/%_R2.fastq ./data/virusbowtieReference/bowtieReference
+$(variable9_1): data/virusseqsfastq/%_R2.fastq-noheader-forcat : data/virusseqsfastq/%_R2.fastq ./data/virusbowtieReference/bowtieReference.1.bt2
 	bash ./bin/CreateContigRelAbundTable.sh \
 			./data/virusbowtieReference/bowtieReference \
 			data/virusseqsfastq/%_R2.fastq
