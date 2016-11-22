@@ -222,6 +222,7 @@ include setfile9_1
 virusabund: $(variable9_1)
 
 ./data/virusbowtieReference/bowtieReference : ./data/totalcontigsvirus.fa
+	mkdir -p ./data/virusbowtieReference
 	bowtie2-build \
 		-q ./data/totalcontigsvirus.fa \
 		./data/virusbowtieReference/bowtieReference
