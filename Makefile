@@ -261,7 +261,7 @@ bacteriaabund:
 
 include setfile10_1
 
-bacteriaabund: $(variable10_1)
+bacteriaabund: movebacteriaabund $(variable10_1)
 
 ./data/bacteriabowtieReference/bowtieReference.1.bt2 : ./data/totalcontigsbacteria.fa
 	mkdir -p ./data/bacteriabowtieReference
