@@ -230,7 +230,7 @@ virusabund: $(variable9_1)
 $(variable9_1): data/virusseqsfastq/%_R2.fastq-noheader-forcat : data/virusseqsfastq/%_R2.fastq
 	bash ./bin/CreateContigRelAbundTable.sh \
 			./data/virusbowtieReference/bowtieReference \
-			data/virusseqsfastq/%_R2.fastq
+			$<
 
 # Bacteria
 setfile10: ./data/metadata/MasterMeta.tsv
