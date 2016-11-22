@@ -272,6 +272,16 @@ bacteriaabund: movebacteriaabund $(variable10_1)
 $(variable10_1): data/bacteriaseqsfastq/%_R2.fastq-noheader-forcat : data/bacteriaseqsfastq/%_R2.fastq ./data/bacteriabowtieReference/bowtieReference.1.bt2
 	qsub ./bin/CreateContigRelAbundTable.pbs -F './data/bacteriabowtieReference/bowtieReference $<'
 
+# The results from each of these rule sets (bacteria and virus) need to be combined
+./data/ContigRelAbundForGraphVirus.tsv : virusabund
+	cat ./data/virusseqsfastq/*_R2.fastq-noheader-forcat > $@
+	sed -i 's/_R2.fastq//g' $@
+
+./data/ContigRelAbundForGraphBacteria.tsv : bacteriaabund
+	cat ./data/bacteriaseqsfastq/*_R2.fastq-noheader-forcat > $@
+	sed -i 's/_R2.fastq//g' $@
+	
+
 ######################################## CONTIG CLUSTERING ########################################
 
 #####################
