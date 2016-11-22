@@ -1,8 +1,18 @@
 #! /bin/bash
-# CreateContigRelAbundTable.sh
+# CreateContigRelAbundTable.pbs
 # Geoffrey Hannigan
 # Pat Schloss Lab
 # University of Michigan
+
+#PBS -N runmakefile-bowtie2
+#PBS -q first
+#PBS -l nodes=4:ppn=2,mem=40gb
+#PBS -l walltime=600:00:00
+#PBS -j oe
+#PBS -V
+#PBS -A schloss_lab
+
+cd /mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerVirome || exit
 
 #######################
 # Set the Environment #
