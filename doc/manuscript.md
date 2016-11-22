@@ -9,7 +9,9 @@ geometry: margin=1.0in
 # Thoughts & Notes
 I think I want this paper to be more focused. Instead of a general survey of the virome, I want to focus on the predictive modeling. How it performs, how it compares to the other sample sets, and what biological information we can get from it. Not only will this make the paper clearer with more of a purpose, but I think it will let me get it done sooner as well.
 
-General Landscape -> Networking -> Predictive Modeling
+I think the *title* and general theme should reflect how well viruses (maybe metagenome functionality in general) predict cancer, and what elements are important.
+
+General Landscape -> Predictive Modeling -> Networking to ID Virus OGUs
 
 # Working Hypothesis
 Like bacteria, it is more of the minor players of the community that make that difference instead of major abundances.
@@ -37,8 +39,6 @@ Virus DNA was purified according to previous studies. Briefly, the stool was res
 We used beta-diversity to evaluate the differences in the communities between disease states. This allowed us to see how similar the communities were to each other. We utilized the Bray-Curtis dissimilarity metric to evaluate the differences between community states. There was no observable clustering using NMDS ordination **(Figure \ref{betaogu} A)**. An anosim test with a post hoc multivariate Tukey test was used to calculate the statistical significance of the differences between the disease groups based on the variance around the centroids of the sample clusters **(Figure \ref{betaogu} B)**. There were no significant differences between the disease groups, although there was a strongly significant difference between the negative controls and the rest of the study groups. This further supports the quality of our sample set.
 
 ![Beta-diversity comparing disease states of the colorectal virome from stool samples. A) NMDS ordination of community samples, colored by disease state. B) Differences in means between disease group centroids with 95% confidence intervals based on an anosim test with a post hoc multivariate Tukey test. Comparisons in which the intervals cross the zero mean difference line (dashed line) were not significantly different.\label{betaogu}](../figures/diversity-beta-ogu.pdf){ width=100% }
-
-## The Colorectal Cancer Phage-Bacteria Network
 
 ## Cancer classification using virus-based machine learning
 Previous work has shown that 16S rRNA community signatures are effective for classifying stool samples as coming from healthy, pre-cancerous, or cancerous individuals[@Zackular:2014fba; @Baxter:2016dj]. This is valuable because it presents a potential alternative screening approach to the invasive colonoscopy. This approach supplements other screening tests such as FIT. The exceptional performance of bacterial signatures in these predictive models suggests a role for bacteria in colorectal cancer. We built off of these findings by evaluating the ability of virus community signatures to classify stool samples and compared performance to models built using bacterial data.

@@ -7,12 +7,13 @@
 #######################
 # Set the Environment #
 #######################
-export ContigsFile=$1
+export BowtieReference=$1
 export FastaSequences=$2
-export MasterOutput=$3
 export Output='data/tmpbowtie'
 
 mkdir -p ./${Output}
+mkdir -p ./${Output}/bowtieReference
+
 
 ###################
 # Set Subroutines #
@@ -20,8 +21,6 @@ mkdir -p ./${Output}
 GetHits () {
 	# 1 = Input Orfs
 	# 2 = Bowtie Reference
-
-	mkdir -p ./${Output}/bowtieReference
 
 	bowtie2 \
 		-x ${2} \
@@ -41,15 +40,15 @@ GetHits () {
 BowtieRun () {
 	sampleid=$(echo ${1} | sed 's/_2.fastq//')
 	GetHits \
-		${FastaSequences}/${1} \
-		./${Output}/bowtieReference/bowtieReference
+		${1} \
+		${2}
 
 	# Remove the header
-	sed -e "1d" ${FastaSequences}/${1}-bowtie.tsv > ${FastaSequences}/${1}-noheader
+	sed -e "1d" ${1}-bowtie.tsv > ${1}-noheader
 
-	awk -v name=${sampleid} '{ print $0"\t"name }' ${FastaSequences}/${1}-noheader \
-	| grep -v '\*' > ${FastaSequences}/${1}-noheader-forcat
-	# rm ${FastaSequences}/${1}-noheader
+	awk -v name=${sampleid} '{ print $0"\t"name }' ${1}-noheader \
+	| grep -v '\*' > ${1}-noheader-forcat
+	# rm ${1}/${1}-noheader
 }
 
 # Export the subroutines
@@ -60,22 +59,7 @@ export -f BowtieRun
 # Contig Relative Abundance #
 #############################
 
-echo Getting contig relative abundance table...
-
-# Clear the file to prepare for appending to new file below
-rm -f ${MasterOutput}
-
-# Build bowtie reference
-echo Building bowtie reference...
-bowtie2-build \
-	-q ${ContigsFile} \
-	./${Output}/bowtieReference/bowtieReference
-
 echo Running bowtie...
-ls ${FastaSequences}/*_R2.fastq | sed "s/.*\///g" | xargs -I {} --max-procs=32 bash -c 'BowtieRun "$@"' _ {}
 
-echo Catting files...
+BowtieRun ${FastaSequences} ${BowtieReference}
 
-cat ${FastaSequences}/*-noheader-forcat > ${MasterOutput}
-
-sed -i 's/_R2.fastq//' ${MasterOutput}

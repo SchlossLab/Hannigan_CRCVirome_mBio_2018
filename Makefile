@@ -197,21 +197,39 @@ setfile9: ./data/metadata/MasterMeta.tsv
 		| sed 's/^/data\/virusseqsfastq\//'))
 	echo 'variable9 = $(VIRUS_MOVE)' > $@
 
-virusabundance:
+movevirusabund:
 
 include setfile9
+
+movevirusabund: $(variable9)
 
 $(variable9): data/virusseqsfastq/%_R2.fastq : data/HumanDecon/%_R2.fastq
 	mkdir -p data/virusseqsfastq
 	cp $< $@
 
-virusabundance : \
-			./data/totalcontigsvirus.fa \
-			$(variable9)
+setfile9_1: ./data/metadata/MasterMeta.tsv
+	$(eval BUILD_VIRUS_ABUND = $(shell awk '{ print $$2 }' ./data/metadata/NexteraXT003Map.tsv \
+		| sort \
+		| uniq \
+		| sed 's/$$/_R2.fastq-noheader-forcat/' \
+		| sed 's/^/data\/virusseqsfastq\//'))
+	echo 'variable9_1 = $(BUILD_VIRUS_ABUND)' > $@
+
+virusabund:
+
+include setfile9_1
+
+virusabund: $(variable9_1)
+
+./data/virusbowtieReference/bowtieReference : ./data/totalcontigsvirus.fa
+	bowtie2-build \
+		-q ./data/totalcontigsvirus.fa \
+		./data/virusbowtieReference/bowtieReference
+
+$(variable9_1): data/virusseqsfastq/%_R2.fastq-noheader-forcat : data/virusseqsfastq/%_R2.fastq ./data/virusbowtieReference/bowtieReference
 	bash ./bin/CreateContigRelAbundTable.sh \
-		./data/totalcontigsvirus.fa \
-		./data/virusseqsfastq \
-		./data/ContigRelAbundForGraphVirus.tsv
+			./data/virusbowtieReference/bowtieReference \
+			data/virusseqsfastq/%_R2.fastq
 
 # Bacteria
 setfile10: ./data/metadata/MasterMeta.tsv
