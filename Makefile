@@ -227,7 +227,7 @@ virusabund: $(variable9_1)
 		-q ./data/totalcontigsvirus.fa \
 		./data/virusbowtieReference/bowtieReference
 
-$(variable9_1): data/virusseqsfastq/%_R2.fastq-noheader-forcat : data/virusseqsfastq/%_R2.fastq
+$(variable9_1): data/virusseqsfastq/%_R2.fastq-noheader-forcat : data/virusseqsfastq/%_R2.fastq ./data/virusbowtieReference/bowtieReference.1.bt2
 	bash ./bin/CreateContigRelAbundTable.sh \
 			./data/virusbowtieReference/bowtieReference \
 			$<
