@@ -240,29 +240,52 @@ bacteriaabundance : \
 
 ######################################## CONTIG CLUSTERING ########################################
 
-# #####################
-# # Contig Clustering #
-# #####################
-# ./data/ContigAbundForConcoct.tsv : ./data/ContigRelAbundForGraph.tsv
-# 	Rscript ./bin/ReshapeAlignedAbundance.R \
-# 		-i ./data/ContigRelAbundForGraph.tsv \
-# 		-o ./data/ContigAbundForConcoct.tsv \
-# 		-p 0.5
+#####################
+# Contig Clustering #
+#####################
+# Bacteria
+./data/ContigAbundForConcoctBacteria.tsv : ./data/ContigRelAbundForGraphBacteria.tsv
+	Rscript ./bin/ReshapeAlignedAbundance.R \
+		-i ./data/ContigRelAbundForGraphBacteria.tsv \
+		-o ./data/ContigAbundForConcoctBacteria.tsv \
+		-p 0.5
 
-# ./data/ContigClusters/clustering_gt1000.csv : \
-# 			./data/totalcontigs.fa \
-# 			./data/ContigAbundForConcoct.tsv
-# 	mkdir ./data/ContigClustersPhage
-# 	concoct \
-# 		--coverage_file ./data/ContigAbundForConcoct.tsv \
-# 		--composition_file ./data/totalcontigs.fa \
-# 		--clusters 500 \
-# 		--kmer_length 4 \
-# 		--length_threshold 1000 \
-# 		--read_length 150 \
-# 		--basename ./data/ContigClusters/ \
-# 		--no_total_coverage \
-# 		--iterations 50
+./data/ContigClustersBacteria/clustering_gt1000.csv : \
+			./data/totalcontigsbacteria.fa \
+			./data/ContigAbundForConcoctBacteria.tsv
+	mkdir ./data/ContigClustersBacteria
+	concoct \
+		--coverage_file ./data/ContigAbundForConcoctBacteria.tsv \
+		--composition_file ./data/totalcontigsbacteria.fa \
+		--clusters 500 \
+		--kmer_length 4 \
+		--length_threshold 1000 \
+		--read_length 150 \
+		--basename ./data/ContigClustersBacteria/ \
+		--no_total_coverage \
+		--iterations 50
+
+# Virus
+./data/ContigAbundForConcoctVirus.tsv : ./data/ContigRelAbundForGraphVirus.tsv
+	Rscript ./bin/ReshapeAlignedAbundance.R \
+		-i ./data/ContigRelAbundForGraphVirus.tsv \
+		-o ./data/ContigAbundForConcoctVirus.tsv \
+		-p 0.5
+
+./data/ContigClustersVirus/clustering_gt1000.csv : \
+			./data/totalcontigsvirus.fa \
+			./data/ContigAbundForConcoctVirus.tsv
+	mkdir ./data/ContigClustersVirus
+	concoct \
+		--coverage_file ./data/ContigAbundForConcoctVirus.tsv \
+		--composition_file ./data/totalcontigsvirus.fa \
+		--clusters 500 \
+		--kmer_length 4 \
+		--length_threshold 1000 \
+		--read_length 150 \
+		--basename ./data/ContigClustersVirus/ \
+		--no_total_coverage \
+		--iterations 50
 
 # ############################
 # # Cluster Contig Abundance #
