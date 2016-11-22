@@ -257,11 +257,11 @@ setfile10_1: ./data/metadata/MasterMeta.tsv
 		| sed 's/^/data\/bacteriaseqsfastq\//'))
 	echo 'variable10_1 = $(BUILD_BACTERIA_ABUND)' > $@
 
-virusabund:
+bacteriaabund:
 
 include setfile10_1
 
-virusabund: $(variable10_1)
+bacteriaabund: $(variable10_1)
 
 ./data/bacteriabowtieReference/bowtieReference.1.bt2 : ./data/totalcontigsbacteria.fa
 	mkdir -p ./data/bacteriabowtieReference
