@@ -250,7 +250,7 @@ $(variable10): data/bacteriaseqsfastq/%_R2.fastq : data/HumanDecon/%_R2.fastq
 	cp $< $@
 
 setfile10_1: ./data/metadata/MasterMeta.tsv
-	$(eval BUILD_BACTERIA_ABUND = $(shell awk '{ print $$2 }' ./data/metadata/NexteraXT003Map.tsv \
+	$(eval BUILD_BACTERIA_ABUND = $(shell awk '{ print $$2 }' ./data/metadata/NexteraXT004Map.tsv \
 		| sort \
 		| uniq \
 		| sed 's/$$/_R2.fastq-noheader-forcat/' \
