@@ -239,21 +239,38 @@ setfile10: ./data/metadata/MasterMeta.tsv
 		| sed 's/^/data\/bacteriaseqsfastq\//'))
 	echo 'variable10 = $(BACTERIA_MOVE)' > $@
 
-bacteriaabundance:
+movebacteriaabund:
 
 include setfile10
+
+movebacteriaabund: $(variable10)
 
 $(variable10): data/bacteriaseqsfastq/%_R2.fastq : data/HumanDecon/%_R2.fastq
 	mkdir -p data/bacteriaseqsfastq
 	cp $< $@
 
-bacteriaabundance : \
-			./data/totalcontigsbacteria.fa \
-			$(variable10)
-	bash ./bin/CreateContigRelAbundTable.sh \
-		./data/totalcontigsbacteria.fa \
-		./data/bacteriaseqsfastq \
-		./data/ContigRelAbundForGraphBacteria.tsv
+setfile10_1: ./data/metadata/MasterMeta.tsv
+	$(eval BUILD_BACTERIA_ABUND = $(shell awk '{ print $$2 }' ./data/metadata/NexteraXT003Map.tsv \
+		| sort \
+		| uniq \
+		| sed 's/$$/_R2.fastq-noheader-forcat/' \
+		| sed 's/^/data\/bacteriaseqsfastq\//'))
+	echo 'variable10_1 = $(BUILD_BACTERIA_ABUND)' > $@
+
+virusabund:
+
+include setfile10_1
+
+virusabund: $(variable10_1)
+
+./data/bacteriabowtieReference/bowtieReference.1.bt2 : ./data/totalcontigsbacteria.fa
+	mkdir -p ./data/bacteriabowtieReference
+	bowtie2-build \
+		-q ./data/totalcontigsbacteria.fa \
+		./data/bacteriabowtieReference/bowtieReference
+
+$(variable10_1): data/bacteriaseqsfastq/%_R2.fastq-noheader-forcat : data/bacteriaseqsfastq/%_R2.fastq ./data/bacteriabowtieReference/bowtieReference.1.bt2
+	qsub ./bin/CreateContigRelAbundTable.pbs -F './data/bacteriabowtieReference/bowtieReference $<'
 
 ######################################## CONTIG CLUSTERING ########################################
 
