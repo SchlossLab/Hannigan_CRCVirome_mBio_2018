@@ -40,7 +40,7 @@ We used beta-diversity to evaluate the differences in the communities between di
 
 ![Beta-diversity comparing disease states of the colorectal virome from stool samples. A) NMDS ordination of community samples, colored by disease state. B) Differences in means between disease group centroids with 95% confidence intervals based on an anosim test with a post hoc multivariate Tukey test. Comparisons in which the intervals cross the zero mean difference line (dashed line) were not significantly different.\label{betaogu}](../figures/diversity-beta-ogu.pdf){ width=100% }
 
-## Cancer classification using virus-based machine learning
+## Virome-based cancer classification outperforms bacterial models
 Previous work has shown that 16S rRNA community signatures are effective for classifying stool samples as coming from healthy, pre-cancerous, or cancerous individuals[@Zackular:2014fba; @Baxter:2016dj]. This is valuable because it presents a potential alternative screening approach to the invasive colonoscopy. This approach supplements other screening tests such as FIT. The exceptional performance of bacterial signatures in these predictive models suggests a role for bacteria in colorectal cancer. We built off of these findings by evaluating the ability of virus community signatures to classify stool samples and compared performance to models built using bacterial data.
 
 We built and tested random forest models based on virus and bacteria communtiy signatures. To improve performance and make the models computationally feasible, we only used OTUs and OGUs that were present in more than half of the samples. Abundance counts were subsampled to the same level and those samples that failed to reach the defined sequencing threshold were excluded from analysis. The same model approach was used for both datasets, and the only difference was the data used to learn the model. We found that the model based on virus metagenomic signatures greatly outperformed the model built on bacterial 16S data **(Figure \ref{sampleproc})**. This supports the utility of using virus communities as cancer biomarkers and suggests viruses play a role in colorectal cancer.
@@ -58,6 +58,11 @@ Try adding more information to the ROC curve:
 Try running a three-way model that includes adenoma.
 
 Show ability to distinguish between samples and negative controls?
+
+## Performance of cancer vs ademona vs healthy models between microbial signatures
+After evaluating our ability to classify samples as cancerous vs healthy, we incorporated the pre-cancerous adenoma samples into the model and evaluated out ability to classify the groups out of the total dataset **(Figure \ref{threewaymodel})**.
+
+![ROC curves from three-class random forest tuned on mean AUC for A) virus and B) bacterial signatures. Each curve represents the ability of the specified class to be classified against the other two classes. \label{threewaymodel}](../figures/predmodel-threewayclassification.pdf){ width=100% }
 
 ## Identifying Major Factors in Colorectal Cancer
 
