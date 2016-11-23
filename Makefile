@@ -293,7 +293,7 @@ $(variable10_1): data/bacteriaseqsfastq/%_R2.fastq-noheader-forcat : data/bacter
 	Rscript ./bin/ReshapeAlignedAbundance.R \
 		-i ./data/ContigRelAbundForGraphBacteria.tsv \
 		-o ./data/ContigAbundForConcoctBacteria.tsv \
-		-p 0.25
+		-p 0.15
 
 ./data/ContigClustersBacteria/clustering_gt1000.csv : \
 			./data/totalcontigsbacteria.fa \
