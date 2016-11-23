@@ -288,11 +288,12 @@ $(variable10_1): data/bacteriaseqsfastq/%_R2.fastq-noheader-forcat : data/bacter
 # Contig Clustering #
 #####################
 # Bacteria
+# Lower sample number because of memory limitations
 ./data/ContigAbundForConcoctBacteria.tsv : ./data/ContigRelAbundForGraphBacteria.tsv
 	Rscript ./bin/ReshapeAlignedAbundance.R \
 		-i ./data/ContigRelAbundForGraphBacteria.tsv \
 		-o ./data/ContigAbundForConcoctBacteria.tsv \
-		-p 0.5
+		-p 0.25
 
 ./data/ContigClustersBacteria/clustering_gt1000.csv : \
 			./data/totalcontigsbacteria.fa \
