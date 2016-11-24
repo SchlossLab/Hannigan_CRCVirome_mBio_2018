@@ -7,7 +7,7 @@
 
 #PBS -N runmakefile-CRC
 #PBS -q first
-#PBS -l nodes=4:ppn=2,mem=40gb
+#PBS -l nodes=4:ppn=2,pmem=40gb
 #PBS -l walltime=600:00:00
 #PBS -j oe
 #PBS -V
