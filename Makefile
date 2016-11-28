@@ -171,13 +171,13 @@ cleancontigpairs:
 
 contigpairs: $(variable7) $(variable8)
 
-$(variable7): data/makerecorddump/%.fastq : data/contigfastq/%.fastq ./data/totalcontigsvirus.fa
+$(variable7): data/makerecorddump/%.fastq ./data/totalcontigsvirus.fa : data/contigfastq/%.fastq
 	mkdir -p data/makerecorddump
 	touch $@
 	cat $< >> ./data/totalcontigsvirus.fa
 	sed -i 's/ /_/g' ./data/totalcontigsvirus.fa
 
-$(variable8): data/makerecorddump/%.fastq : data/contigfastq/%.fastq ./data/totalcontigsbacteria.fa
+$(variable8): data/makerecorddump/%.fastq ./data/totalcontigsbacteria.fa : data/contigfastq/%.fastq
 	mkdir -p data/makerecorddump
 	touch $@
 	cat $< >> ./data/totalcontigsbacteria.fa
