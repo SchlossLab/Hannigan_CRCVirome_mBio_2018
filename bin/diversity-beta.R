@@ -132,7 +132,7 @@ write("Dispersion without negative controls", stderr())
 catdistnames <- castdistnoneg
 catdistnames$names <- row.names(catdistnames)
 mergedist <- merge(catdistnames, datadisease, by.x="names", by.y="V2")
-dist <- vegdist(inputcast, method=opt$divmetric)
+dist <- vegdist(negcast, method=opt$divmetric)
 mod <- betadisper(dist, mergedist[,length(mergedist)])
 anova(mod)
 permutest(mod, pairwise = TRUE)
