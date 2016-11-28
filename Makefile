@@ -307,7 +307,7 @@ $(variable10_1): data/bacteriaseqsfastq/%_R2.fastq-noheader-forcat : data/bacter
 		--composition_file ./data/totalcontigsbacteria.fa \
 		--clusters 500 \
 		--kmer_length 4 \
-		--length_threshold 2500 \
+		--length_threshold 2000 \
 		--read_length 150 \
 		--basename ./data/ContigClustersBacteria/ \
 		--no_total_coverage \
