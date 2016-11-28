@@ -103,6 +103,7 @@ nonegplotnmds <- ggplot(NMDS_AND_MAP, aes(x=MDS1, y=MDS2, colour=V30)) +
     geom_point() +
     scale_fill_manual(values = wes_palette("Royal1"))
 
+write("Dispersion with negative controls", stderr())
 # Trying dispersion
 catdistnames <- castdist
 catdistnames$names <- row.names(catdistnames)
@@ -124,6 +125,7 @@ plotdiffs <- ggplot(moddf, aes(y=diff, x=comparison)) +
     ylab("Differences in Mean Levels of Group") +
     xlab("")
 
+write("Dispersion without negative controls", stderr())
 # Dispersion without negatives as well
 catdistnames <- castdistnoneg
 catdistnames$names <- row.names(catdistnames)
