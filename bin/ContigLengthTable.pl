@@ -52,8 +52,7 @@ while (my $line = <$IN>) {
 		$flag = 0;
 		$lineName = '';
 	} else {
-		die "Im sorry to have to tell you this, 
-		but there was an error in the fasta format: $!";
+		die "Error in the fasta format: $!";
 	}
 }
 
