@@ -298,7 +298,7 @@ $(variable10_1): data/bacteriaseqsfastq/%_R2.fastq-noheader-forcat : data/bacter
 		-o ./data/ContigAbundForConcoctBacteria.tsv \
 		-p 0.25
 
-./data/ContigClustersBacteria/clustering_gt2500.csv : \
+./data/ContigClustersBacteria/clustering_gt2000.csv : \
 			./data/totalcontigsbacteria.fa \
 			./data/ContigAbundForConcoctBacteria.tsv
 	mkdir ./data/ContigClustersBacteria
