@@ -297,7 +297,7 @@ $(variable10_1): data/bacteriaseqsfastq/%_R2.fastq-noheader-forcat : data/bacter
 		-o ./data/ContigAbundForConcoctBacteria.tsv \
 		-p 0.25
 
-./data/ContigClustersBacteria/clustering_gt1000.csv : \
+./data/ContigClustersBacteria/clustering_gt2500.csv : \
 			./data/totalcontigsbacteria.fa \
 			./data/ContigAbundForConcoctBacteria.tsv
 	mkdir ./data/ContigClustersBacteria
@@ -334,16 +334,26 @@ $(variable10_1): data/bacteriaseqsfastq/%_R2.fastq-noheader-forcat : data/bacter
 		--no_total_coverage \
 		--iterations 50
 
-# ############################
-# # Cluster Contig Abundance #
-# ############################
-# ./data/ClusteredContigAbund.tsv : \
-# 			./data/ContigRelAbundForGraph.tsv \
-# 			./data/ContigClusters/clustering_gt1000.csv
-# 	bash ./bin/ClusterContigAbund.sh \
-# 		./data/ContigRelAbundForGraph.tsv \
-# 		./data/ContigClusters/clustering_gt1000.csv \
-# 		./data/ClusteredContigAbund.tsv
+####################################### CLUSTERED ABUNDANCE #######################################
+
+############################
+# Cluster Contig Abundance #
+############################
+# Virus
+# Get table of contig IDs and their lengths
+./data/VirusContigLength.tsv : \
+			./data/totalcontigsvirus.fa
+	perl ./bin/ContigLengthTable.pl \
+		-i ./data/totalcontigsvirus.fa \
+		-o ./data/VirusContigLength.tsv
+
+./data/VirusClusteredContigAbund.tsv : \
+			./data/ContigRelAbundForGraphVirus.tsv \
+			./data/ContigClustersVirus/clustering_gt1000.csv
+	bash ./bin/ClusterContigAbund.sh \
+		./data/ContigRelAbundForGraph.tsv \
+		./data/ContigClusters/clustering_gt1000.csv \
+		./data/ClusteredContigAbund.tsv
 
 # #################
 # # Identify OPFs #
@@ -669,27 +679,31 @@ $(variable10_1): data/bacteriaseqsfastq/%_R2.fastq-noheader-forcat : data/bacter
 # 		--subsample 100000 \
 # 		--out ./figures/diversity-alpha-opf.pdf
 
-# #######################
-# # OGU Beta Diversity #
-# #######################
-# ./figures/diversity-beta-ogu.pdf : \
-# 			./data/ClusteredContigAbund.tsv \
-# 			./data/metadata/NexteraXT003Map.tsv
-# 	Rscript ./bin/diversity-beta.R \
-# 		--input ./data/ClusteredContigAbund.tsv \
-# 		--metadata ./data/metadata/NexteraXT003Map.tsv \
-# 		--subsample 100000 \
-# 		--out ./figures/diversity-beta-ogu.pdf
+#######################
+# OGU Beta Diversity #
+#######################
+./figures/diversity-beta-ogu.pdf \
+./figures/diversity-beta-ogu-negative.pdf : \
+			./data/ClusteredContigAbund.tsv \
+			./data/metadata/NexteraXT003Map.tsv
+	Rscript ./bin/diversity-beta.R \
+		--input ./data/ClusteredContigAbund.tsv \
+		--metadata ./data/metadata/NexteraXT003Map.tsv \
+		--subsample 100000 \
+		--out ./figures/diversity-beta-ogu.pdf \
+		--negout ./figures/diversity-beta-ogu-negative.pdf
 
-# ./figures/diversity-betajaccard-ogu.pdf : \
-# 			./data/ClusteredContigAbund.tsv \
-# 			./data/metadata/NexteraXT003Map.tsv
-# 	Rscript ./bin/diversity-beta.R \
-# 		--input ./data/ClusteredContigAbund.tsv \
-# 		--metadata ./data/metadata/NexteraXT003Map.tsv \
-# 		--subsample 100000 \
-# 		--divmetric jaccard \
-# 		--out ./figures/diversity-betajaccard-ogu.pdf
+./figures/diversity-betajaccard-ogu.pdf \
+./figures/diversity-betajaccard-ogu-negative.pdf : \
+			./data/ClusteredContigAbund.tsv \
+			./data/metadata/NexteraXT003Map.tsv
+	Rscript ./bin/diversity-beta.R \
+		--input ./data/ClusteredContigAbund.tsv \
+		--metadata ./data/metadata/NexteraXT003Map.tsv \
+		--subsample 100000 \
+		--divmetric jaccard \
+		--out ./figures/diversity-betajaccard-ogu.pdf \
+		--negout ./figures/diversity-betajaccard-ogu-negative.pdf
 
 # #######################
 # # OPF Beta Diversity #
