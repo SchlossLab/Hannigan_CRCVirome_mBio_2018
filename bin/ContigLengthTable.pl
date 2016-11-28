@@ -42,7 +42,6 @@ open($OUT, ">", "$output") || die "Unable to write to $output: $!";
 # Now run the filter
 while (my $line = <$IN>) {
 	chomp $line;
-	print "$line\n";
 	if ($line =~ /^\>/ && $flag==0) {
 		($lineName = $line) =~ s/^\>//;
 		$flag = 1;
