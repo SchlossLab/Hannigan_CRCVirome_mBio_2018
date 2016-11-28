@@ -96,6 +96,7 @@ ORD_NMDS <- metaMDS(castdistnoneg,k=2)
 ORD_FIT = data.frame(MDS1 = ORD_NMDS$points[,1], MDS2 = ORD_NMDS$points[,2])
 ORD_FIT$SampleID <- rownames(ORD_FIT)
 NMDS_AND_MAP <- merge(ORD_FIT, datadisease, by.x="SampleID", by.y="V2")
+NMDS_AND_MAP
 
 # Plot everything
 nonegplotnmds <- ggplot(NMDS_AND_MAP, aes(x=MDS1, y=MDS2, colour=V30)) +
