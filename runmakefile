@@ -30,5 +30,5 @@ cd /mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerVirome || exit
 echo Working in $(pwd)
 
 # Run make
-make ./data/ContigClustersBacteria/clustering_gt2000.csv
-make ./data/ContigClustersVirus/clustering_gt1000.csv
+make bacteriaabund
+make virusabund
