@@ -99,6 +99,8 @@ $(variable4): data/HumanDecon/%_R2.fastq: data/QC/%_R2.fastq
 		$< \
 		$@
 
+############################################# CONTIGS #############################################
+
 ###################
 # Contig Assembly #
 ###################
@@ -140,8 +142,6 @@ $(variable5): data/contigs/%.fastq : data/HumanDecon/%_R1.fastq
 $(variable6): data/contigfastq/%.fastq :
 	mkdir -p data/contigfastq
 	cp $(subst contigfastq,contigs,$@)/final.contigs.fa $@
-
-############################################# CONTIGS #############################################
 
 # Get a master file for bacterial and viral contigs
 setfile7: ./data/metadata/MasterMeta.tsv
@@ -276,10 +276,12 @@ $(variable10_1): data/bacteriaseqsfastq/%_R2.fastq-noheader-forcat : data/bacter
 ./data/ContigRelAbundForGraphVirus.tsv : virusabund
 	cat ./data/virusseqsfastq/*_R2.fastq-noheader-forcat > $@
 	sed -i 's/_R2.fastq//g' $@
+	sed -i 's/data\/virusseqsfastq\///g' $@
 
 ./data/ContigRelAbundForGraphBacteria.tsv : bacteriaabund
 	cat ./data/bacteriaseqsfastq/*_R2.fastq-noheader-forcat > $@
 	sed -i 's/_R2.fastq//g' $@
+	sed -i 's/data\/bacteriaseqsfastq\///g' $@
 	
 
 ######################################## CONTIG CLUSTERING ########################################
@@ -293,7 +295,7 @@ $(variable10_1): data/bacteriaseqsfastq/%_R2.fastq-noheader-forcat : data/bacter
 	Rscript ./bin/ReshapeAlignedAbundance.R \
 		-i ./data/ContigRelAbundForGraphBacteria.tsv \
 		-o ./data/ContigAbundForConcoctBacteria.tsv \
-		-p 0.10
+		-p 0.15
 
 ./data/ContigClustersBacteria/clustering_gt1000.csv : \
 			./data/totalcontigsbacteria.fa \
@@ -304,7 +306,7 @@ $(variable10_1): data/bacteriaseqsfastq/%_R2.fastq-noheader-forcat : data/bacter
 		--composition_file ./data/totalcontigsbacteria.fa \
 		--clusters 500 \
 		--kmer_length 4 \
-		--length_threshold 1000 \
+		--length_threshold 2500 \
 		--read_length 150 \
 		--basename ./data/ContigClustersBacteria/ \
 		--no_total_coverage \
