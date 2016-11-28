@@ -48,7 +48,7 @@ while (my $line = <$IN>) {
 		next;
 	} elsif ($line !~ /^\>/ && $flag==1) {
 		$LineLength = length $line;
-		print $OUT "$lineName\n$LineLength\n";
+		print $OUT "$lineName\t$LineLength\n";
 		$flag = 0;
 		$lineName = '';
 	} else {
