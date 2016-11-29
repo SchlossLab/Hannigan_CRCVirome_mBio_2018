@@ -32,7 +32,7 @@ GetOptions(
 	'h|help' => \$opt_help,
 	'i|input=s' => \$input,
 	'l|lengthfile' => \$lengthfile,
-	'o|output=s' => \$output,
+	'o|output=s' => \$output
 );
 
 pod2usage(-verbose => 1) && exit if defined $opt_help;
