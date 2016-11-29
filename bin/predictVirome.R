@@ -195,7 +195,7 @@ vardf$class <- "Virus"
 vardfbac$class <- "Bacteria"
 varimpbind <- rbind(vardf, vardfbac)
 ggplot(varimpbind, aes(y = Overall, group = ))
-plot_grid(importanceplot, importanceplotbac, labels = c("A", "B"))
+importancegrid <- plot_grid(importanceplot, importanceplotbac, labels = c("A", "B"))
 
 pdf("./figures/predmodel-viromebacteria.pdf", height = 5, width = 6)
 	boundplot
