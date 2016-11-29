@@ -361,7 +361,7 @@ $(variable10_1): data/bacteriaseqsfastq/%_R2.fastq-noheader-forcat : data/bacter
 			./data/CorrectedContigRelAbundForGraph.tsv
 	bash ./bin/ClusterContigAbund.sh \
 		./data/CorrectedContigRelAbundForGraph.tsv \
-		./data/ContigClusters/clustering_gt1000.csv \
+		./data/ContigClustersVirus/clustering_gt1000.csv \
 		./data/VirusClusteredContigAbund.tsv
 
 # Bacteria
@@ -371,6 +371,22 @@ $(variable10_1): data/bacteriaseqsfastq/%_R2.fastq-noheader-forcat : data/bacter
 	perl ./bin/ContigLengthTable.pl \
 		-i ./data/totalcontigsbacteria.fa \
 		-o ./data/BacteriaContigLength.tsv
+
+./data/CorrectedContigRelAbundForGraphBacteria.tsv : \
+			./data/ContigRelAbundForGraph.tsv \
+			./data/BacteriaContigLength.tsv
+	perl ./bin/AbundLengthCorrection.pl \
+		-i ./data/ContigRelAbundForGraph.tsv \
+		-l ./data/BacteriaContigLength.tsv \
+		-o ./data/CorrectedContigRelAbundForGraphBacteria.tsv \
+		-f 2000
+
+./data/BacteriaClusteredContigAbund.tsv : \
+			./data/CorrectedContigRelAbundForGraphBacteria.tsv
+	bash ./bin/ClusterContigAbund.sh \
+		./data/CorrectedContigRelAbundForGraphBacteria.tsv \
+		./data/ContigClustersBacteria/clustering_gt2000.csv \
+		./data/BacteriaClusteredContigAbund.tsv
 
 # #################
 # # Identify OPFs #
