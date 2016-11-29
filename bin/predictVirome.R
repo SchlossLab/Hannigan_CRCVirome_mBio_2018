@@ -25,6 +25,9 @@ caretmodel <- function(x) {
 ##########################
 input <- read.delim("./data/ClusteredContigAbund.tsv", header=TRUE, sep="\t")
 datadisease <- read.delim("./data/metadata/MasterMeta.tsv", header=FALSE, sep="\t")[,c(2,30,22)]
+taxonomy <- read.delim("./data/mothur16S/final.taxonomy", header = TRUE, sep = "\t")
+# Format taxonomy table
+taxonomy$Taxonomy <- sub(".+\\;(.+)\\(\\d+\\)\\;$", "\\1", taxonomy$Taxonomy, perl=TRUE)
 
 inputrelabund <- data.frame(input %>% group_by(V2) %>% mutate(RelAbund = 100 * sum / sum(sum)))
 relabundcast <- dcast(inputrelabund, V2 ~ V1, value.var = "RelAbund")
@@ -77,14 +80,14 @@ importanceplot
 #############################
 # Bacteria Prediction Model #
 #############################
-input <- read.delim("./data/mothur16S/final.shared", header=TRUE, sep="\t")
-input$Group <- sub("^(\\D)(\\d)$","\\10\\2", sub("(.)\\D+(\\d+)", "\\1\\2", input$Group, perl=TRUE))
-input$Group <- as.factor(input$Group)
+inputbacteria <- read.delim("./data/mothur16S/final.shared", header=TRUE, sep="\t")
+inputbacteria$Group <- sub("^(\\D)(\\d)$","\\10\\2", sub("(.)\\D+(\\d+)", "\\1\\2", inputbacteria$Group, perl=TRUE))
+inputbacteria$Group <- as.factor(inputbacteria$Group)
 # Calculate as relative abundance
-inputmelt <- melt(input[-c(1,3)])
+inputbacteriamelt <- melt(inputbacteria[-c(1,3)])
 # Get relative abundance
-inputrelabund <- data.frame(inputmelt %>% group_by(Group) %>% mutate(RelAbund = 100 * value / sum(value)))
-relabundcast <- dcast(inputrelabund, Group ~ variable, value.var = "RelAbund")
+inputbacteriarelabund <- data.frame(inputbacteriamelt %>% group_by(Group) %>% mutate(RelAbund = 100 * value / sum(value)))
+relabundcast <- dcast(inputbacteriarelabund, Group ~ variable, value.var = "RelAbund")
 # Fix the metadata for this case without duplicate MG IDs
 datadiseasesub <- datadisease[,2:3]
 datadiseasesub <- datadiseasesub[!duplicated(datadiseasesub),]
@@ -118,16 +121,20 @@ ggplot(subsetmodel$pred, aes(d = obs, m = Healthy)) +
 # Get the variable importance
 vardfbac <- data.frame(varImp(subsetmodel$finalModel))
 vardfbac$categories <- rownames(vardfbac)
-vardfbac <- vardfbac[order(vardfbac$Overall, decreasing = FALSE),]
-vardfbac$categories <- factor(vardfbac$categories, levels = vardfbac$categories)
+vardfbacmerge <- merge(vardfbac, taxonomy, by.x = "categories", by.y = "OTU")
+vardfbacmerge <- vardfbacmerge[order(vardfbacmerge$Overall, decreasing = FALSE),]
+vardfbacmerge <- vardfbacmerge[(length(vardfbacmerge[,1])-10):(length(vardfbacmerge[,1])),]
+vardfbacmerge$categories <- factor(vardfbacmerge$categories, levels = vardfbacmerge$categories)
 
-importanceplotbac <- ggplot(vardfbac[(length(vardfbac[,1])-10):(length(vardfbac[,1])),], aes(x=categories, y=Overall)) +
+
+importanceplotbac <- ggplot(vardfbacmerge, aes(x=categories, y=Overall, fill = Taxonomy)) +
   theme_classic() +
   theme(
     axis.line.x = element_line(colour = "black"),
-    axis.line.y = element_line(colour = "black")
+    axis.line.y = element_line(colour = "black"),
+    legend.position = "bottom"
   ) +
-  geom_bar(stat="identity", fill=wes_palette("Royal1")[2]) +
+  geom_bar(stat="identity") +
   xlab("Categories") +
   ylab("Mean Decrease in Accuracy") +
   coord_flip()
