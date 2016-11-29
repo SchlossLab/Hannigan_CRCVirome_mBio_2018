@@ -348,9 +348,7 @@ $(variable10_1): data/bacteriaseqsfastq/%_R2.fastq-noheader-forcat : data/bacter
 		-i ./data/totalcontigsvirus.fa \
 		-o ./data/VirusContigLength.tsv
 
-./data/VirusClusteredContigAbund.tsv : \
-			./data/ContigRelAbundForGraphVirus.tsv \
-			./data/ContigClustersVirus/clustering_gt1000.csv
+./data/VirusClusteredContigAbund.tsv :
 	bash ./bin/ClusterContigAbund.sh \
 		./data/ContigRelAbundForGraph.tsv \
 		./data/ContigClusters/clustering_gt1000.csv \
