@@ -348,6 +348,11 @@ $(variable10_1): data/bacteriaseqsfastq/%_R2.fastq-noheader-forcat : data/bacter
 		-i ./data/totalcontigsvirus.fa \
 		-o ./data/VirusContigLength.tsv
 
+./data/correctedabundancevirus.tsv : \
+			./data/ContigRelAbundForGraph.tsv \
+			./data/VirusContigLength.tsv
+	
+
 ./data/VirusClusteredContigAbund.tsv :
 	bash ./bin/ClusterContigAbund.sh \
 		./data/ContigRelAbundForGraph.tsv \
