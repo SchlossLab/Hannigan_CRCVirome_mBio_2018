@@ -18,6 +18,7 @@ my $opt_help;
 my $input;
 my $lengthfile;
 my $output;
+my $filter = 0;
 
 ## Files
 my $IN;
@@ -32,8 +33,11 @@ GetOptions(
 	'h|help' => \$opt_help,
 	'i|input=s' => \$input,
 	'l|lengthfile=s' => \$lengthfile,
-	'o|output=s' => \$output
+	'o|output=s' => \$output,
+	'f|filter=i' => \$filter
 );
+
+print STDERR "Filtering threshold is $filter.\n";
 
 pod2usage(-verbose => 1) && exit if defined $opt_help;
 
@@ -57,7 +61,7 @@ while (my $line = <$IN>) {
 	my $sampleid = (split /\t/, $line)[2];
 	my $contiglengthcall = $contighash{$contigname};
 	my $correctedabund = 10**6 * $contighits / $contiglengthcall;
-	print $OUT "$contigname\t$correctedabund\t$sampleid\n";
+	print $OUT "$contigname\t$correctedabund\t$sampleid\t$contiglengthcall\n" if ($contiglengthcall >= $filter);
 }
 
 close($IN);
