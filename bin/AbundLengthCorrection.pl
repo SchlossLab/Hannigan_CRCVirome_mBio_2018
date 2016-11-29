@@ -31,7 +31,7 @@ my %contighash;
 GetOptions(
 	'h|help' => \$opt_help,
 	'i|input=s' => \$input,
-	'l|lengthfile' => \$lengthfile,
+	'l|lengthfile=s' => \$lengthfile,
 	'o|output=s' => \$output
 );
 
