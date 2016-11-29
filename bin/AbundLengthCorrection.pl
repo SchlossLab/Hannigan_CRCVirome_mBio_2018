@@ -61,7 +61,7 @@ while (my $line = <$IN>) {
 	my $sampleid = (split /\t/, $line)[2];
 	my $contiglengthcall = $contighash{$contigname};
 	my $correctedabund = 10**6 * $contighits / $contiglengthcall;
-	print $OUT "$contigname\t$correctedabund\t$sampleid\t$contiglengthcall\n" if ($contiglengthcall >= $filter);
+	print $OUT "$contigname\t$correctedabund\t$sampleid\n" if ($contiglengthcall >= $filter);
 }
 
 close($IN);
