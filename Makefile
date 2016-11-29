@@ -356,6 +356,14 @@ $(variable10_1): data/bacteriaseqsfastq/%_R2.fastq-noheader-forcat : data/bacter
 		./data/ContigClusters/clustering_gt1000.csv \
 		./data/ClusteredContigAbund.tsv
 
+# Bacteria
+# Get table of contig IDs and their lengths
+./data/BacteriaContigLength.tsv : \
+			./data/totalcontigsbacteria.fa
+	perl ./bin/ContigLengthTable.pl \
+		-i ./data/totalcontigsbacteria.fa \
+		-o ./data/BacteriaContigLength.tsv
+
 # #################
 # # Identify OPFs #
 # #################
