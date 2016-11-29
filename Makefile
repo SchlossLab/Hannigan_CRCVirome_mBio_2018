@@ -354,13 +354,15 @@ $(variable10_1): data/bacteriaseqsfastq/%_R2.fastq-noheader-forcat : data/bacter
 	perl ./bin/AbundLengthCorrection.pl \
 		-i ./data/ContigRelAbundForGraph.tsv \
 		-l ./data/VirusContigLength.tsv \
-		-o ./data/CorrectedContigRelAbundForGraph.tsv
+		-o ./data/CorrectedContigRelAbundForGraph.tsv \
+		-f 1000
 
-./data/VirusClusteredContigAbund.tsv :
+./data/VirusClusteredContigAbund.tsv : \
+			./data/CorrectedContigRelAbundForGraph.tsv
 	bash ./bin/ClusterContigAbund.sh \
-		./data/ContigRelAbundForGraph.tsv \
+		./data/CorrectedContigRelAbundForGraph.tsv \
 		./data/ContigClusters/clustering_gt1000.csv \
-		./data/ClusteredContigAbund.tsv
+		./data/VirusClusteredContigAbund.tsv
 
 # Bacteria
 # Get table of contig IDs and their lengths
