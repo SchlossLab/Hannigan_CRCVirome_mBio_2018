@@ -349,7 +349,6 @@ $(variable10_1): data/bacteriaseqsfastq/%_R2.fastq-noheader-forcat : data/bacter
 		-o ./data/VirusContigLength.tsv
 
 ./data/CorrectedContigRelAbundForGraph.tsv : \
-			./data/ContigRelAbundForGraphVirus.tsv \
 			./data/VirusContigLength.tsv
 	perl ./bin/AbundLengthCorrection.pl \
 		-i ./data/ContigRelAbundForGraphVirus.tsv \
@@ -373,7 +372,6 @@ $(variable10_1): data/bacteriaseqsfastq/%_R2.fastq-noheader-forcat : data/bacter
 		-o ./data/BacteriaContigLength.tsv
 
 ./data/CorrectedContigRelAbundForGraphBacteria.tsv : \
-			./data/ContigRelAbundForGraphBacteria.tsv \
 			./data/BacteriaContigLength.tsv
 	perl ./bin/AbundLengthCorrection.pl \
 		-i ./data/ContigRelAbundForGraphBacteria.tsv \
