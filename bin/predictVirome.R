@@ -187,16 +187,14 @@ boundmodel <- rbind(subsetmodel$pred, outmodel$pred, combomodel$pred)
 boundplot <- ggplot(boundmodel, aes(d = obs, m = Healthy, color = class)) +
 	geom_roc(n.cuts = 0) +
 	style_roc() +
-	scale_color_manual(values = wes_palette("Royal1"))
+	scale_color_manual(values = wes_palette("Royal1")[c(1,2,4)])
 boundplot
 
 # Compare importance
-vardf$class <- "Virus"
-vardfbac$class <- "Bacteria"
-varimpbind <- rbind(vardf, vardfbac)
-ggplot(varimpbind, aes(y = Overall, group = ))
-importancegrid <- plot_grid(importanceplot, importanceplotbac, labels = c("A", "B"))
+importancegrid <- plot_grid(importanceplot, importanceplotbac, importanceplotcombo, labels = c("B", "C", "D"), ncol = 1)
 
-pdf("./figures/predmodel-viromebacteria.pdf", height = 5, width = 6)
-	boundplot
+mergedcowplot <- plot_grid(boundplot, importancegrid, labels = c("A"), rel_widths = c(2,1), ncol = 2)
+
+pdf("./figures/predmodel-viromebacteria.pdf", height = 5, width = 10)
+	mergedcowplot
 dev.off()
