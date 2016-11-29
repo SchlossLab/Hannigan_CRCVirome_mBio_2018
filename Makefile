@@ -349,18 +349,18 @@ $(variable10_1): data/bacteriaseqsfastq/%_R2.fastq-noheader-forcat : data/bacter
 		-o ./data/VirusContigLength.tsv
 
 ./data/CorrectedContigRelAbundForGraph.tsv : \
-			./data/ContigRelAbundForGraph.tsv \
+			./data/ContigRelAbundForGraphVirus.tsv \
 			./data/VirusContigLength.tsv
 	perl ./bin/AbundLengthCorrection.pl \
-		-i ./data/ContigRelAbundForGraph.tsv \
+		-i ./data/ContigRelAbundForGraphVirus.tsv \
 		-l ./data/VirusContigLength.tsv \
-		-o ./data/CorrectedContigRelAbundForGraph.tsv \
+		-o ./data/CorrectedContigRelAbundForGraphVirus.tsv \
 		-f 1000
 
 ./data/VirusClusteredContigAbund.tsv : \
-			./data/CorrectedContigRelAbundForGraph.tsv
+			./data/CorrectedContigRelAbundForGraphVirus.tsv
 	bash ./bin/ClusterContigAbund.sh \
-		./data/CorrectedContigRelAbundForGraph.tsv \
+		./data/CorrectedContigRelAbundForGraphVirus.tsv \
 		./data/ContigClustersVirus/clustering_gt1000.csv \
 		./data/VirusClusteredContigAbund.tsv
 
@@ -373,10 +373,10 @@ $(variable10_1): data/bacteriaseqsfastq/%_R2.fastq-noheader-forcat : data/bacter
 		-o ./data/BacteriaContigLength.tsv
 
 ./data/CorrectedContigRelAbundForGraphBacteria.tsv : \
-			./data/ContigRelAbundForGraph.tsv \
+			./data/ContigRelAbundForGraphBacteria.tsv \
 			./data/BacteriaContigLength.tsv
 	perl ./bin/AbundLengthCorrection.pl \
-		-i ./data/ContigRelAbundForGraph.tsv \
+		-i ./data/ContigRelAbundForGraphBacteria.tsv \
 		-l ./data/BacteriaContigLength.tsv \
 		-o ./data/CorrectedContigRelAbundForGraphBacteria.tsv \
 		-f 2000
