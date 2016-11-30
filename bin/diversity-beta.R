@@ -57,6 +57,9 @@ opt <- parse_args(opt_parser);
 ################
 # Run Analysis #
 ################
+
+##### Beta Diversity #####
+
 # Import otu abundance table
 input <- read.delim(opt$input, header=TRUE, sep="\t")
 # Get the metadata table
@@ -147,8 +150,38 @@ nonegplotdiffs <- ggplot(moddf, aes(y=diff, x=comparison)) +
     ylab("Differences in Mean Levels of Group") +
     xlab("")
 
+##### Alpha Diversity #####
+
+inputshannon <- data.frame(rownames(negcast) ,diversity(negcast, index="shannon"))
+colnames(inputshannon) <- c("SampleID", "ShannonDiv")
+mergedshannon <- merge(inputshannon, datadisease, by.x="SampleID", by.y="V2")
+mergedshannon <- mergedshannon[!c(mergedshannon$V30 %in% "Negative"),]
+shannonplot <- ggplot(mergedshannon, aes(x=V30, y=ShannonDiv, fill=V30)) +
+    theme_classic() +
+    theme(legend.position="none") +
+    geom_boxplot(notch=FALSE) +
+    xlab("Health Status") +
+    ylab("Shannon Diversity") +
+    scale_fill_manual(values = alpha(wes_palette("Royal1"), 0.75))
+pairwise.wilcox.test(x=mergedshannon$ShannonDiv, g=mergedshannon$V30, p.adjust.method="bonferroni")
+
+inputrich <- data.frame(rownames(negcast), rarefy(negcast, sample=opt$subsample))
+colnames(inputrich) <- c("SampleID", "Rich")
+mergedrich <- merge(inputrich, datadisease, by.x="SampleID", by.y="V2")
+mergedrich <- mergedrich[!c(mergedrich$V30 %in% "Negative"),]
+richplot <- ggplot(mergedrich, aes(x=V30, y=Rich, fill=V30)) +
+    theme_classic() +
+    theme(legend.position="none") +
+    geom_boxplot(notch=FALSE) +
+    xlab("Health Status") +
+    ylab("Richness") +
+    scale_fill_manual(values = alpha(wes_palette("Royal1"), 0.75))
+pairwise.wilcox.test(x=mergedrich$Rich, g=mergedrich$V30, p.adjust.method="bonferroni")
+
+
+alphaplot <- plot_grid(shannonplot, richplot)
 gridplot <- plot_grid(plotnmds, plotdiffs, labels = c("A", "B"))
-gridplotnoneg <- plot_grid(nonegplotnmds, nonegplotdiffs, labels = c("A", "B"))
+gridplotnoneg <- plot_grid(nonegplotnmds, nonegplotdiffs, alphaplot, labels = c("A", "B", "C"))
 
 pdf(file=opt$out, width=10, height=4)
     gridplotnoneg
