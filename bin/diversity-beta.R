@@ -183,7 +183,7 @@ alphaplot <- plot_grid(shannonplot, richplot, labels = c("C", "D"))
 gridplot <- plot_grid(plotnmds, plotdiffs, labels = c("A", "B"))
 gridplotnoneg <- plot_grid(nonegplotnmds, nonegplotdiffs, alphaplot, labels = c("A", "B"), ncol = 3)
 
-pdf(file=opt$out, width=10, height=4)
+pdf(file=opt$out, width=12, height=4)
     gridplotnoneg
 dev.off()
 
