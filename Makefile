@@ -386,39 +386,48 @@ $(variable10_1): data/bacteriaseqsfastq/%_R2.fastq-noheader-forcat : data/bacter
 		./data/ContigClustersBacteria/clustering_gt2000.csv \
 		./data/BacteriaClusteredContigAbund.tsv
 
-# #################
-# # Identify OPFs #
-# #################
-# ./data/totalopfs.fa : ./data/totalcontigs.fa
-# 	bash ./bin/ClusterOPFs.sh \
-# 		$< \
-# 		$@
+#################
+# Identify OPFs #
+#################
+idorfs: ./data/totalcontigorfsvirus.fa ./data/totalcontigorfsbacteria.fa
 
-# ############################
-# # ORF Abundance Per Sample #
-# ############################
-# orfalign:
-# 	bash ./bin/getOrfAbundance.sh \
-# 		./data/tmp-opfs/ContigOrfsNoSpec.fa \
-# 		./data/HumanDecon
+# Virus
+./data/totalcontigorfsvirus.fa : ./data/totalcontigsvirus.fa
+	bash ./bin/ClusterOPFs.sh \
+		$< \
+		$@
 
-# ./data/orfabund.tsv:
-# 	bash ./bin/catOrfAbundance.sh \
-# 		./data/HumanDecon \
-# 		./data/orfabund.tsv
+# Bacteria
+./data/totalcontigorfsbacteria.fa : ./data/totalcontigsbacteria.fa
+	bash ./bin/ClusterOPFs.sh \
+		$< \
+		$@
 
-# #######################
-# # OPF Abundance Table #
-# #######################
-# ./data/ClusteredOpfAbund.tsv : \
-# 			./data/totalopfs.fa.tsv \
-# 			./data/orfabund.tsv
-# 	$(shell awk '{ print $$2"\t"$$1 }' ./data/totalopfs.fa.tsv > ./data/OpfClusters.tsv)
-# 	$(shell awk '{ print $$2"\t"$$1"\t"$$3 }' ./data/orfabund.tsv > ./data/orfabundOrdered.tsv)
-# 	bash ./bin/ClusterContigAbund.sh \
-# 		./data/orfabundOrdered.tsv \
-# 		./data/OpfClusters.tsv \
-# 		./data/ClusteredOpfAbund.tsv
+############################
+# ORF Abundance Per Sample #
+############################
+orfalign:
+	bash ./bin/getOrfAbundance.sh \
+		./data/tmp-opfs/ContigOrfsNoSpec.fa \
+		./data/HumanDecon
+
+./data/orfabund.tsv:
+	bash ./bin/catOrfAbundance.sh \
+		./data/HumanDecon \
+		./data/orfabund.tsv
+
+#######################
+# OPF Abundance Table #
+#######################
+./data/ClusteredOpfAbund.tsv : \
+			./data/totalopfs.fa.tsv \
+			./data/orfabund.tsv
+	$(shell awk '{ print $$2"\t"$$1 }' ./data/totalopfs.fa.tsv > ./data/OpfClusters.tsv)
+	$(shell awk '{ print $$2"\t"$$1"\t"$$3 }' ./data/orfabund.tsv > ./data/orfabundOrdered.tsv)
+	bash ./bin/ClusterContigAbund.sh \
+		./data/orfabundOrdered.tsv \
+		./data/OpfClusters.tsv \
+		./data/ClusteredOpfAbund.tsv
 
 # #######################
 # # OGU Alpha Diversity #
