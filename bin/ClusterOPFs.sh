@@ -74,11 +74,15 @@ export -f EstablishOpfs
 ################
 echo Predicting ORFs...
 
-# PredictOrfs \
-# 	${ContigsFile} \
-# 	./data/tmp-opfs/ContigOrfs.fa \
-# 	|| exit
+export contigfilename=$(echo ${ContigsFile} | sed 's/.*\///g' | sed 's/\.fa//')
+
+echo File name is ${contigfilename}
+
+PredictOrfs \
+	${ContigsFile} \
+	./data/tmp-opfs/${contigfilename}-orfs.fa \
+	|| exit
 
 EstablishOpfs \
-	ContigOrfs.fa \
+	${contigfilename}-orfs.fa \
 	${Output}

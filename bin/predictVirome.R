@@ -23,7 +23,7 @@ caretmodel <- function(x) {
 ##########################
 # Virus Prediction Model #
 ##########################
-input <- read.delim("./data/ClusteredContigAbund.tsv", header=TRUE, sep="\t")
+input <- read.delim("./data/VirusClusteredContigAbund.tsv", header=TRUE, sep="\t")
 datadisease <- read.delim("./data/metadata/MasterMeta.tsv", header=FALSE, sep="\t")[,c(2,30,22)]
 taxonomy <- read.delim("./data/mothur16S/final.taxonomy", header = TRUE, sep = "\t")
 # Format taxonomy table
@@ -131,8 +131,7 @@ importanceplotbac <- ggplot(vardfbacmerge, aes(x=categories, y=Overall, fill = T
   theme_classic() +
   theme(
     axis.line.x = element_line(colour = "black"),
-    axis.line.y = element_line(colour = "black"),
-    legend.position = "bottom"
+    axis.line.y = element_line(colour = "black")
   ) +
   geom_bar(stat="identity") +
   xlab("Categories") +
@@ -140,6 +139,59 @@ importanceplotbac <- ggplot(vardfbacmerge, aes(x=categories, y=Overall, fill = T
   coord_flip()
 
 importanceplotbac
+
+#####################################
+# Whole Metagenome Prediction Model #
+#####################################
+metainput <- read.delim("./data/BacteriaClusteredContigAbund.tsv", header=TRUE, sep="\t")
+
+metainputrelabund <- data.frame(metainput %>% group_by(V2) %>% mutate(RelAbund = 100 * sum / sum(sum)))
+relabundcast <- dcast(metainputrelabund, V2 ~ V1, value.var = "RelAbund")
+relabundcast[is.na(relabundcast)] <- 0
+row.names(relabundcast) <- relabundcast$V2
+castmerge <- merge(relabundcast, datadisease, by.x="V2", by.y="V2")
+castmerge <- castmerge[,-1]
+
+# Filter by presence/absence
+metaabssubset <- castmerge[!c(castmerge$V30 %in% "Negative"),]
+metaabssubset <- metaabssubset[!c(metaabssubset$V30 %in% "Adenoma"),]
+metaabssubset$V30 <- factor(metaabssubset$V30)
+metaabssubset <- metaabssubset[,c(colSums(metaabssubset != 0) > 30)]
+# Get rid of the IDs
+metaabsmissingid <- metaabssubset[,-which(names(metaabssubset) %in% c("V22"))]
+
+metaoutmodel <- caretmodel(metaabsmissingid)
+metaoutmodel
+
+ggplot(metaoutmodel$pred, aes(d = obs, m = Healthy)) +
+	geom_roc(n.cuts = 0, color = wes_palette("Royal1")[2]) +
+	theme_classic() +
+	theme(
+	  axis.line.x = element_line(colour = "black"),
+	  axis.line.y = element_line(colour = "black")
+	) +
+	geom_segment(aes(x = 0, y = 0, xend = 1, yend = 1), linetype=2, colour=wes_palette("Royal1")[1]) +
+	ylab("Sensitivity") +
+	xlab(paste("Inverse Specificity"))
+
+# Get the variable importance
+vardf <- data.frame(varImp(metaoutmodel$finalModel))
+vardf$categories <- rownames(vardf)
+vardf <- vardf[order(vardf$Overall, decreasing = FALSE),]
+vardf$categories <- factor(vardf$categories, levels = vardf$categories)
+
+metaimportanceplot <- ggplot(vardf[(length(vardf[,1])-10):(length(vardf[,1])),], aes(x=categories, y=Overall)) +
+  theme_classic() +
+  theme(
+    axis.line.x = element_line(colour = "black"),
+    axis.line.y = element_line(colour = "black")
+  ) +
+  geom_bar(stat="identity", fill=wes_palette("Royal1")[2]) +
+  xlab("Categories") +
+  ylab("Mean Decrease in Accuracy") +
+  coord_flip()
+
+metaimportanceplot
 
 #################################
 # Merge Bacteria and Viral Data #
@@ -182,26 +234,69 @@ importanceplotcombo <- ggplot(combovar[(length(combovar[,1])-10):(length(combova
 
 importanceplotcombo
 
+############################
+# Quantify AUC Differences #
+############################
+GetAverageAUC <- function(x, y) {
+	functionmodel <- caretmodel(x)
+	highAUC <- functionmodel$results$ROC[order(functionmodel$results$ROC, decreasing = TRUE)[1]]
+	resultdf <- data.frame(y,highAUC)
+	return(resultdf)
+}
+
+iterationcount <- 10
+
+viromeauc <- lapply(c(1:iterationcount), function(i) GetAverageAUC(absmissingid, i))
+viromeaucdf <- ldply(viromeauc, data.frame)
+viromeaucdf$class <- "Virus"
+
+bacteriaauc <- lapply(c(1:iterationcount), function(i) GetAverageAUC(pasubsetmissing, i))
+bacteriaaucdf <- ldply(bacteriaauc, data.frame)
+bacteriaaucdf$class <- "Bacteria"
+
+comboauc <- lapply(c(1:iterationcount), function(i) GetAverageAUC(virusbacteria, i))
+comboaucdf <- ldply(comboauc, data.frame)
+comboaucdf$class <- "Combined"
+
+metagenomeauc <- lapply(c(1:iterationcount), function(i) GetAverageAUC(metaabsmissingid, i))
+metagenomeaucdf <- ldply(metagenomeauc, data.frame)
+metagenomeaucdf$class <- "Metagenomic"
+
+megatron <- rbind(viromeaucdf, bacteriaaucdf, comboaucdf, metagenomeaucdf)
+
+pairwise.wilcox.test(x=megatron$highAUC, g=megatron$class, p.adjust.method="bonferroni")
+
+auccompareplot <- ggplot(megatron, aes(x = class, y = highAUC, fill = class)) +
+	theme_classic() +
+	theme(legend.position="none") +
+	geom_boxplot(notch = FALSE) +
+	scale_fill_manual(values = wes_palette("Royal1"))
+auccompareplot
+
 ###############################
 # Compare Bacteria and Virus  #
 ###############################
 subsetmodel$pred$class <- "Bacteria"
 outmodel$pred$class <- "Virus"
 combomodel$pred$class <- "Combined"
-boundmodel <- rbind(subsetmodel$pred, outmodel$pred, combomodel$pred)
+metaoutmodel$pred$class <- "Metagenome"
+boundmodel <- rbind(subsetmodel$pred, outmodel$pred, combomodel$pred, metaoutmodel$pred)
 
 # Plot the ROC curve
 boundplot <- ggplot(boundmodel, aes(d = obs, m = Healthy, color = class)) +
 	geom_roc(n.cuts = 0) +
 	style_roc() +
-	scale_color_manual(values = wes_palette("Royal1")[c(1,2,4)])
+	scale_color_manual(values = wes_palette("Royal1"))
 boundplot
 
 # Compare importance
-importancegrid <- plot_grid(importanceplot, importanceplotbac, importanceplotcombo, labels = c("B", "C", "D"), ncol = 1)
+subimportance <- plot_grid(importanceplot, importanceplotcombo, labels = c("D", "E"), ncol = 2)
+bottomgrid <- plot_grid(importanceplotbac, subimportance, labels = c("C"), ncol = 2)
+topgrid <- plot_grid(boundplot, auccompareplot, labels = c("A", "B"), ncol = 2, rel_widths = c(6,5))
+finalgridplot <- plot_grid(topgrid, bottomgrid, ncol=1, rel_heights = c(2,1))
 
-mergedcowplot <- plot_grid(boundplot, importancegrid, labels = c("A"), rel_widths = c(2,1), ncol = 2)
-
-pdf("./figures/predmodel-viromebacteria.pdf", height = 5, width = 10)
-	mergedcowplot
+pdf("./figures/predmodel-viromebacteria.pdf", height = 8, width = 12)
+	finalgridplot
 dev.off()
+
+
