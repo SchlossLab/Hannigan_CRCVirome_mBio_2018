@@ -179,9 +179,9 @@ richplot <- ggplot(mergedrich, aes(x=V30, y=Rich, fill=V30)) +
 pairwise.wilcox.test(x=mergedrich$Rich, g=mergedrich$V30, p.adjust.method="bonferroni")
 
 
-alphaplot <- plot_grid(shannonplot, richplot)
+alphaplot <- plot_grid(shannonplot, richplot, labels = c("C", "D"))
 gridplot <- plot_grid(plotnmds, plotdiffs, labels = c("A", "B"))
-gridplotnoneg <- plot_grid(nonegplotnmds, nonegplotdiffs, alphaplot, labels = c("A", "B", "C"))
+gridplotnoneg <- plot_grid(nonegplotnmds, nonegplotdiffs, alphaplot, labels = c("A", "B"), ncol = 3)
 
 pdf(file=opt$out, width=10, height=4)
     gridplotnoneg
