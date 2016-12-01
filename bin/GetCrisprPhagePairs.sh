@@ -40,6 +40,7 @@ sed 's/ /_/g' "${PhageGenomes}" > ./${Output}/PhageReferenceNoSpace.fa || exit
 sed 's/ /_/g' ./${Output}/Spacers.good.fa \
 	| tac \
 	| sed '/^\./,+1d' \
+	| sed '/\.$/,+1d' \
 	| tac \
 	> ./${Output}/SpacersNoSpaceGood.fa || exit
 
