@@ -154,11 +154,44 @@ importanceplotbac <- ggplot(vardfbac[(length(vardfbac[,1])-10):(length(vardfbac[
 
 importanceplotbac
 
+############################
+# Quantify AUC Differences #
+############################
+GetAverageAUC <- function(x, y) {
+	functionmodel <- caretmodel(x)
+	highAUC <- functionmodel$results$Mean_ROC[order(functionmodel$results$Mean_ROC, decreasing = TRUE)[1]]
+	resultdf <- data.frame(y,highAUC)
+	return(resultdf)
+}
+
+iterationcount <- 10
+
+viromeauc <- lapply(c(1:iterationcount), function(i) GetAverageAUC(absmissingid, i))
+viromeaucdf <- ldply(viromeauc, data.frame)
+viromeaucdf$class <- "Virus"
+
+bacteriaauc <- lapply(c(1:iterationcount), function(i) GetAverageAUC(pasubsetmissing, i))
+bacteriaaucdf <- ldply(bacteriaauc, data.frame)
+bacteriaaucdf$class <- "Bacteria"
+
+megatron <- rbind(viromeaucdf, bacteriaaucdf)
+
+wilcox.test(megatron$highAUC ~ megatron$class)
+
+auccompareplot <- ggplot(megatron, aes(x = class, y = highAUC, fill = class)) +
+	theme_classic() +
+	theme(legend.position="none") +
+	geom_boxplot(notch = FALSE) +
+	scale_fill_manual(values = wes_palette("Royal1"))
+auccompareplot
+
 ###############################
 # Compare Bacteria and Virus  #
 ###############################
-boundplot <- plot_grid(meanrocvirome, meanrocbacteria, labels = c("A", "B"))
+importanceplots <- plot_grid(importanceplot, importanceplotbac, labels = c("D", "E"), ncol = 2)
+boundplot <- plot_grid(meanrocvirome, meanrocbacteria, auccompareplot, labels = c("A", "B", "C"), rel_widths = c(2, 2, 1), ncol = 3)
+topbottomplot <- plot_grid(boundplot, importanceplots, rel_heights = c(3, 2), ncol = 1)
 
 pdf("./figures/predmodel-threewayclassification.pdf", height = 5, width = 12)
-	boundplot
+	topbottomplot
 dev.off()

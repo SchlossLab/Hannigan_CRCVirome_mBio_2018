@@ -540,8 +540,59 @@ mothurcluster :
 	bash ./bin/mothurCluster.sh \
 		./data/mothur16S
 
-# ###############################
-# # 16S Classification Modeling #
-# ###############################
+####################################### INTERACTION NETWORKS ######################################
 
+##################################
+# Score Contigs for Interactions #
+##################################
+
+VREF=./data/ViromeAgainstReferenceBacteria
+# In this case the samples will get run against the bacteria reference genome set
+ViromeRefRun : ${VREF}/BenchmarkCrisprsFormat.tsv \
+	${VREF}/BenchmarkProphagesFormatFlip.tsv \
+	${VREF}/MatchesByBlastxFormatOrder.tsv \
+	${VREF}/PfamInteractionsFormatScoredFlip.tsv
+
+${VREF}/BenchmarkCrisprsFormat.tsv \
+${VREF}/BenchmarkProphagesFormatFlip.tsv \
+${VREF}/MatchesByBlastxFormatOrder.tsv \
+${VREF}/PfamInteractionsFormatScoredFlip.tsv : \
+			./data/totalcontigorfsvirus.fa \
+			./data/totalcontigorfsbacteria.fa \
+			./bin/BenchmarkingModel.sh
+	echo $(shell date)  :  Calculating predictive values for experimental datasets >> ${DATENAME}.makelog
+	bash ./bin/BenchmarkingModel.sh \
+		./data/totalcontigorfsvirus.fa \
+		./data/totalcontigorfsbacteri.fa \
+		${VREF}/BenchmarkCrisprsFormat.tsv \
+		${VREF}/BenchmarkProphagesFormatFlip.tsv \
+		${VREF}/MatchesByBlastxFormatOrder.tsv \
+		${VREF}/PfamInteractionsFormatScoredFlip.tsv \
+		"ViromeAgainstReferenceBacteria"
+
+#########################
+# Cluster Contig Scores #
+#########################
+
+# Annotate contig IDs with cluster IDs and further compress
+clusterrun : ${VREF}/BenchmarkProphagesFormatFlipClustered.tsv \
+	${VREF}/MatchesByBlastxFormatOrderClustered.tsv \
+	${VREF}/PfamInteractionsFormatScoredFlipClustered.tsv
+
+${VREF}/BenchmarkProphagesFormatFlipClustered.tsv \
+${VREF}/MatchesByBlastxFormatOrderClustered.tsv \
+${VREF}/PfamInteractionsFormatScoredFlipClustered.tsv :
+	echo $(shell date)  :  Collapsing predictive scores by contig clusters >> ${DATENAME}.makelog
+	bash ./bin/ClusterContigScores.sh \
+		${VREF}/BenchmarkProphagesFormatFlip.tsv \
+		${VREF}/MatchesByBlastxFormatOrder.tsv \
+		${VREF}/PfamInteractionsFormatScoredFlip.tsv \
+		${VREF}/BenchmarkProphagesFormatFlipClustered.tsv \
+		${VREF}/MatchesByBlastxFormatOrderClustered.tsv \
+		${VREF}/PfamInteractionsFormatScoredFlipClustered.tsv \
+		./data/ContigClustersPhage/clustering_gt1000.csv \
+		./data/ContigClustersBacteria/clustering_gt1000.csv \
+		"ViromeAgainstReferenceBacteria" \
+		${VREF}/BenchmarkCrisprsFormat.tsv \
+		${VREF}/BenchmarkCrisprsFormatClustered.tsv
 

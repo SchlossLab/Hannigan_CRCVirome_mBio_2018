@@ -2,5 +2,5 @@
 
 echo Rendering now...
 
-pandoc --toc ./manuscript.md -f markdown -t latex -o ./manuscript.pdf --biblio=citations.bib --csl=/Users/Hannigan/git/styles/nature.csl
+pandoc -s --toc ./manuscript.md -f markdown -t latex -o ./manuscript.pdf --biblio=citations.bib --csl=/Users/Hannigan/git/styles/nature.csl
 
