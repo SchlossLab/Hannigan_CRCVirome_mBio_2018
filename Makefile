@@ -557,13 +557,13 @@ ${VREF}/BenchmarkCrisprsFormat.tsv \
 ${VREF}/BenchmarkProphagesFormatFlip.tsv \
 ${VREF}/MatchesByBlastxFormatOrder.tsv \
 ${VREF}/PfamInteractionsFormatScoredFlip.tsv : \
-			./data/totalcontigorfsvirus.fa \
-			./data/totalcontigorfsbacteria.fa \
+			./data/totalcontigsvirus.fa \
+			./data/totalcontigsbacteria.fa \
 			./bin/BenchmarkingModel.sh
 	echo $(shell date)  :  Calculating predictive values for experimental datasets >> ${DATENAME}.makelog
 	bash ./bin/BenchmarkingModel.sh \
-		./data/totalcontigorfsvirus.fa \
-		./data/totalcontigorfsbacteri.fa \
+		./data/totalcontigsvirus.fa \
+		./data/totalcontigsbacteria.fa \
 		${VREF}/BenchmarkCrisprsFormat.tsv \
 		${VREF}/BenchmarkProphagesFormatFlip.tsv \
 		${VREF}/MatchesByBlastxFormatOrder.tsv \
