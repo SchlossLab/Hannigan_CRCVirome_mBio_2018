@@ -1,4 +1,4 @@
-# ContigLengthDist.R
+# GetLongestContig.R
 # Geoffrey Hannigan
 # Schloss Lab
 # University of Michigan
@@ -36,13 +36,13 @@ opt <- parse_args(opt_parser);
 
 # Virus
 
-input <- read.delim(opt$input, head = FALSE, sep = "\t")
-colnames(input) <- c("ContigID", "Length")
+inputfile <- read.delim(opt$input, head = FALSE, sep = "\t")
+colnames(inputfile) <- c("ContigID", "Length")
 
-clusters <- read.delim(opt$clusters, head = FALSE, sep = ",")
-colnames(clusters) <- c("ContigID", "Cluster")
+clustersfile <- read.delim(opt$clusters, head = FALSE, sep = ",")
+colnames(clustersfile) <- c("ContigID", "Cluster")
 
-mergeclust <- merge(input, clusters, by = "ContigID")
+mergeclust <- merge(inputfile, clustersfile, by = "ContigID")
 
 # Get top lengths
 topcontigsbylength <- ddply(mergeclust, "Cluster", function(x) head(x[order(x$Length, decreasing = TRUE) , ], opt$toplength))
