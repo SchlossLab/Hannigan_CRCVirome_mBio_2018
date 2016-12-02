@@ -7,7 +7,7 @@
 export referencelist=$1
 export outputfilename=$2
 
-export downloadvar=$(tr '\n' ',' ${referencelist})
+export downloadvar=$(tr '\n' ',' < ${referencelist} | sed 's/\,$//')
 
 echo $downloadvar
 
