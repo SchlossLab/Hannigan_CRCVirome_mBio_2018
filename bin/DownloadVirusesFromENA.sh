@@ -11,7 +11,7 @@ mkdir -p ./tmp-database-download
 
 while read line; do
 	wget "http://www.ebi.ac.uk/ena/data/view/${line}&display=fasta" -O ./tmp-database-download/${line}
-done < VirusPhageReference.tsv
+done < ${referencelist}
 
 cat ./tmp-database-download/* > ${outputfilename}
 
