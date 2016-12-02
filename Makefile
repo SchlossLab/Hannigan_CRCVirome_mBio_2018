@@ -10,6 +10,23 @@ metadatafiles = ./data/metadata/NexteraXT003Map.tsv ./data/metadata/NexteraXT004
 ./data/metadata/MasterMeta.tsv : $(metadatafiles)
 	cat ./data/metadata/NexteraXT003Map.tsv ./data/metadata/NexteraXT004Map.tsv > ./data/metadata/MasterMeta.tsv
 
+########################################## VIRUS DATABASE #########################################
+./data/metadata/virus.txt:
+	wget http://www.ebi.ac.uk/genomes/virus.txt -O $@
+
+./data/metadata/phage.txt:
+	wget http://www.ebi.ac.uk/genomes/phage.txt -O $@
+
+# Merge the reference databases
+./data/metadata/VirusPhageReference.tsv: ./data/metadata/virus.txt ./data/metadata/phage.txt
+	cat ./data/metadata/virus.txt ./data/metadata/phage.txt > ./data/metadata/VirusPhageReference.tsv
+
+# Download Sequences
+./data/metadata/VirusPhageReference.fa : ./data/metadata/VirusPhageReference.tsv
+	bash ./bin/DownloadVirusesFromENA.sh \
+		$< \
+		$@
+
 ######################################### QUALITY CONTROL #########################################
 
 ###################
