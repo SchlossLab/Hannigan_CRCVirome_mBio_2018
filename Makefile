@@ -628,7 +628,7 @@ ${VREF}/PfamInteractionsFormatScoredFlipClustered.tsv :
 		--input ./data/VirusContigLength.tsv \
 		--clusters ./data/ContigClustersVirus/clustering_gt1000.csv \
 		--toplength 1 \
-		-- $@
+		--out $@
 
 ./data/contigclustersidentity/longestcontigsbacteria.tsv : ./data/BacteriaContigLength.tsv
 	mkdir -p ./data/contigclustersidentity
@@ -636,5 +636,5 @@ ${VREF}/PfamInteractionsFormatScoredFlipClustered.tsv :
 		--input ./data/BacteriaContigLength.tsv \
 		--clusters ./data/ContigClustersBacteria/clustering_gt2000.csv \
 		--toplength 1 \
-		-- $@
+		--out $@
 
