@@ -3,7 +3,6 @@
 #Geoffrey Hannigan
 #Elizabeth Grice Lab
 #University of Pennsylvania
-#Major help from Qi Zhang :)
 
 # Set use
 use strict;
@@ -34,7 +33,7 @@ while (my $line = <$IN>) {
 		print $OUT $line;
 }
 # Print the final newline
-print $OUT "/n";
+print $OUT "\n";
 
 #Close out files and print completion note to STDOUT
 close($IN);
