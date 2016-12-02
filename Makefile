@@ -620,3 +620,21 @@ ${VREF}/PfamInteractionsFormatScoredFlipClustered.tsv :
 		${VREF}/BenchmarkCrisprsFormat.tsv \
 		${VREF}/BenchmarkCrisprsFormatClustered.tsv
 
+################################## CONTIG CLUSTER IDENTIFICATION ##################################
+# Get ID for longest contig in each cluster
+./data/contigclustersidentity/longestcontigsvisur.tsv : ./data/VirusContigLength.tsv ./data/ContigClustersVirus/clustering_gt1000.csv
+	mkdir -p ./data/contigclustersidentity
+	Rscript GetLongestContig.R \
+		--input ./data/VirusContigLength.tsv \
+		--clusters ./data/ContigClustersVirus/clustering_gt1000.csv \
+		--toplength 1 \
+		-- $@
+
+./data/contigclustersidentity/longestcontigsbacteria.tsv : ./data/BacteriaContigLength.tsv ./data/ContigClustersBacteria/clustering_gt2000.csv
+	mkdir -p ./data/contigclustersidentity
+	Rscript GetLongestContig.R \
+		--input ./data/BacteriaContigLength.tsv \
+		--clusters ./data/ContigClustersBacteria/clustering_gt2000.csv \
+		--toplength 1 \
+		-- $@
+
