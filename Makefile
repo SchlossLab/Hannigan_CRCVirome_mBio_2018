@@ -645,5 +645,5 @@ ${VREF}/PfamInteractionsFormatScoredFlipClustered.tsv :
 		./data/metadata/VirusPhageReferenceFormat.fa \
 		./data/contigclustersidentity/longestcontigsvirus.tsv \
 		./data/contigclustersidentity/VirusRepsetIds.tsv \
-		/scratch/pschloss_flux/ghannig/bin/ncbi-blast-2.3.0+/bin/
+		"/home/ghannig/bin/ncbi-blast-2.4.0+/bin/"
 
