@@ -37,7 +37,7 @@ export -f RunBlast
 
 cut -f 1 ${idfile} | tail -n +2 > ./data/tmpid/contiglist.tsv
 grep -A 1 -f ./data/tmpid/contiglist.tsv ${fastafile} \
-	egrep -v "\-\-" \
+	| egrep -v "\-\-" \
 	> ./data/tmpid/contigrepset.fa
 
 RunBlast ./data/tmpid/contigrepset.fa ${referencefile}
