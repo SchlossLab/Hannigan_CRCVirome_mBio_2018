@@ -192,6 +192,6 @@ importanceplots <- plot_grid(importanceplot, importanceplotbac, labels = c("D", 
 boundplot <- plot_grid(meanrocvirome, meanrocbacteria, auccompareplot, labels = c("A", "B", "C"), rel_widths = c(2, 2, 1), ncol = 3)
 topbottomplot <- plot_grid(boundplot, importanceplots, rel_heights = c(3, 2), ncol = 1)
 
-pdf("./figures/predmodel-threewayclassification.pdf", height = 5, width = 12)
+pdf("./figures/predmodel-threewayclassification.pdf", height = 6, width = 12)
 	topbottomplot
 dev.off()

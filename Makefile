@@ -401,6 +401,9 @@ $(variable10_1): data/bacteriaseqsfastq/%_R2.fastq-noheader-forcat : data/bacter
 		./data/ContigClustersBacteria/clustering_gt2000.csv \
 		./data/BacteriaClusteredContigAbund.tsv
 
+########################################### CONTIG STATS ##########################################
+
+
 ################################### OPERATIONAL PROTEIN FAMILIES ##################################
 
 #################
@@ -560,7 +563,6 @@ ${VREF}/PfamInteractionsFormatScoredFlip.tsv : \
 			./data/totalcontigsvirus.fa \
 			./data/totalcontigsbacteria.fa \
 			./bin/BenchmarkingModel.sh
-	echo $(shell date)  :  Calculating predictive values for experimental datasets >> ${DATENAME}.makelog
 	bash ./bin/BenchmarkingModel.sh \
 		./data/totalcontigsvirus.fa \
 		./data/totalcontigsbacteria.fa \
@@ -582,7 +584,6 @@ clusterrun : ${VREF}/BenchmarkProphagesFormatFlipClustered.tsv \
 ${VREF}/BenchmarkProphagesFormatFlipClustered.tsv \
 ${VREF}/MatchesByBlastxFormatOrderClustered.tsv \
 ${VREF}/PfamInteractionsFormatScoredFlipClustered.tsv :
-	echo $(shell date)  :  Collapsing predictive scores by contig clusters >> ${DATENAME}.makelog
 	bash ./bin/ClusterContigScores.sh \
 		${VREF}/BenchmarkProphagesFormatFlip.tsv \
 		${VREF}/MatchesByBlastxFormatOrder.tsv \

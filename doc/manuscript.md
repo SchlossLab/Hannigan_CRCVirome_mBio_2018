@@ -50,7 +50,7 @@ We compared the existing bacterial 16S rRNA gene model to a model built using th
 
 To evaluate the synergistic capabilities of the bacterial and viral signatures within the model, we built a combinatory model using both bacteria community and virome data. The combination model failed to improve performance beyond the model built using virome signatures alone. **(Figure \ref{predmodel A - B})**. Not only do bacterial community signatures fail to classify stool samples as well as the virome, but the bacteria do not have a synergistic impact on the virome classification model either.
 
-## Identifying important biological factors in colorectal cancer
+## Identifying important biological factors in colorectal cancer classification
 Our model for classifying stool samples as cancerous or healthy performed significantly better when using virome signatures compared to bacterial 16S. Not only is this important for demonstrating an improved model, but it also suggests an underlying biological importance for viruses in colorectal cancer. We therefore used our predictive models to evaluate which viruses were most important for distinguishing between disease states, thus allowing us to identify the agents likely to play biological roles in disease.
 
 We calculated the importance of each operational unit in each model by iteratively re-building the model without each unit and quantifying the resulting loss of accuracy. We found that there was a discreency between the distribution of top variable importance between bacterial and viral models, with the most important bacterial taxa being responsible for 6.5% of the model while the top viral feature was only responsible for 1.5%. The top bacterial unit (as identified by 16S rRNA gene sequence) was fusobacterium, a bacterium long been associated with cancer and hypothesised to play a role in colorectal cancer.
@@ -59,6 +59,9 @@ We calculated the importance of each operational unit in each model by iterative
 After evaluating our ability to classify samples as cancerous vs healthy, we incorporated the pre-cancerous adenoma samples into the model and evaluated our ability to classify the groups out of the total dataset **(Figure \ref{threewaymodel})**. We used a set of three-class random forest models for both the bacterial and viral sample sets. Again the virome significantly outperformed the bacterial community signatures. The virus signature allowed for consistently high resolution for each of the disease classes, while the resolution varried with the bacterial signatures. The bacterial signature allowed for high accuracy in classifying cancerous stool apart from pre-cancerous or healthy, but struggled to classify adenomas or healthy samples away from the remainder of the dataset. On average the bacterial model performed poorly compared to the consistently higher viruses.
 
 ![*ROC curves from three-class random forest tuned on mean AUC for A) virus and B) bacterial signatures. Each curve represents the ability of the specified class to be classified against the other two classes.*\label{threewaymodel}](../figures/predmodel-threewayclassification.pdf){ width=100% }
+
+## Identifying important features for general model
+Above we followed up with the important features associated with the cancer-healthy model. Here we are repeating the analysis while looking at the large model using all of the information, including the adenoma samples.
 
 # Discussion
 
@@ -75,6 +78,10 @@ After evaluating our ability to classify samples as cancerous vs healthy, we inc
 # Supplemental Figures
 
 ![*Basic Quality Control Metrics. A) VLP genomic DNA yield from all sequenced samples. Each bar represents a sample which is grouped and colored by its associated disease group. B) Sequence yield following quality control including quality score filtering and human decontamintion. Dashed line represents the subsampling depth used in the study.*\label{qualcontrol}](../figures/qualitycontrol.pdf){ width=100% }
+
+![*Contig cluster stats.*\label{clustercontigqc}](../figures/contiglengthbycluster.pdf){ width=100% }
+
+![*Contig length and coverage stats.*\label{clustercontigqc}](../figures/qc-contiglengthcoverage.pdf){ width=100% }
 
 ![*Beta-diversity comparing disease states of the colorectal virome from stool samples. A) NMDS ordination of community samples, colored by disease state. B) Differences in means between disease group centroids with 95% confidence intervals based on an anosim test with a post hoc multivariate Tukey test. Comparisons in which the intervals cross the zero mean difference line (dashed line) were not significantly different.*\label{betaogunegative}](../figures/diversity-beta-ogu-negative.pdf){ width=100% }
 
