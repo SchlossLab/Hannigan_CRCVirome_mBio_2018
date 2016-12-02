@@ -7,8 +7,12 @@
 export referencelist=$1
 export outputfilename=$2
 
-export downloadvar=$(tr '\n' ',' < ${referencelist} | sed 's/\,$//')
+mkdir -p ./tmp-database-download
 
-echo $downloadvar
+while read line; do
+	wget "http://www.ebi.ac.uk/ena/data/view/${line}&display=fasta" -O ./tmp-database-download/${line}
+done < VirusPhageReference.tsv
 
-wget "http://www.ebi.ac.uk/ena/data/view/$downloadvar&display=fasta" -O ${outputfilename}
+cat ./tmp-database-download/* > ${outputfilename}
+
+# rm -rf ./tmp-database-download
