@@ -638,3 +638,12 @@ ${VREF}/PfamInteractionsFormatScoredFlipClustered.tsv :
 		--toplength 1 \
 		--out $@
 
+# Align the contig seqs to the virus reference database
+./data/contigclustersidentity/VirusRepsetIds.tsv :
+	bash ./bin/IdentifyContigs.sh \
+		./data/totalcontigsvirus.fa \
+		./data/metadata/VirusPhageReferenceFormat.fa \
+		./data/contigclustersidentity/longestcontigsvirus.tsv \
+		./data/contigclustersidentity/VirusRepsetIds.tsv \
+		/scratch/pschloss_flux/ghannig/bin/ncbi-blast-2.3.0+/bin/
+
