@@ -26,6 +26,12 @@ metadatafiles = ./data/metadata/NexteraXT003Map.tsv ./data/metadata/NexteraXT004
 	bash ./bin/DownloadVirusesFromENA.sh \
 		$< \
 		$@
+ 
+ # Format reference fasta
+./data/metadata/VirusPhageReferenceFormat.fa : ./data/metadata/VirusPhageReference.fa
+	perl ./bin/remove_block_fasta_format.pl $< ./data/tmpreference.fa
+	egrep -A 1 "complete genome" ./data/tmpreference.fa > $@
+	rm ./data/tmpreference.fa
 
 ######################################### QUALITY CONTROL #########################################
 
