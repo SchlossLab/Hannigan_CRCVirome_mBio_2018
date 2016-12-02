@@ -23,8 +23,8 @@ RunBlast () {
 		-in "${2}" \
 		-out ./data/tmpid/ReferenceGenomes
 
-	echo Running blastn...
-	${BlastPath}blastn \
+	echo Running tblastx...
+	${BlastPath}tblastx \
     	-query "${1}" \
     	-out ${outputfile} \
     	-db ./data/tmpid/ReferenceGenomes \
