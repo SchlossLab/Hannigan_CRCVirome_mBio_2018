@@ -28,8 +28,8 @@ RunBlast () {
     	-query "${1}" \
     	-out ${outputfile} \
     	-db ./data/tmpid/ReferenceGenomes \
-    	-evalue 1e-50 \
-    	-num_threads 4 \
+    	-evalue 1e-25 \
+    	-num_threads 8 \
     	-max_target_seqs 1 \
     	-outfmt 6
 }

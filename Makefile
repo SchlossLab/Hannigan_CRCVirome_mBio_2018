@@ -31,6 +31,7 @@ metadatafiles = ./data/metadata/NexteraXT003Map.tsv ./data/metadata/NexteraXT004
 ./data/metadata/VirusPhageReferenceFormat.fa : ./data/metadata/VirusPhageReference.fa
 	perl ./bin/remove_block_fasta_format.pl $< ./data/tmpreference.fa
 	egrep -A 1 "complete genome" ./data/tmpreference.fa | egrep -v "\-\-" > $@
+	sed -i 's/ /_/g' $@
 	rm ./data/tmpreference.fa
 
 ######################################### QUALITY CONTROL #########################################
