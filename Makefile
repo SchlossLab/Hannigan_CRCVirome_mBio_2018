@@ -615,8 +615,8 @@ ${VREF}/PfamInteractionsFormatScoredFlipClustered.tsv :
 		${VREF}/BenchmarkProphagesFormatFlipClustered.tsv \
 		${VREF}/MatchesByBlastxFormatOrderClustered.tsv \
 		${VREF}/PfamInteractionsFormatScoredFlipClustered.tsv \
-		./data/ContigClustersPhage/clustering_gt1000.csv \
-		./data/ContigClustersBacteria/clustering_gt1000.csv \
+		./data/ContigClustersVirus/clustering_gt1000.csv \
+		./data/ContigClustersBacteria/clustering_gt2000.csv \
 		"ViromeAgainstReferenceBacteria" \
 		${VREF}/BenchmarkCrisprsFormat.tsv \
 		${VREF}/BenchmarkCrisprsFormatClustered.tsv
