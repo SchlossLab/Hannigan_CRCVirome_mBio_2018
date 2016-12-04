@@ -638,7 +638,7 @@ expnetwork :
 # Predict interactions between nodes
 ./data/PredictedRelationshipTable.tsv :
 	bash ./bin/RunPredictionsWithNeo4j.sh \
-		./data/rfinteractionmodel.RData \
+		./data/metadata/rfinteractionmodel.RData \
 		./data/PredictedRelationshipTable.tsv
 
 # Add relationships
