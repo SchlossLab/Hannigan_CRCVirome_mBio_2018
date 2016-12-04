@@ -625,7 +625,6 @@ ${VREF}/PfamInteractionsFormatScoredFlipClustered.tsv :
 expnetwork :
 	# Note that this resets the graph database and erases
 	# the validation information we previously added.
-	echo $(shell date)  :  Building network using experimental dataset predictive values >> ${DATENAME}.makelog
 	rm -r ../../bin/neo4j-enterprise-2.3.0/data/graph.db/
 	mkdir ../../bin/neo4j-enterprise-2.3.0/data/graph.db/
 	bash ./bin/CreateProteinNetwork \
@@ -635,6 +634,26 @@ expnetwork :
 		${VREF}/PfamInteractionsFormatScoredFlipClustered.tsv \
 		${VREF}/MatchesByBlastxFormatOrderClustered.tsv \
 		"FALSE"
+
+# Predict interactions between nodes
+./data/PredictedRelationshipTable.tsv :
+	bash ./bin/RunPredictionsWithNeo4j.sh \
+		./data/rfinteractionmodel.RData \
+		./data/PredictedRelationshipTable.tsv
+
+# Add relationships
+finalrelationships \
+./figures/BacteriaPhageNetworkDiagram.pdf \
+./figures/BacteriaPhageNetworkDiagram.png \
+./figures/PhageHostHist.pdf \
+./figures/PhageHostHist.png \
+./figures/BacteriaEdgeCount.pdf \
+./figures/BacteriaEdgeCount.png : \
+		./data/PredictedRelationshipTable.tsv \
+		./bin/AddRelationshipsWrapper.sh
+	echo $(shell date)  :  Adding relationships to network and plotting total graph >> ${DATENAME}.makelog
+	bash ./bin/AddRelationshipsWrapper.sh \
+		./data/PredictedRelationshipTable.tsv
 
 ################################## CONTIG CLUSTER IDENTIFICATION ##################################
 # Get ID for longest contig in each cluster
