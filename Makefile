@@ -621,6 +621,21 @@ ${VREF}/PfamInteractionsFormatScoredFlipClustered.tsv :
 		${VREF}/BenchmarkCrisprsFormat.tsv \
 		${VREF}/BenchmarkCrisprsFormatClustered.tsv
 
+# Make a graph database from the experimental information
+expnetwork :
+	# Note that this resets the graph database and erases
+	# the validation information we previously added.
+	echo $(shell date)  :  Building network using experimental dataset predictive values >> ${DATENAME}.makelog
+	rm -r ../../bin/neo4j-enterprise-2.3.0/data/graph.db/
+	mkdir ../../bin/neo4j-enterprise-2.3.0/data/graph.db/
+	bash ./bin/CreateProteinNetwork \
+		${VALDIR}/Interactions.tsv \
+		${VREF}/BenchmarkCrisprsFormatClustered.tsv \
+		${VREF}/BenchmarkProphagesFormatFlipClustered.tsv \
+		${VREF}/PfamInteractionsFormatScoredFlipClustered.tsv \
+		${VREF}/MatchesByBlastxFormatOrderClustered.tsv \
+		"FALSE"
+
 ################################## CONTIG CLUSTER IDENTIFICATION ##################################
 # Get ID for longest contig in each cluster
 ./data/contigclustersidentity/longestcontigsvirus.tsv : ./data/VirusContigLength.tsv
