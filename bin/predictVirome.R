@@ -77,6 +77,39 @@ importanceplot <- ggplot(vardf[(length(vardf[,1])-10):(length(vardf[,1])),], aes
 
 importanceplot
 
+# Iterate to get average importance plot
+GetAverageImportance <- function(x, y) {
+	write(y, stderr())
+	functionmodel <- caretmodel(x)
+	resultvardf <- data.frame(varImp(functionmodel$finalModel))
+	resultvardf$categories <- rownames(resultvardf)
+	resultvardf$categories <- factor(resultvardf$categories, levels = resultvardf$categories)
+	resultvardf$iteration <- y
+	return(resultvardf)
+}
+
+iterationcount <- 10
+
+viromeavgimportance <- lapply(c(1:iterationcount), function(i) GetAverageImportance(absmissingid, i))
+viromeavgimportancedf <- ldply(viromeavgimportance, data.frame)
+virimport <- ddply(viromeavgimportancedf, c("categories"), summarize, median = median(Overall))
+virimportaverage <- merge(viromeavgimportancedf, virimport, by = "categories")
+virimportaverage <- virimportaverage[order(virimportaverage$median, decreasing = FALSE),]
+virimportaverage$categories <- factor(virimportaverage$categories, levels = virimportaverage$categories)
+
+importanceplot <- ggplot(virimportaverage[(length(virimportaverage[,1])-99):(length(virimportaverage[,1])),], aes(x=categories, y=Overall)) +
+  theme_classic() +
+  theme(
+    axis.line.x = element_line(colour = "black"),
+    axis.line.y = element_line(colour = "black")
+  ) +
+  geom_boxplot(fill=wes_palette("Royal1")[2]) +
+  xlab("Categories") +
+  ylab("Mean Decrease in Accuracy") +
+  coord_flip()
+
+importanceplot
+
 #############################
 # Bacteria Prediction Model #
 #############################

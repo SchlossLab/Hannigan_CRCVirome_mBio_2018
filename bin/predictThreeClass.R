@@ -77,7 +77,7 @@ meanrocvirome <- ggplot(modelmeanroc, aes(d = obs, m = one, color = class)) +
 	geom_roc(n.cuts = 0) +
 	style_roc() +
 	scale_color_manual(values = wes_palette("Royal1")[c(1,2,4)])
-meanrocvirome
+
 
 # Get the variable importance
 vardf <- data.frame(varImp(outmodel$finalModel))
@@ -96,7 +96,23 @@ importanceplot <- ggplot(vardf[(length(vardf[,1])-10):(length(vardf[,1])),], aes
   ylab("Mean Decrease in Accuracy") +
   coord_flip()
 
-importanceplot
+
+
+# Get relative abundance of the important OGUs between disease states
+varlength <- length(vardf$categories)
+pullvalues <- as.character(vardf[c((varlength-5):varlength),c("categories")])
+exampletry <- absmissingid[,c(pullvalues,"V30")]
+melttry <- melt(exampletry)
+binlength <- c(1:5) + 0.5
+importanceabundance <- ggplot(melttry, aes(x = factor(variable), y = (value + 1e-06), fill = factor(V30))) +
+	theme_classic() +
+	geom_dotplot(binaxis = "y", binwidth = 0.15, stackdir = "center", position = "dodge") +
+	stat_summary_bin(fun.y = median, fun.ymin = median, fun.ymax = median,
+                 geom = "crossbar", width = 0.5, position = "dodge") +
+	scale_y_log10() +
+	geom_vline(xintercept=binlength,color="grey")
+
+pairwise.wilcox.test(x = exampletry$Cluster_229, g = exampletry$V30)
 
 #############################
 # Bacteria Prediction Model #
@@ -133,7 +149,7 @@ meanrocbacteria <- ggplot(modelmeanrocbacteria, aes(d = obs, m = one, color = cl
 	geom_roc(n.cuts = 0) +
 	style_roc() +
 	scale_color_manual(values = wes_palette("Royal1")[c(1,2,4)])
-meanrocbacteria
+
 
 # Get the variable importance
 vardfbac <- data.frame(varImp(subsetmodel$finalModel))
@@ -152,7 +168,7 @@ importanceplotbac <- ggplot(vardfbac[(length(vardfbac[,1])-10):(length(vardfbac[
   ylab("Mean Decrease in Accuracy") +
   coord_flip()
 
-importanceplotbac
+
 
 ############################
 # Quantify AUC Differences #
@@ -183,15 +199,16 @@ auccompareplot <- ggplot(megatron, aes(x = class, y = highAUC, fill = class)) +
 	theme(legend.position="none") +
 	geom_boxplot(notch = FALSE) +
 	scale_fill_manual(values = wes_palette("Royal1"))
-auccompareplot
+
 
 ###############################
 # Compare Bacteria and Virus  #
 ###############################
 importanceplots <- plot_grid(importanceplot, importanceplotbac, labels = c("D", "E"), ncol = 2)
 boundplot <- plot_grid(meanrocvirome, meanrocbacteria, auccompareplot, labels = c("A", "B", "C"), rel_widths = c(2, 2, 1), ncol = 3)
-topbottomplot <- plot_grid(boundplot, importanceplots, rel_heights = c(3, 2), ncol = 1)
+lowerplot <- plot_grid(importanceabundance, labels = c("F"))
+topbottomplot <- plot_grid(boundplot, importanceplots, lowerplot, rel_heights = c(3, 2, 3), ncol = 1)
 
-pdf("./figures/predmodel-threewayclassification.pdf", height = 6, width = 12)
+pdf("./figures/predmodel-threewayclassification.pdf", height = 10, width = 12)
 	topbottomplot
 dev.off()
