@@ -28,7 +28,7 @@ input <- read.delim(opt$input, head=FALSE, sep="\t")
 
 input$V3 <- as.numeric(as.character(input$V3))
 
-agtable <- ddply(input, c("V1", "V2"), summarize, sum=sum(V3))
+agtable <- ddply(input, c("V1", "V2"), summarize, sum=(100 * sum(V3) / length(V3) )
 
 write.table(
   x = agtable,

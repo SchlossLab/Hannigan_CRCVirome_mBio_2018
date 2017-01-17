@@ -14,85 +14,62 @@ library("matrixStats")
 library("parallel")
 
 minavgrelabund <- 0
-minsamps <- 0
+minsamps <- 30
 
 rarefybig <- function(x, subdepth) {
-	print("Creating empty matrix")
-	m <- as.matrix(x)
-	m[] <- 0
-	m <- as.data.frame(m)
+    print("Creating empty matrix")
 
-	lowbound <- 0
-	
-	while(lowbound < subdepth) {
-		# print("Start loop")
-		df <- data.frame(value = c(0, 0))
-		xcount <- 0
-		finalcount <- 0
-		# Create reference table
-		# print("Creating reference table")
-		for (i in 1:length(x)) {
-			cval <- x[,i]
-			name <- colnames(x)[i]
-			finalcount <- xcount + cval
-			df[,name] <- c(xcount, finalcount)
-			xcount <- finalcount
-		}
-		df <- as.data.frame(t(df[,-1]))
-		
-		# print("Evaluate random number position")
-		# See where number fits in table
-		numbertest <- runif(1, 0, sum(x))
-		pullval <- row.names(df[c(df$V1 < numbertest & df$V2 >= numbertest),])
-
-		# print("Save count information")
-		# Save count in data frame
-		m[,pullval] <- m[,pullval] + 1
-		
-		# print("Update reference table")
-		# Update the reference table
-		x[,pullval] <- x[,pullval] - 1
-		
-		# print("Remove zeros")
-		# Remove columns whose values reached zero
-		x <- x[, colSums(x) > 0]
-	
-		lowbound <- lowbound + 1
-		write(lowbound, stderr())
-	}
-	return(m)
-}
-
-rarefywell <- function(x, sample, average = FALSE)
-{
-    if (!identical(all.equal(x, round(x)), TRUE)) 
-        stop("function is meaningful only for integers (counts)")
-    x <- as.matrix(x)
-    if (ncol(x) == 1)
-        x <- t(x)
-    if (length(sample) > 1 && length(sample) != nrow(x))
-        stop(gettextf(
-             "length of 'sample' and number of rows of 'x' do not match"))
-    sample <- rep(sample, length=nrow(x))
-    colnames(x) <- colnames(x, do.NULL = FALSE)
-    nm <- colnames(x)
-    ## warn if something cannot be rarefied
-    if (any(rowSums(x) < sample))
-        warning("Some row sums < 'sample' and are not rarefied")
-    for (i in 1:nrow(x)) {
-        if (sum(x[i,]) <= sample[i]) ## nothing to rarefy: take all
-            next
-        if (average) {
-        	x <- x / rowSums(x) * sample
-        } else {
-        	row <- sample(rep(nm, times=x[i,]), sample[i])
-        	row <- table(row)
-        	ind <- names(row)
-        	x[i,] <- 0
-        	x[i,ind] <- row
+    randnorep <- function(count, min, max) {
+        if((max - min + 1) < count) {
+            write("ERROR: Sample is out of range!", stderr())
+            break
         }
+        uct <- 0
+        rounded <- NULL
+        while(uct < count) {
+            itrr <- round(runif((count - uct), min = min, max = max))
+            rounded <- c(rounded, itrr)
+            rounded <- unique(rounded)
+            uct <- length(rounded)
+        }
+        rounded
     }
-    x
+
+    m <- as.matrix(x)
+    m[] <- 0
+    m <- as.data.frame(m)
+
+    df <- data.frame(value = c(0, 0))
+    xcount <- 0
+    finalcount <- 0
+    # Create reference table
+    print("Creating reference table")
+    for (i in 1:length(x)) {
+        cval <- x[,i]
+        name <- colnames(x)[i]
+        finalcount <- xcount + cval
+        df[,name] <- c(xcount, finalcount)
+        xcount <- finalcount
+    }
+    df <- as.data.frame(t(df[,-1]))
+    df$names <- rownames(df)
+
+    randdist <- randnorep(subdepth, 1, sum(x))
+
+    print("Annotating random distribution")
+    getValue <- function(x, data) {
+        tmp <- data %>%
+        filter(x <= V2, x > V1)
+        return(tmp$names)
+    }
+
+    row <- sapply(randdist, getValue, data=df)
+    row <- table(row)
+    ind <- names(row)
+    x[] <- 0
+    x[,ind] <- row
+
+    return(x)
 }
 
 caretmodel <- function(x) {
@@ -117,7 +94,7 @@ taxonomy$Taxonomy <- sub(".+\\;(.+)\\(\\d+\\)\\;$", "\\1", taxonomy$Taxonomy, pe
 
 # Rarefy input table
 minimumsubsample <- round(min(ddply(input, c("V2"), summarize, sumsamples = sum(sum))$sumsamples), 0)
-minimumsubsample <- 25000
+minimumsubsample <- 150000
 inputcast <- dcast(input, V1 ~ V2)
 inputcast[is.na(inputcast)] <- 0
 inputcast[,-1] <-round(inputcast[,-1],0)
@@ -126,30 +103,26 @@ inputcast <- inputcast[,-1]
 inputcast <- as.data.frame(t(inputcast))
 counter <- 1
 rarefunction <- function(y) {
-	if (sum(y) > 1e9) {
-		write("Using long rarefy", stderr())
-		return(rarefywell(y, minimumsubsample))
+	if(sum(y) >= 1e9) {
+		return(rarefybig(y, minimumsubsample))
 	} else {
-		write("Using short rarefy", stderr())
 		return(rrarefy(y, minimumsubsample))
 	}
 }
-rareoutput <- mclapply(c(1:length(inputcast[,1])), function(i) {
-	counter <<- counter + 1; 
+rareoutput <- lapply(c(1:length(inputcast[,1])), function(i) {
 	write(counter, stderr())
+	counter <<- counter + 1; 
 	subsetdf <- inputcast[i,]
 	if(sum(subsetdf) >= minimumsubsample) {
-		rareoutput <- rarefunction(subsetdf)
+		return(rarefunction(subsetdf))
 	}
-}, mc.cores = 4)
+})
 rareoutputbind <- as.data.frame(do.call(rbind, rareoutput))
-# save(rareoutputbind, file = "./data/subsamplevirome.Rdata")
-# length(rareoutput)
-
-# load(file = "./data/subsamplevirome.Rdata")
+length(rareoutputbind[,1])
 
 inputmelt <- melt(as.matrix(rareoutputbind))
 colnames(inputmelt) <- c("V2", "V1", "sum")
+inputmelt$sum <- ifelse(inputmelt$sum >= (minimumsubsample)^-1, inputmelt$sum, 0)
 
 inputrelabund <- data.frame(inputmelt %>% group_by(V2) %>% mutate(RelAbund = 100 * sum / sum(sum)))
 relabundcast <- dcast(inputrelabund, V2 ~ V1, value.var = "RelAbund")
@@ -238,6 +211,21 @@ importanceplot
 # Bacteria Prediction Model #
 #############################
 inputbacteria <- read.delim("./data/mothur16S/final.shared", header=TRUE, sep="\t")
+
+counter <- 1
+rareoutput <- lapply(c(1:length(inputbacteria[,1])), function(i) {
+	write(counter, stderr())
+	counter <<- counter + 1; 
+	subsetdf <- inputbacteria[i,-c(1:3)]
+	names <- inputbacteria[i,c(1:3)]
+	if(sum(subsetdf) >= 10000) {
+		rareoutput <- rrarefy(subsetdf, 10000)
+		y <- cbind(names, rareoutput)
+	}
+	return(y)
+})
+rareoutputbacteria <- do.call(rbind, rareoutput)
+
 inputbacteria$Group <- sub("^(\\D)(\\d)$","\\10\\2", sub("(.)\\D+(\\d+)", "\\1\\2", inputbacteria$Group, perl=TRUE))
 inputbacteria$Group <- as.factor(inputbacteria$Group)
 # Calculate as relative abundance
