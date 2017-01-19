@@ -83,6 +83,42 @@ caretmodel <- function(x) {
   return(model)
 }
 
+GetAverageImportance <- function(x, y) {
+	write(y, stderr())
+	functionmodel <- caretmodel(x)
+	resultvardf <- data.frame(varImp(functionmodel$finalModel))
+	resultvardf$categories <- rownames(resultvardf)
+	resultvardf$categories <- factor(resultvardf$categories, levels = resultvardf$categories)
+	resultvardf$iteration <- y
+	return(resultvardf)
+}
+
+plotimportance <- function(x, iterationcount = 10, topcount = 10) {
+	avgimportance <- lapply(c(1:iterationcount), function(i) GetAverageImportance(x, i))
+	avgimportancedf <- ldply(avgimportance, data.frame)
+	import <- ddply(avgimportancedf, c("categories"), summarize, mean = mean(Overall))
+	importaverage <- merge(avgimportancedf, import, by = "categories")
+	importaverage <- importaverage[order(importaverage$mean, decreasing = FALSE),]
+	importaverage$categories <- factor(importaverage$categories, levels = importaverage$categories)
+	
+	binlength <- c(1:topcount) + 0.5
+	
+	importanceplot <- ggplot(importaverage[(length(importaverage[,1])-99):(length(importaverage[,1])),], aes(x=categories, y=Overall)) +
+	  theme_classic() +
+	  theme(
+	    axis.line.x = element_line(colour = "black"),
+	    axis.line.y = element_line(colour = "black")
+	  ) +
+	  geom_dotplot(fill=wes_palette("Royal1")[2], binaxis = "y", binwidth = 0.05, stackdir = "center") +
+	  xlab("Categories") +
+	  ylab("Mean Accuracy Decrease") +
+	  stat_summary(fun.y = mean, fun.ymin = mean, fun.ymax = mean, geom = "crossbar", width = 0.5) +
+	  geom_vline(xintercept=binlength,color="grey") +
+	  coord_flip()
+
+	  return(importanceplot)
+}
+
 ##########################
 # Virus Prediction Model #
 ##########################
@@ -93,8 +129,7 @@ taxonomy <- read.delim("./data/mothur16S/final.taxonomy", header = TRUE, sep = "
 taxonomy$Taxonomy <- sub(".+\\;(.+)\\(\\d+\\)\\;$", "\\1", taxonomy$Taxonomy, perl=TRUE)
 
 # Rarefy input table
-minimumsubsample <- round(min(ddply(input, c("V2"), summarize, sumsamples = sum(sum))$sumsamples), 0)
-minimumsubsample <- 150000
+minimumsubsample <- 1000000
 inputcast <- dcast(input, V1 ~ V2)
 inputcast[is.na(inputcast)] <- 0
 inputcast[,-1] <-round(inputcast[,-1],0)
@@ -128,7 +163,6 @@ inputrelabund <- data.frame(inputmelt %>% group_by(V2) %>% mutate(RelAbund = 100
 relabundcast <- dcast(inputrelabund, V2 ~ V1, value.var = "RelAbund")
 relabundcast[is.na(relabundcast)] <- 0
 row.names(relabundcast) <- relabundcast$V2
-relabundcast <- relabundcast[,c(TRUE, colMedians(as.matrix(relabundcast[,-1])) > minavgrelabund)]
 
 castmerge <- merge(relabundcast, datadisease, by.x="V2", by.y="V2")
 castmerge <- castmerge[,-1]
@@ -141,71 +175,13 @@ abssubset <- abssubset[,c(colSums(abssubset != 0) > minsamps)]
 # Get rid of the IDs
 absmissingid <- abssubset[,-which(names(abssubset) %in% c("V22"))]
 
+length(absmissingid[,1])
+
 outmodel <- caretmodel(absmissingid)
 outmodel
 
-ggplot(outmodel$pred, aes(d = obs, m = Healthy)) +
-	plotROC::geom_roc(n.cuts = 0, color = wes_palette("Royal1")[2]) +
-	theme_classic() +
-	theme(
-	  axis.line.x = element_line(colour = "black"),
-	  axis.line.y = element_line(colour = "black")
-	) +
-	geom_segment(aes(x = 0, y = 0, xend = 1, yend = 1), linetype=2, colour=wes_palette("Royal1")[1]) +
-	ylab("Sensitivity") +
-	xlab(paste("Inverse Specificity"))
-
-# Get the variable importance
-vardf <- data.frame(varImp(outmodel$finalModel))
-vardf$categories <- rownames(vardf)
-vardf <- vardf[order(vardf$Overall, decreasing = FALSE),]
-vardf$categories <- factor(vardf$categories, levels = vardf$categories)
-
-importanceplot <- ggplot(vardf[(length(vardf[,1])-10):(length(vardf[,1])),], aes(x=categories, y=Overall)) +
-  theme_classic() +
-  theme(
-    axis.line.x = element_line(colour = "black"),
-    axis.line.y = element_line(colour = "black")
-  ) +
-  geom_bar(stat="identity", fill=wes_palette("Royal1")[2]) +
-  xlab("Categories") +
-  ylab("Mean Decrease in Accuracy") +
-  coord_flip()
-
-importanceplot
-
 # Iterate to get average importance plot
-GetAverageImportance <- function(x, y) {
-	write(y, stderr())
-	functionmodel <- caretmodel(x)
-	resultvardf <- data.frame(varImp(functionmodel$finalModel))
-	resultvardf$categories <- rownames(resultvardf)
-	resultvardf$categories <- factor(resultvardf$categories, levels = resultvardf$categories)
-	resultvardf$iteration <- y
-	return(resultvardf)
-}
-
-iterationcount <- 10
-
-viromeavgimportance <- lapply(c(1:iterationcount), function(i) GetAverageImportance(absmissingid, i))
-viromeavgimportancedf <- ldply(viromeavgimportance, data.frame)
-virimport <- ddply(viromeavgimportancedf, c("categories"), summarize, median = median(Overall))
-virimportaverage <- merge(viromeavgimportancedf, virimport, by = "categories")
-virimportaverage <- virimportaverage[order(virimportaverage$median, decreasing = FALSE),]
-virimportaverage$categories <- factor(virimportaverage$categories, levels = virimportaverage$categories)
-
-importanceplot <- ggplot(virimportaverage[(length(virimportaverage[,1])-99):(length(virimportaverage[,1])),], aes(x=categories, y=Overall)) +
-  theme_classic() +
-  theme(
-    axis.line.x = element_line(colour = "black"),
-    axis.line.y = element_line(colour = "black")
-  ) +
-  geom_boxplot(fill=wes_palette("Royal1")[2]) +
-  xlab("Categories") +
-  ylab("Mean Decrease in Accuracy") +
-  coord_flip()
-
-importanceplot
+importanceplot <- plotimportance(absmissingid)
 
 #############################
 # Bacteria Prediction Model #
@@ -236,7 +212,6 @@ relabundcast <- dcast(inputbacteriarelabund, Group ~ variable, value.var = "RelA
 # Fix the metadata for this case without duplicate MG IDs
 datadiseasesub <- datadisease[,2:3]
 datadiseasesub <- datadiseasesub[!duplicated(datadiseasesub),]
-# relabundcast <- relabundcast[,c(TRUE, colMedians(as.matrix(relabundcast[,-1])) > minavgrelabund)]
 
 # Add the disease classes
 relabundclasses <- merge(relabundcast, datadiseasesub, by.x="Group", by.y="V22")
@@ -252,39 +227,7 @@ pasubsetmissing <- pasubset[,-which(names(pasubset) %in% c("Group", "V2"))]
 subsetmodel <- caretmodel(pasubsetmissing)
 subsetmodel
 
-# Plot the ROC curve
-ggplot(subsetmodel$pred, aes(d = obs, m = Healthy)) +
-	geom_roc(n.cuts = 0, color = wes_palette("Royal1")[2]) +
-	theme_classic() +
-	theme(
-	  axis.line.x = element_line(colour = "black"),
-	  axis.line.y = element_line(colour = "black")
-	) +
-	geom_segment(aes(x = 0, y = 0, xend = 1, yend = 1), linetype=2, colour=wes_palette("Royal1")[1]) +
-	ylab("Sensitivity") +
-	xlab(paste("Inverse Specificity"))
-
-# Get the variable importance
-vardfbac <- data.frame(varImp(subsetmodel$finalModel))
-vardfbac$categories <- rownames(vardfbac)
-vardfbacmerge <- merge(vardfbac, taxonomy, by.x = "categories", by.y = "OTU")
-vardfbacmerge <- vardfbacmerge[order(vardfbacmerge$Overall, decreasing = FALSE),]
-vardfbacmerge <- vardfbacmerge[(length(vardfbacmerge[,1])-10):(length(vardfbacmerge[,1])),]
-vardfbacmerge$categories <- factor(vardfbacmerge$categories, levels = vardfbacmerge$categories)
-
-
-importanceplotbac <- ggplot(vardfbacmerge, aes(x=categories, y=Overall, fill = Taxonomy)) +
-  theme_classic() +
-  theme(
-    axis.line.x = element_line(colour = "black"),
-    axis.line.y = element_line(colour = "black")
-  ) +
-  geom_bar(stat="identity") +
-  xlab("Categories") +
-  ylab("Mean Decrease in Accuracy") +
-  coord_flip()
-
-importanceplotbac
+importanceplotbac <- plotimportance(pasubsetmissing)
 
 #####################################
 # Whole Metagenome Prediction Model #
@@ -292,7 +235,7 @@ importanceplotbac
 metainput <- read.delim("./data/BacteriaClusteredContigAbund.tsv", header=TRUE, sep="\t")
 
 # Rarefy input table
-minimumsubsample <- round(min(ddply(metainput, c("V2"), summarize, sumsamples = sum(sum))$sumsamples), 0)
+minimumsubsample <- 250000
 metainputcast <- dcast(metainput, V1 ~ V2)
 metainputcast[is.na(metainputcast)] <- 0
 metainputcast[,-1] <-round(metainputcast[,-1],0)
@@ -300,22 +243,18 @@ row.names(metainputcast) <- metainputcast[,1]
 metainputcast <- metainputcast[,-1]
 metainputcast <- as.data.frame(t(metainputcast))
 counter <- 1
-rarefunction <- function(y) {
+
+metarareoutput <- lapply(c(1:length(metainputcast[,1])), function(i) {
 	write(counter, stderr())
 	counter <<- counter + 1; 
-	if (sum(y) > 1e9) {
-		write("Using long rarefy", stderr())
-		return(rarefywell(y, minimumsubsample))
-	} else {
-		write("Using short rarefy", stderr())
-		return(rrarefy(y, minimumsubsample))
-	}
-}
-metarareoutput <- lapply(c(1:length(metainputcast[,1])), function(i) {
 	subsetdf <- metainputcast[i,]
-	metarareoutput <- rarefunction(subsetdf)
+	if(sum(subsetdf) >= minimumsubsample) {
+		rareoutput <- rrarefy(subsetdf, minimumsubsample)
+		return(rareoutput)
+	}
 })
 metarareoutputbind <- as.data.frame(do.call(rbind, metarareoutput))
+length(metarareoutputbind[,1])
 
 metainputmelt <- melt(as.matrix(metarareoutputbind))
 colnames(metainputmelt) <- c("V2", "V1", "sum")
@@ -339,36 +278,6 @@ metaabsmissingid <- metaabssubset[,-which(names(metaabssubset) %in% c("V22"))]
 metaoutmodel <- caretmodel(metaabsmissingid)
 metaoutmodel
 
-ggplot(metaoutmodel$pred, aes(d = obs, m = Healthy)) +
-	geom_roc(n.cuts = 0, color = wes_palette("Royal1")[2]) +
-	theme_classic() +
-	theme(
-	  axis.line.x = element_line(colour = "black"),
-	  axis.line.y = element_line(colour = "black")
-	) +
-	geom_segment(aes(x = 0, y = 0, xend = 1, yend = 1), linetype=2, colour=wes_palette("Royal1")[1]) +
-	ylab("Sensitivity") +
-	xlab(paste("Inverse Specificity"))
-
-# Get the variable importance
-vardf <- data.frame(varImp(metaoutmodel$finalModel))
-vardf$categories <- rownames(vardf)
-vardf <- vardf[order(vardf$Overall, decreasing = FALSE),]
-vardf$categories <- factor(vardf$categories, levels = vardf$categories)
-
-metaimportanceplot <- ggplot(vardf[(length(vardf[,1])-10):(length(vardf[,1])),], aes(x=categories, y=Overall)) +
-  theme_classic() +
-  theme(
-    axis.line.x = element_line(colour = "black"),
-    axis.line.y = element_line(colour = "black")
-  ) +
-  geom_bar(stat="identity", fill=wes_palette("Royal1")[2]) +
-  xlab("Categories") +
-  ylab("Mean Decrease in Accuracy") +
-  coord_flip()
-
-metaimportanceplot
-
 #################################
 # Merge Bacteria and Viral Data #
 #################################
@@ -379,36 +288,8 @@ colnames(virusbacteria)[colnames(virusbacteria)=="V30.y"] <- "V30"
 combomodel <- caretmodel(virusbacteria)
 combomodel
 
-# Plot the ROC curve
-ggplot(combomodel$pred, aes(d = obs, m = Healthy)) +
-	geom_roc(n.cuts = 0, color = wes_palette("Royal1")[2]) +
-	theme_classic() +
-	theme(
-	  axis.line.x = element_line(colour = "black"),
-	  axis.line.y = element_line(colour = "black")
-	) +
-	geom_segment(aes(x = 0, y = 0, xend = 1, yend = 1), linetype=2, colour=wes_palette("Royal1")[1]) +
-	ylab("Sensitivity") +
-	xlab(paste("Inverse Specificity"))
-
 # Get the variable importance
-combovar <- data.frame(varImp(combomodel$finalModel))
-combovar$categories <- rownames(combovar)
-combovar <- combovar[order(combovar$Overall, decreasing = FALSE),]
-combovar$categories <- factor(combovar$categories, levels = combovar$categories)
-
-importanceplotcombo <- ggplot(combovar[(length(combovar[,1])-10):(length(combovar[,1])),], aes(x=categories, y=Overall)) +
-  theme_classic() +
-  theme(
-    axis.line.x = element_line(colour = "black"),
-    axis.line.y = element_line(colour = "black")
-  ) +
-  geom_bar(stat="identity", fill=wes_palette("Royal1")[2]) +
-  xlab("Categories") +
-  ylab("Mean Decrease in Accuracy") +
-  coord_flip()
-
-importanceplotcombo
+importanceplotcombo <- plotimportance(virusbacteria)
 
 ############################
 # Quantify AUC Differences #
@@ -439,15 +320,26 @@ metagenomeauc <- lapply(c(1:iterationcount), function(i) GetAverageAUC(metaabsmi
 metagenomeaucdf <- ldply(metagenomeauc, data.frame)
 metagenomeaucdf$class <- "Metagenomic"
 
-megatron <- rbind(viromeaucdf, bacteriaaucdf, metagenomeaucdf)
+megatron <- rbind(viromeaucdf, bacteriaaucdf, metagenomeaucdf, comboaucdf)
 
 pairwise.wilcox.test(x=megatron$highAUC, g=megatron$class, p.adjust.method="bonferroni")
+
+binlength <- c(1:4) + 0.5
 
 auccompareplot <- ggplot(megatron, aes(x = class, y = highAUC, fill = class)) +
 	theme_classic() +
 	theme(legend.position="none") +
-	geom_boxplot(notch = FALSE) +
-	scale_fill_manual(values = wes_palette("Royal1"))
+	geom_dotplot(fill=wes_palette("Royal1")[2], binaxis = "y", binwidth = 0.005, stackdir = "center") +
+	stat_summary(fun.y = mean, fun.ymin = mean, fun.ymax = mean, geom = "crossbar", width = 0.5) +
+	geom_vline(xintercept=binlength,color="grey") +
+	scale_fill_manual(values = wes_palette("Royal1")) +
+	theme(
+	  axis.line.x = element_line(colour = "black"),
+	  axis.line.y = element_line(colour = "black")
+	) +
+	xlab("") +
+	ylab("Area Under the Curve")
+
 auccompareplot
 
 ###############################
@@ -463,7 +355,7 @@ boundmodel <- rbind(subsetmodel$pred, outmodel$pred, combomodel$pred, metaoutmod
 boundplot <- ggplot(boundmodel, aes(d = obs, m = Healthy, color = class)) +
 	geom_roc(n.cuts = 0) +
 	style_roc() +
-	scale_color_manual(values = wes_palette("Royal1"))
+	scale_color_manual(values = wes_palette("Royal1"), name = "Disease")
 boundplot
 
 # Compare importance

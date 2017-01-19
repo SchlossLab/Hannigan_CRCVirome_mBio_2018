@@ -13,11 +13,9 @@ module load R/3.2.3
 
 echo Running neo4j script...
 
-# perl ./bin/AddPredictedRelationships.pl \
-# 		-i "${1}" \
-# 	|| /mnt/EXT/Schloss-data/bin/neo4j-enterprise-2.3.0/bin/neo4j stop
-
-Rscript ./bin/VisualizeNetwork.R
+perl ./bin/AddPredictedRelationships.pl \
+		-i "${1}" \
+	|| /mnt/EXT/Schloss-data/bin/neo4j-enterprise-2.3.0/bin/neo4j stop
 
 # Stop local neo4j server
 /mnt/EXT/Schloss-data/bin/neo4j-enterprise-2.3.0/bin/neo4j stop
