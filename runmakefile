@@ -14,9 +14,9 @@
 #PBS -A schloss_lab
 
 # Load in modules
-module load gcc/4.6.4
+module load gcc/4.9.2
 # Set the proper R module
-module load R/3.2.3
+module load R/3.3.2
 # Load perl modules
 module load perl/5.22.1
 module load perl-modules/5.22.1
@@ -30,4 +30,4 @@ cd /mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerVirome || exit
 echo Working in $(pwd)
 
 # Run make
-make finalrelationships
+make ./data/contigclustersidentity/VirusRepsetIds.tsv
