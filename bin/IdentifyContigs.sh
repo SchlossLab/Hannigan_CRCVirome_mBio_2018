@@ -26,7 +26,7 @@ RunBlast () {
 	echo Running tblastx...
 	${BlastPath}tblastx \
     	-query "${1}" \
-    	-out ${outputfile} \
+    	-out ./data/tmpid/blastout.tsv \
     	-db ./data/tmpid/ReferenceGenomes \
     	-evalue 1e-25 \
     	-num_threads 8 \
@@ -42,3 +42,12 @@ grep -A 1 -f ./data/tmpid/contiglist.tsv ${fastafile} \
 	> ./data/tmpid/contigrepset.fa
 
 RunBlast ./data/tmpid/contigrepset.fa ${referencefile}
+
+# Add cluster ID to the table
+cut -f 1,2 ./data/tmpid/blastout.tsv | sort | uniq > ./data/tmpid/cutblastout.tsv
+sed 's/\,/\t/' ./data/ContigClustersVirus/clustering_gt1000.csv > ./data/tmpid/clusterids.tsv
+awk -F "\t" 'FNR==NR { a[$1] = $2; next } { for( i in a ) if($1 ~ i) {print a[i]"\t"$2} }' \
+	./data/tmpid/clusterids.tsv \
+	./data/tmpid/cutblastout.tsv \
+	| sed 's/\tENA|\(.*\)|/\t\1/' \
+	> ./data/tmpid/clustform.tsv
