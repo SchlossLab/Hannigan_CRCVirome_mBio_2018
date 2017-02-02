@@ -36,17 +36,17 @@ RunBlast () {
 
 export -f RunBlast
 
-cut -f 1 ${idfile} | tail -n +2 > ./data/tmpid/contiglist.tsv
-grep -A 1 -f ./data/tmpid/contiglist.tsv ${fastafile} \
-	| egrep -v "\-\-" \
-	> ./data/tmpid/contigrepset.fa
+# cut -f 1 ${idfile} | tail -n +2 > ./data/tmpid/contiglist.tsv
+# grep -A 1 -f ./data/tmpid/contiglist.tsv ${fastafile} \
+# 	| egrep -v "\-\-" \
+# 	> ./data/tmpid/contigrepset.fa
 
-RunBlast ./data/tmpid/contigrepset.fa ${referencefile}
+# RunBlast ./data/tmpid/contigrepset.fa ${referencefile}
 
 # Add cluster ID to the table
 cut -f 1,2 ./data/tmpid/blastout.tsv | sort | uniq > ./data/tmpid/cutblastout.tsv
 sed 's/\,/\t/' ./data/ContigClustersVirus/clustering_gt1000.csv > ./data/tmpid/clusterids.tsv
-awk -F "\t" 'FNR==NR { a[$1] = $2; next } { for( i in a ) if($1 ~ i) {print a[i]"\t"$2} }' \
+awk -F "\t" 'FNR==NR { a[$1] = $2; next } { for( i in a ) if($1 ~ i) {print a[$1]"\t"$2} }' \
 	./data/tmpid/clusterids.tsv \
 	./data/tmpid/cutblastout.tsv \
 	| sed 's/\tENA|\(.*\)|/\t\1/' \
