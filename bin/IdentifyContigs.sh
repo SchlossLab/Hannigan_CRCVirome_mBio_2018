@@ -43,11 +43,18 @@ export -f RunBlast
 
 # RunBlast ./data/tmpid/contigrepset.fa ${referencefile}
 
-# Add cluster ID to the table
-cut -f 1,2 ./data/tmpid/blastout.tsv | sort | uniq > ./data/tmpid/cutblastout.tsv
-sed 's/\,/\t/' ./data/ContigClustersVirus/clustering_gt1000.csv > ./data/tmpid/clusterids.tsv
-awk -F "\t" 'FNR==NR { a[$1] = $2; next } { for( i in a ) if($1 ~ i) {print a[$1]"\t"$2} }' \
-	./data/tmpid/clusterids.tsv \
-	./data/tmpid/cutblastout.tsv \
-	| sed 's/\tENA|\(.*\)|/\t\1/' \
-	> ./data/tmpid/clustform.tsv
+# # Add cluster ID to the table
+# cut -f 1,2 ./data/tmpid/blastout.tsv | sort | uniq > ./data/tmpid/cutblastout.tsv
+# sed 's/\,/\t/' ./data/ContigClustersVirus/clustering_gt1000.csv > ./data/tmpid/clusterids.tsv
+# awk -F "\t" 'FNR==NR { a[$1] = $2; next } { for( i in a ) if($1 ~ i) {print a[$1]"\t"$2} }' \
+# 	./data/tmpid/clusterids.tsv \
+# 	./data/tmpid/cutblastout.tsv \
+# 	| sed 's/ENA|\(.\+\)|.*/\1/' \
+# 	> ./data/tmpid/clustform.tsv
+
+# Get the taxon IDs
+awk -F "\t" 'FNR==NR { a[$1] = $3; next } { for( i in a ) if($1 ~ i) {print $1"\t"$2"\t"a[$2]} }' \
+	./tmp-database-download/nucl_gb.accession2taxid  \
+	./data/tmpid/clustform.tsv \
+	> ./data/tmpid/ctax.tsv
+
