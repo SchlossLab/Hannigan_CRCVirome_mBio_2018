@@ -680,4 +680,4 @@ finalrelationships \
 		"/home/ghannig/bin/ncbi-blast-2.4.0+/bin/"
 
 ./rtables/idcount.tsv :
-	shell bc <<< "scale=8; 100 * `wc -l < ./data/contigclustersidentity/clustax.tsv` / `wc -l < ./data/contigclustersidentity/longestcontigsvirus.tsv`" > ./rtables/idcount.tsv
+	$(shell bc <<< "scale=8; 100 * `wc -l < ./data/contigclustersidentity/clustax.tsv` / `wc -l < ./data/contigclustersidentity/longestcontigsvirus.tsv`") > ./rtables/idcount.tsv
