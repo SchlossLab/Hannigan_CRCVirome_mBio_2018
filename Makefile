@@ -26,7 +26,7 @@ metadatafiles = ./data/metadata/NexteraXT003Map.tsv ./data/metadata/NexteraXT004
 	bash ./bin/DownloadVirusesFromENA.sh \
 		$< \
 		$@
- 
+
  # Format reference fasta
 ./data/metadata/VirusPhageReferenceFormat.fa : ./data/metadata/VirusPhageReference.fa
 	perl ./bin/remove_block_fasta_format.pl $< ./data/tmpreference.fa
@@ -425,9 +425,6 @@ $(variable10_1): data/bacteriaseqsfastq/%_R2.fastq-noheader-forcat : data/bacter
 		./data/ContigClustersBacteria/clustering_gt2000.csv \
 		./data/BacteriaClusteredContigAbund.tsv
 
-########################################### CONTIG STATS ##########################################
-
-
 ################################### OPERATIONAL PROTEIN FAMILIES ##################################
 
 #################
@@ -682,3 +679,5 @@ finalrelationships \
 		./data/contigclustersidentity/VirusRepsetIds.tsv \
 		"/home/ghannig/bin/ncbi-blast-2.4.0+/bin/"
 
+./rtables/idcount.tsv :
+	shell bc <<< "scale=8; 100 * `wc -l < ./data/contigclustersidentity/clustax.tsv` / `wc -l < ./data/contigclustersidentity/longestcontigsvirus.tsv`" > ./rtables/idcount.tsv
