@@ -21,8 +21,14 @@ metadatafiles = ./data/metadata/NexteraXT003Map.tsv ./data/metadata/NexteraXT004
 ./data/metadata/VirusPhageReference.tsv: ./data/metadata/virus.txt ./data/metadata/phage.txt
 	cat ./data/metadata/virus.txt ./data/metadata/phage.txt > ./data/metadata/VirusPhageReference.tsv
 
-# Download Sequences
+# Download Viral Sequences
 ./data/metadata/VirusPhageReference.fa : ./data/metadata/VirusPhageReference.tsv
+	bash ./bin/DownloadVirusesFromENA.sh \
+		$< \
+		$@
+
+# Download Bacterial Sequences
+./data/metadata/BacteriaReference.fa : ./data/metadata/bacteria.txt
 	bash ./bin/DownloadVirusesFromENA.sh \
 		$< \
 		$@
@@ -681,3 +687,7 @@ finalrelationships \
 
 ./rtables/idcount.tsv :
 	bc <<< "scale=8; 100 * `wc -l < ./data/contigclustersidentity/clustax.tsv` / `wc -l < ./data/contigclustersidentity/longestcontigsvirus.tsv`" > ./rtables/idcount.tsv
+
+./rtables/phagecount.tsv :
+	bc <<< "scale=8; 100 * `egrep "Caudovirales|[Pp]hage" ./data/contigclustersidentity/clustax.tsv | wc -l` / `wc -l < ./data/contigclustersidentity/clustax.tsv`" > ./rtables/phagecount.tsv
+
