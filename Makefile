@@ -40,6 +40,9 @@ metadatafiles = ./data/metadata/NexteraXT003Map.tsv ./data/metadata/NexteraXT004
 	sed -i 's/ /_/g' $@
 	rm ./data/tmpreference.fa
 
+# Note that the integrase gene had to be downloaded from the uniprot database manually.
+# I used the same search query as my recent PeerJ manuscript.
+
 ######################################### QUALITY CONTROL #########################################
 
 ###################
@@ -690,4 +693,15 @@ finalrelationships \
 
 ./rtables/phagecount.tsv :
 	bc <<< "scale=8; 100 * `egrep "Caudovirales|[Pp]hage" ./data/contigclustersidentity/clustax.tsv | wc -l` / `wc -l < ./data/contigclustersidentity/clustax.tsv`" > ./rtables/phagecount.tsv
+
+################################# BACTERIA CLUSTER IDENTIFICATION #################################
+# Get ID for longest contig in each cluster
+./data/contigclustersidentity/longestcontigsbacteria.tsv : ./data/BacteriaContigLength.tsv
+	mkdir -p ./data/contigclustersidentity
+	Rscript ./bin/GetLongestContig.R \
+		--input ./data/BacteriaContigLength.tsv \
+		--clusters ./data/ContigClustersBacteria/clustering_gt2000.csv \
+		--toplength 1 \
+		--out $@
+
 
