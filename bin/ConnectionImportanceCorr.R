@@ -6,7 +6,7 @@
 ##################
 # Load Libraries #
 ##################
-packagelist <- c("RNeo4j", "ggplot2", "wesanderson", "igraph", "visNetwork", "scales", "plyr")
+packagelist <- c("RNeo4j", "ggplot2", "wesanderson", "igraph", "visNetwork", "scales", "plyr", "vegan")
 new.packages <- packagelist[!(packagelist %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages, repos='http://cran.us.r-project.org')
 lapply(packagelist, library, character.only = TRUE)
@@ -15,6 +15,7 @@ library("caret")
 library("dplyr")
 library("reshape2")
 library("cowplot")
+library("vegan")
 
 ###################
 # Set Subroutines #
@@ -43,15 +44,11 @@ filter=0) {
   return(list(nodes, multipleedge))
 }
 
-edgecount <- function (nodeframe=nodeout, edgeframe=edgeout) {
+central <- function (nodeframe=nodeout, edgeframe=edgeout) {
   # Pull out the data for clustering
-  ig <- graph_from_data_frame(edgeframe, directed = TRUE)
-  connectionresult <- gsize(ig)
-  meandistance <- mean_distance(ig, directed = FALSE)
-  degreedist <- c(degree_distribution(ig, cumulative = TRUE))
-  acent <- c(alpha_centrality(ig))
-  pc <- c(power_centrality(ig))
-  return(pc)
+  ig <- graph_from_data_frame(edgeframe, directed = FALSE)
+  ec <- c(alpha_centrality(ig))
+  return(ec)
 }
 
 caretmodel <- function(x) {
@@ -83,13 +80,23 @@ plotnetwork <- function (nodeframe=nodeout, edgeframe=edgeout) {
   return(outputgraph)
 }
 
+GetAverageImportance <- function(x, y) {
+  write(y, stderr())
+  functionmodel <- caretmodel(x)
+  resultvardf <- data.frame(varImp(functionmodel$finalModel))
+  resultvardf$categories <- rownames(resultvardf)
+  resultvardf$categories <- factor(resultvardf$categories, levels = resultvardf$categories)
+  resultvardf$iteration <- y
+  return(resultvardf)
+}
+
 ##############################
 # Run Analysis & Save Output #
 ##############################
 
 # Start the connection to the graph
 # If you are getting a lack of permission, disable local permission on Neo4J
-graph <- startGraph("http://localhost:7474/db/data/", "neo4j", "neo4j")
+graph <- startGraph("http://localhost:7474/db/data/", "neo4j", "root")
 
 # Use Cypher query to get a table of the table edges
 query <- "
@@ -104,15 +111,42 @@ edgeout <- as.data.frame(graphoutputlist[2])
 head(nodeout)
 head(edgeout)
 
-alphacent <- as.data.frame(edgecount())
+alphacent <- as.data.frame(central())
 colnames(alphacent) <- "Centrality"
 alphacent$sampleID <- rownames(alphacent)
 
 
-input <- read.delim("./data/ClusteredContigAbund.tsv", header=TRUE, sep="\t")
+input <- read.delim("./data/VirusClusteredContigAbund.tsv", header=TRUE, sep="\t")
 datadisease <- read.delim("./data/metadata/MasterMeta.tsv", header=FALSE, sep="\t")[,c(2,30,22)]
 
-inputrelabund <- data.frame(input %>% group_by(V2) %>% mutate(RelAbund = 100 * sum / sum(sum)))
+# Rarefy input table
+minimumsubsample <- 1000000
+inputcast <- dcast(input, V1 ~ V2)
+inputcast[is.na(inputcast)] <- 0
+inputcast[,-1] <-round(inputcast[,-1],0)
+row.names(inputcast) <- inputcast[,1]
+inputcast <- inputcast[,-1]
+inputcast <- as.data.frame(t(inputcast))
+counter <- 1
+rarefunction <- function(y) {
+  return(rrarefy(y, minimumsubsample))
+}
+rareoutput <- lapply(c(1:length(inputcast[,1])), function(i) {
+  write(counter, stderr())
+  counter <<- counter + 1; 
+  subsetdf <- inputcast[i,]
+  if(sum(subsetdf) >= minimumsubsample) {
+    return(rarefunction(subsetdf))
+  }
+})
+rareoutputbind <- as.data.frame(do.call(rbind, rareoutput))
+length(rareoutputbind[,1])
+
+inputmelt <- melt(as.matrix(rareoutputbind))
+colnames(inputmelt) <- c("V2", "V1", "sum")
+inputmelt$sum <- ifelse(inputmelt$sum >= (minimumsubsample)^-1, inputmelt$sum, 0)
+
+inputrelabund <- data.frame(inputmelt %>% group_by(V2) %>% mutate(RelAbund = 100 * sum / sum(sum)))
 relabundcast <- dcast(inputrelabund, V2 ~ V1, value.var = "RelAbund")
 relabundcast[is.na(relabundcast)] <- 0
 row.names(relabundcast) <- relabundcast$V2
@@ -129,19 +163,22 @@ absmissingid <- abssubset[,-which(names(abssubset) %in% c("V22"))]
 outmodel <- caretmodel(absmissingid)
 outmodel
 
-vardf <- data.frame(varImp(outmodel$finalModel))
-vardf$sampleID <- gsub("Cluster", "Phage", rownames(vardf))
+avgimportance <- lapply(c(1:25), function(i) GetAverageImportance(absmissingid, i))
+avgimportance <- ldply(avgimportance, data.frame)
+avgimportance$sampleID <- gsub("Cluster", "Phage", avgimportance$categories)
+davg <- ddply(avgimportance, c("sampleID"), summarize, mean = mean(Overall))
+mergeddf <- merge(alphacent, davg, by = "sampleID")
 
-mergeddf <- merge(vardf, alphacent, by = "sampleID")
+scor <- cor.test(mergeddf$Centrality, mergeddf$mean, method = "spearman")
 
-cor.test(log10(mergeddf$Overall), log10(mergeddf$Centrality), method = c("pearson"))
-
-scatterplotconnect <- ggplot(mergeddf, aes(x = log10(Overall), y = log10(Centrality))) +
+scatterplotconnect <- ggplot(mergeddf, aes(x = Centrality, y = log10(mean))) +
   theme_classic() +
   geom_point() +
   geom_smooth(method=lm, se=FALSE) +
-  xlab("OGU Importance (log10)") +
-  ylab("OGU Alpha Centrality (log10)")
+  ylab("OGU Importance (log10)") +
+  xlab("OGU Alpha Centrality")
+
+scatterplotconnect
 
 networkplot <- plotnetwork()
 
@@ -152,3 +189,8 @@ width=10,
 height=5)
   finalplot
 dev.off()
+
+scorw <- data.frame("names" = c("pval", "rho"), "scores" = c(scor$p.value, as.numeric(scor$estimate)))
+
+write.table(scorw, file = "./rtables/cor-stats.tsv", quote = FALSE, sep = "\t", row.names = FALSE, col.names = TRUE)
+

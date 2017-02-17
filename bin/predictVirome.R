@@ -93,27 +93,109 @@ GetAverageImportance <- function(x, y) {
 	return(resultvardf)
 }
 
-plotimportance <- function(x, iterationcount = 10, topcount = 10) {
+plotimportance <- function(x, iterationcount = 25, topcount = 10) {
 	avgimportance <- lapply(c(1:iterationcount), function(i) GetAverageImportance(x, i))
 	avgimportancedf <- ldply(avgimportance, data.frame)
 	import <- ddply(avgimportancedf, c("categories"), summarize, mean = mean(Overall))
 	importaverage <- merge(avgimportancedf, import, by = "categories")
+
+	virustax <- virustax[,c(1,3,7)]
+
+	importaverage <- merge(importaverage, virustax, by.x = "categories", by.y = "V1", all = TRUE)
+	importaverage$V7 <- as.character(importaverage$V7)
+	importaverage <- importaverage[!c(importaverage$Overall %in% NA),]
+	importaverage[is.na(importaverage)] <- "Unknown"
 	importaverage <- importaverage[order(importaverage$mean, decreasing = FALSE),]
 	importaverage$categories <- factor(importaverage$categories, levels = importaverage$categories)
+	importaverage$V7 <- factor(importaverage$V7, levels = importaverage$V7)
 	
 	binlength <- c(1:topcount) + 0.5
+
+	numberto <- topcount * iterationcount - 1
+	dfplot <- importaverage[(length(importaverage[,1])-numberto):(length(importaverage[,1])),]
 	
-	importanceplot <- ggplot(importaverage[(length(importaverage[,1])-99):(length(importaverage[,1])),], aes(x=categories, y=Overall)) +
+	importanceplot <- ggplot(dfplot, aes(x=categories, y=Overall)) +
 	  theme_classic() +
 	  theme(
 	    axis.line.x = element_line(colour = "black"),
 	    axis.line.y = element_line(colour = "black")
 	  ) +
-	  geom_dotplot(fill=wes_palette("Royal1")[2], binaxis = "y", binwidth = 0.05, stackdir = "center") +
-	  xlab("Categories") +
+	  geom_dotplot(fill=wes_palette("Royal1")[2], binaxis = "y", stackdir = "center", dotsize = 0.5, stackratio = 0.5) +
+	  xlab("Virus Identity") +
 	  ylab("Mean Accuracy Decrease") +
-	  stat_summary(fun.y = mean, fun.ymin = mean, fun.ymax = mean, geom = "crossbar", width = 0.5) +
+	  stat_summary(fun.y = mean, fun.ymin = mean, fun.ymax = mean, geom = "crossbar", width = 0.75) +
 	  geom_vline(xintercept=binlength,color="grey") +
+	  scale_x_discrete(labels=dfplot[c(0:(topcount - 1))*iterationcount+1,"V7"]) +
+	  coord_flip()
+
+	  return(importanceplot)
+}
+
+pbi <- function(x, iterationcount = 25, topcount = 10) {
+	avgimportance <- lapply(c(1:iterationcount), function(i) GetAverageImportance(x, i))
+	avgimportancedf <- ldply(avgimportance, data.frame)
+	import <- ddply(avgimportancedf, c("categories"), summarize, mean = mean(Overall))
+	importaverage <- merge(avgimportancedf, import, by = "categories")
+	importaverage <- merge(importaverage, taxonomy, by.x = "categories", by.y = "OTU")
+	importaverage <- importaverage[order(importaverage$mean, decreasing = FALSE),]
+	importaverage$categories <- factor(importaverage$categories, levels = importaverage$categories)
+	importaverage$Taxonomy <- factor(importaverage$Taxonomy, levels = importaverage$Taxonomy)
+	
+	binlength <- c(1:topcount) + 0.5
+
+	numberto <- topcount * iterationcount - 1
+	dfplot <- importaverage[(length(importaverage[,1])-numberto):(length(importaverage[,1])),]
+	
+	importanceplot <- ggplot(dfplot, aes(x=categories, y=Overall)) +
+	  theme_classic() +
+	  theme(
+	    axis.line.x = element_line(colour = "black"),
+	    axis.line.y = element_line(colour = "black")
+	  ) +
+	  geom_dotplot(fill=wes_palette("Royal1")[2], binaxis = "y", stackdir = "center", dotsize = 0.5, stackratio = 0.5) +
+	  xlab("Bacteria Identity") +
+	  ylab("Mean Accuracy Decrease") +
+	  stat_summary(fun.y = mean, fun.ymin = mean, fun.ymax = mean, geom = "crossbar", width = 0.75) +
+	  geom_vline(xintercept=binlength,color="grey") +
+	  scale_x_discrete(labels=dfplot[c(0:(topcount - 1))*iterationcount+1,"Taxonomy"]) +
+	  coord_flip()
+
+	  return(importanceplot)
+}
+
+pcomb <- function(x, iterationcount = 25, topcount = 10) {
+	avgimportance <- lapply(c(1:iterationcount), function(i) GetAverageImportance(x, i))
+	avgimportancedf <- ldply(avgimportance, data.frame)
+	import <- ddply(avgimportancedf, c("categories"), summarize, mean = mean(Overall))
+	importaverage <- merge(avgimportancedf, import, by = "categories")
+	coltax <- virustax[,c(1, 3, 7)]
+	colnames(coltax) <- c("OTU", "Size", "Taxonomy")
+	mtax <- rbind(taxonomy, coltax)
+	importaverage <- merge(importaverage, mtax, by.x = "categories", by.y = "OTU", all = TRUE)
+	importaverage$Taxonomy <- as.character(importaverage$Taxonomy)
+	importaverage <- importaverage[!c(importaverage$Overall %in% NA),]
+	importaverage[is.na(importaverage)] <- "Unknown"
+	importaverage <- importaverage[order(importaverage$mean, decreasing = FALSE),]
+	importaverage$categories <- factor(importaverage$categories, levels = importaverage$categories)
+	importaverage$Taxonomy <- factor(importaverage$Taxonomy, levels = importaverage$Taxonomy)
+
+	binlength <- c(1:topcount) + 0.5
+
+	numberto <- topcount * iterationcount - 1
+	dfplot <- importaverage[(length(importaverage[,1])-numberto):(length(importaverage[,1])),]
+	
+	importanceplot <- ggplot(dfplot, aes(x=categories, y=Overall)) +
+	  theme_classic() +
+	  theme(
+	    axis.line.x = element_line(colour = "black"),
+	    axis.line.y = element_line(colour = "black")
+	  ) +
+	  geom_dotplot(fill=wes_palette("Royal1")[2], binaxis = "y", stackdir = "center", dotsize = 0.5, stackratio = 0.5) +
+	  xlab("Microbe Identity") +
+	  ylab("Mean Accuracy Decrease") +
+	  stat_summary(fun.y = mean, fun.ymin = mean, fun.ymax = mean, geom = "crossbar", width = 0.75) +
+	  geom_vline(xintercept=binlength,color="grey") +
+	  scale_x_discrete(labels=dfplot[c(0:(topcount - 1))*iterationcount+1,"Taxonomy"]) +
 	  coord_flip()
 
 	  return(importanceplot)
@@ -125,8 +207,10 @@ plotimportance <- function(x, iterationcount = 10, topcount = 10) {
 input <- read.delim("./data/VirusClusteredContigAbund.tsv", header=TRUE, sep="\t")
 datadisease <- read.delim("./data/metadata/MasterMeta.tsv", header=FALSE, sep="\t")[,c(2,30,22)]
 taxonomy <- read.delim("./data/mothur16S/final.taxonomy", header = TRUE, sep = "\t")
+virustax <- read.delim("./data/contigclustersidentity/clustax.tsv", header = FALSE, sep = "\t")
 # Format taxonomy table
 taxonomy$Taxonomy <- sub(".+\\;(.+)\\(\\d+\\)\\;$", "\\1", taxonomy$Taxonomy, perl=TRUE)
+virustax$V1 <- sub("^", "Cluster_", virustax$V1, perl = TRUE)
 
 # Rarefy input table
 minimumsubsample <- 1000000
@@ -227,7 +311,7 @@ pasubsetmissing <- pasubset[,-which(names(pasubset) %in% c("Group", "V2"))]
 subsetmodel <- caretmodel(pasubsetmissing)
 subsetmodel
 
-importanceplotbac <- plotimportance(pasubsetmissing)
+importanceplotbac <- pbi(pasubsetmissing)
 
 #####################################
 # Whole Metagenome Prediction Model #
@@ -289,7 +373,7 @@ combomodel <- caretmodel(virusbacteria)
 combomodel
 
 # Get the variable importance
-importanceplotcombo <- plotimportance(virusbacteria)
+importanceplotcombo <- pcomb(virusbacteria)
 
 ############################
 # Quantify AUC Differences #
@@ -298,11 +382,13 @@ GetAverageAUC <- function(x, y) {
 	write(y, stderr())
 	functionmodel <- caretmodel(x)
 	highAUC <- functionmodel$results$ROC[order(functionmodel$results$ROC, decreasing = TRUE)[1]]
-	resultdf <- data.frame(y,highAUC)
+	highSpec <- functionmodel$results$Spec[order(functionmodel$results$Spec, decreasing = TRUE)[1]]
+	highSens <- functionmodel$results$Sens[order(functionmodel$results$Sens, decreasing = TRUE)[1]]
+	resultdf <- data.frame(y,highAUC, highSpec, highSens)
 	return(resultdf)
 }
 
-iterationcount <- 10
+iterationcount <- 15
 
 viromeauc <- lapply(c(1:iterationcount), function(i) GetAverageAUC(absmissingid, i))
 viromeaucdf <- ldply(viromeauc, data.frame)
@@ -322,9 +408,21 @@ metagenomeaucdf$class <- "Metagenomic"
 
 megatron <- rbind(viromeaucdf, bacteriaaucdf, metagenomeaucdf, comboaucdf)
 
-pairwise.wilcox.test(x=megatron$highAUC, g=megatron$class, p.adjust.method="bonferroni")
+aucstat <- pairwise.wilcox.test(x=megatron$highAUC, g=megatron$class, p.adjust.method="bonferroni")
+aucpv <- melt(aucstat$p.value)
+da <- as.data.frame(sort(unique(c(as.character(aucpv[,1]), as.character(aucpv[,2])))))
+colnames(da) <- "name"
+da <- data.frame(da$name, as.numeric(da$name))
+colnames(da) <- c("name", "id")
+aucpvg <- aucpv[c(aucpv$value > 0.01),]
+aucpvg <- aucpvg[!c(is.na(aucpvg$value)),]
+aucpvg <- merge(aucpvg, da, by.x = "Var1", by.y = "name")
+aucpvg <- merge(aucpvg, da, by.x = "Var2", by.y = "name")
 
 binlength <- c(1:4) + 0.5
+
+# Get average stats for each category
+aucstats <- ddply(megatron, "class", summarize, meanAUC = mean(highAUC), meanSPEC = mean(highSpec), meanSENS = mean(highSens))
 
 auccompareplot <- ggplot(megatron, aes(x = class, y = highAUC, fill = class)) +
 	theme_classic() +
@@ -338,7 +436,10 @@ auccompareplot <- ggplot(megatron, aes(x = class, y = highAUC, fill = class)) +
 	  axis.line.y = element_line(colour = "black")
 	) +
 	xlab("") +
-	ylab("Area Under the Curve")
+	ylab("Area Under the Curve") +
+	geom_segment(x = aucpv[1,"id.x"], xend = aucpv[1,"id.y"], y = 0.88, yend = 0.88) +
+	annotate("text", x = mean(c(aucpv[1,"id.x"], aucpv[1,"id.y"])), y = 0.89, label = "N.S.", size = 4) +
+	ylim(NA, 0.9)
 
 auccompareplot
 
@@ -359,13 +460,16 @@ boundplot <- ggplot(boundmodel, aes(d = obs, m = Healthy, color = class)) +
 boundplot
 
 # Compare importance
-subimportance <- plot_grid(importanceplot, importanceplotcombo, labels = c("D", "E"), ncol = 2)
-bottomgrid <- plot_grid(importanceplotbac, subimportance, labels = c("C"), ncol = 2)
-topgrid <- plot_grid(boundplot, auccompareplot, labels = c("A", "B"), ncol = 2, rel_widths = c(6,5))
+bottomgrid <- plot_grid(importanceplotbac, importanceplot, importanceplotcombo, labels = c("C", "D", "E"), nrow = 1)
+topgrid <- plot_grid(boundplot, auccompareplot, labels = c("A", "B"), nrow = 1, rel_widths = c(6,5))
 finalgridplot <- plot_grid(topgrid, bottomgrid, ncol=1, rel_heights = c(2,1))
 
 pdf("./figures/predmodel-viromebacteria.pdf", height = 8, width = 12)
 	finalgridplot
 dev.off()
 
+write.table(aucstats, file = "./rtables/twoclass-auc.tsv", quote = FALSE, sep = "\t", row.names = FALSE, col.names = TRUE)
+colnames(aucpv) <- c("First", "Second", "pval")
+write.table(aucpv, file = "./rtables/twoclass-auc-statsig.tsv", quote = FALSE, sep = "\t", row.names = FALSE, col.names = TRUE)
 
+aucpv[c(aucpv$First %in% "Virus" & aucpv$Second %in% "Bacteria"),"pval"]

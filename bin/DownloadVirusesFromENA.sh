@@ -15,4 +15,4 @@ done < ${referencelist}
 
 cat ./tmp-database-download/* > ${outputfilename}
 
-# rm -rf ./tmp-database-download
+rm -rf ./tmp-database-download

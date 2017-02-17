@@ -84,7 +84,11 @@ caretmodel <- function(x) {
 }
 
 rarefunction <- function(y, minsub) {
-	return(rarefywell(y, minsub, average = TRUE))
+	if(sum(y) >= 1e9) {
+		return(rarefybig(y, minsub))
+	} else {
+		return(rrarefy(y, minsub))
+	}
 }
 
 
@@ -94,61 +98,68 @@ rarefunction <- function(y, minsub) {
 metainput <- read.delim("./data/BacteriaClusteredContigAbund.tsv", header=TRUE, sep="\t")
 datadisease <- read.delim("./data/metadata/MasterMeta.tsv", header=FALSE, sep="\t")[,c(2,30,22)]
 
-subdepths <- c(1e4, 5e4, 1e5, 5e5, 1e6, 5e6, 1e7, 5e7)
+subdepths <- c(1e4, 5e4, 1e5, 5e5)
 numitrs <- 5
 
 subrare <- lapply(subdepths, function(a) {
-	write(a, stdout())
-	metainputcast <- dcast(metainput, V1 ~ V2)
-	metainputcast[is.na(metainputcast)] <- 0
-	metainputcast[,-1] <-round(metainputcast[,-1],0)
-	row.names(metainputcast) <- metainputcast[,1]
-	metainputcast <- metainputcast[,-1]
-	metainputcast <- as.data.frame(t(metainputcast))
+	intout <- lapply(c(1:numitrs), function(b) {
+		write(c(a,b), stdout())
+		metainputcast <- dcast(metainput, V1 ~ V2)
+		metainputcast[is.na(metainputcast)] <- 0
+		metainputcast[,-1] <-round(metainputcast[,-1],0)
+		row.names(metainputcast) <- metainputcast[,1]
+		metainputcast <- metainputcast[,-1]
+		metainputcast <- as.data.frame(t(metainputcast))
 
-	metarareoutput <- lapply(c(1:length(metainputcast[,1])), function(i) {
-		subsetdf <- metainputcast[i,]
-		if(sum(subsetdf) >= a) {
-			metarareoutput <- rarefunction(subsetdf, a)
-		}
+		counter <- 1
+		metarareoutput <- lapply(c(1:length(metainputcast[,1])), function(i) {
+			write(counter, stderr())
+			counter <<- counter + 1;
+			subsetdf <- metainputcast[i,]
+			if(sum(subsetdf) >= a) {
+				metarareoutput <- rarefunction(subsetdf, a)
+			}
+		})
+		metarareoutputbind <- as.data.frame(do.call(rbind, metarareoutput))
+	
+		metainputmelt <- melt(as.matrix(metarareoutputbind))
+		colnames(metainputmelt) <- c("V2", "V1", "sum")
+		
+		metainputrelabund <- data.frame(metainputmelt %>% group_by(V2) %>% mutate(RelAbund = 100 * sum / sum(sum)))
+		metarelabundcast <- dcast(metainputrelabund, V2 ~ V1, value.var = "RelAbund")
+		metarelabundcast[is.na(metarelabundcast)] <- 0
+		row.names(metarelabundcast) <- metarelabundcast$V2
+		metacastmerge <- merge(metarelabundcast, datadisease, by.x="V2", by.y="V2")
+		metacastmerge <- metacastmerge[,-1]
+		
+		# Filter by presence/absence
+		metaabssubset <- metacastmerge[!c(metacastmerge$V30 %in% "Negative"),]
+		metaabssubset <- metaabssubset[!c(metaabssubset$V30 %in% "Adenoma"),]
+		metaabssubset$V30 <- factor(metaabssubset$V30)
+		metaabssubset <- metaabssubset[,c(colSums(metaabssubset != 0) > 0)]
+		# Get rid of the IDs
+		metaabsmissingid <- metaabssubset[,-which(names(metaabssubset) %in% c("V22"))]
+		
+		metaoutmodel <- caretmodel(metaabsmissingid)
+	
+		highAUC <- metaoutmodel$results$ROC[order(metaoutmodel$results$ROC, decreasing = TRUE)[1]]
+	
+		outresult <- c(a, highAUC, nrow(metaabsmissingid), b)
+	
+		return(outresult)
 	})
-	metarareoutputbind <- as.data.frame(do.call(rbind, metarareoutput))
-
-	metainputmelt <- melt(as.matrix(metarareoutputbind))
-	colnames(metainputmelt) <- c("V2", "V1", "sum")
-	
-	metainputrelabund <- data.frame(metainputmelt %>% group_by(V2) %>% mutate(RelAbund = 100 * sum / sum(sum)))
-	metarelabundcast <- dcast(metainputrelabund, V2 ~ V1, value.var = "RelAbund")
-	metarelabundcast[is.na(metarelabundcast)] <- 0
-	row.names(metarelabundcast) <- metarelabundcast$V2
-	metacastmerge <- merge(metarelabundcast, datadisease, by.x="V2", by.y="V2")
-	metacastmerge <- metacastmerge[,-1]
-	
-	# Filter by presence/absence
-	metaabssubset <- metacastmerge[!c(metacastmerge$V30 %in% "Negative"),]
-	metaabssubset <- metaabssubset[!c(metaabssubset$V30 %in% "Adenoma"),]
-	metaabssubset$V30 <- factor(metaabssubset$V30)
-	metaabssubset <- metaabssubset[,c(colSums(metaabssubset != 0) > 0)]
-	# Get rid of the IDs
-	metaabsmissingid <- metaabssubset[,-which(names(metaabssubset) %in% c("V22"))]
-	
-	metaoutmodel <- caretmodel(metaabsmissingid)
-
-	highAUC <- metaoutmodel$results$ROC[order(metaoutmodel$results$ROC, decreasing = TRUE)[1]]
-
-	outresult <- c(a, highAUC, nrow(metaabsmissingid))
-
-	return(outresult)
+	finout <- as.data.frame(do.call(rbind, intout))
+	return(finout)
 })
 metaresult <- as.data.frame(do.call(rbind, subrare))
 
-ggplot(metaresult, aes(x = log10(V1), y = V2)) +
+ggplot(metaresult, aes(x = log10(V1), y = V2, group = V4)) +
 	theme_classic() +
 	theme(
 	  axis.line.x = element_line(colour = "black"),
 	  axis.line.y = element_line(colour = "black")
 	)  +
-	geom_line()
+	geom_point()
 
 #####################
 # Virome Prediction #
