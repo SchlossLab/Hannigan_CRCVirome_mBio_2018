@@ -706,7 +706,11 @@ finalrelationships \
 		"/home/ghannig/bin/ncbi-blast-2.4.0+/bin/"
 
 ################################# PHAGE REPLICATION CYCLE #################################
-
+./data/tmpidlytic/phagebacteriablastout.tsv :
+	bash ./bin/IdentLyticPhages.sh \
+		./data/totalcontigsvirus.fa \
+		./data/contigclustersidentity/longestcontigsbacteria.tsv \
+		"/home/ghannig/bin/ncbi-blast-2.4.0+/bin/"
 
 
 
