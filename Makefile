@@ -698,7 +698,7 @@ finalrelationships \
 
 # Align the contig seqs to the virus reference database
 ./data/contigclustersidentity/BacteriaRepsetIds.tsv :
-	bash ./bin/IdentifyContigs.sh \
+	bash ./bin/IdentifyContigsBac.sh \
 		./data/totalcontigsbacteria.fa \
 		./data/metadata/BacteriaReference.fa \
 		./data/contigclustersidentity/longestcontigsbacteria.tsv \
