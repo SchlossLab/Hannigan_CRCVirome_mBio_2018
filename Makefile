@@ -697,12 +697,12 @@ finalrelationships \
 		--out $@
 
 # Align the contig seqs to the virus reference database
-./data/contigclustersidentity/VirusRepsetIds.tsv :
+./data/contigclustersidentity/BacteriaRepsetIds.tsv :
 	bash ./bin/IdentifyContigs.sh \
-		./data/totalcontigsvirus.fa \
-		./data/metadata/VirusPhageReferenceFormat.fa \
-		./data/contigclustersidentity/longestcontigsvirus.tsv \
-		./data/contigclustersidentity/VirusRepsetIds.tsv \
+		./data/totalcontigsbacteria.fa \
+		./data/metadata/BacteriaReference.fa \
+		./data/contigclustersidentity/longestcontigsbacteria.tsv \
+		./data/contigclustersidentity/BacteriaRepsetIds.tsv \
 		"/home/ghannig/bin/ncbi-blast-2.4.0+/bin/"
 
 ################################# PHAGE REPLICATION CYCLE #################################
