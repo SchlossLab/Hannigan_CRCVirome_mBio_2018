@@ -24,7 +24,7 @@ RunBlast () {
 		-out ./data/tmpid/ReferenceGenomes
 
 	echo Running tblastx...
-	${BlastPath}blastn \
+	${BlastPath}tblastx \
     	-query "${1}" \
     	-out ./data/tmpid/blastout.tsv \
     	-db ./data/tmpid/ReferenceGenomes \
