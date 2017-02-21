@@ -11,7 +11,7 @@ export fastafile=$1
 export idfile=$2
 export BlastPath=$3
 export integrase="./data/metadata/phage-integrase.fa"
-export aclame="./data/metadata/aclame_genes_prophages_0.4.fa"
+export aclame="./data/metadata/aclame_proteins_prophages_0.4.fa"
 export bacteriadb="./data/metadata/BacteriaReference.fa"
 
 mkdir -p ./data/tmpidlytic
@@ -31,7 +31,7 @@ RunBlastx () {
     	-query "${1}" \
     	-out "${3}" \
     	-db ./data/tmpidlytic/ReferenceGenomes \
-    	-evalue 1e-10 \
+    	-evalue 1e-5 \
     	-num_threads 8 \
     	-max_target_seqs 1 \
     	-outfmt 6
@@ -52,7 +52,7 @@ RunBlastn () {
     	-query "${1}" \
     	-out "${3}" \
     	-db ./data/tmpidlytic/ReferenceGenomes \
-    	-evalue 1e-50 \
+    	-evalue 1e-25 \
     	-num_threads 8 \
     	-max_target_seqs 1 \
     	-outfmt 6
@@ -60,7 +60,6 @@ RunBlastn () {
 
 export -f RunBlastx
 export -f RunBlastn
-
 
 cut -f 1 ${idfile} | tail -n +2 > ./data/tmpidlytic/contiglist.tsv
 grep -A 1 -f ./data/tmpidlytic/contiglist.tsv ${fastafile} \
@@ -74,7 +73,7 @@ RunBlastx \
 	./data/tmpidlytic/intblastout.tsv
 
 # Align contigs to ACLAME database
-RunBlastn \
+RunBlastx \
 	./data/tmpidlytic/contigrepset.fa \
 	${aclame} \
 	./data/tmpidlytic/aclameblastout.tsv
