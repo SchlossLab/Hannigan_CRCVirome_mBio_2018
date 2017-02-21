@@ -67,27 +67,27 @@ grep -A 1 -f ./data/tmpidlytic/contiglist.tsv ${fastafile} \
 	| egrep -v "\-\-" \
 	> ./data/tmpidlytic/contigrepset.fa
 
-# # Align contigs to the integrase dataset
-# RunBlastx \
-# 	./data/tmpidlytic/contigrepset.fa \
-# 	${integrase} \
-# 	./data/tmpidlytic/intblastout.tsv
+# Align contigs to the integrase dataset
+RunBlastx \
+	./data/tmpidlytic/contigrepset.fa \
+	${integrase} \
+	./data/tmpidlytic/intblastout.tsv
 
-# # Align contigs to ACLAME database
-# RunBlastn \
-# 	./data/tmpidlytic/contigrepset.fa \
-# 	${aclame} \
-# 	./data/tmpidlytic/aclameblastout.tsv
+# Align contigs to ACLAME database
+RunBlastn \
+	./data/tmpidlytic/contigrepset.fa \
+	${aclame} \
+	./data/tmpidlytic/aclameblastout.tsv
 
-# # Align contigs to bacterial database
-# RunBlastn \
-# 	./data/tmpidlytic/contigrepset.fa \
-# 	${bacteriadb} \
-# 	./data/tmpidlytic/phagebacteriablastout.tsv
+# Align contigs to bacterial database
+RunBlastn \
+	./data/tmpidlytic/contigrepset.fa \
+	${bacteriadb} \
+	./data/tmpidlytic/phagebacteriablastout.tsv
 
-# # Combine the blast hits
-# cat \
-# 	./data/tmpidlytic/intblastout.tsv \
-# 	./data/tmpidlytic/aclameblastout.tsv \
-# 	./data/tmpidlytic/phagebacteriablastout.tsv
+# Combine the blast hits
+cat \
+	./data/tmpidlytic/intblastout.tsv \
+	./data/tmpidlytic/aclameblastout.tsv \
+	./data/tmpidlytic/phagebacteriablastout.tsv
 
