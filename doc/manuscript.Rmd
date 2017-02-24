@@ -58,6 +58,8 @@ phagecount <- read.delim(file = "../rtables/phagecount.tsv", header = FALSE, sep
 corstats <- read.delim(file = "../rtables/cor-stats.tsv", header = TRUE, sep = "\t")
 ```
 
+\newpage
+
 # Abstract
 
 Colorectal cancer is the second leading cause of cancer-related death in the United States and is a primary cause of morbidity and mortality throughout the world. Although the cause of colorectal cancer remains unclear, it has been strongly linked to gut bacterial communities. Viruses are another important component of the gut microbial community that have yet to be studied in colorectal cancer, despite their oncogenic potential. We evaluated the gut virome (virus community) role in colorectal cancer using a cohort of 90 human subjects with either healthy, precancerous, or cancerous colons. We utilized 16S rRNA gene, whole shotgun metagenomic, and purified virus metagenomic methods to compare the virome's role to that of the bacterial community. We found that alpha and beta diversity metrics were insufficient for detecting an association between the virome and colorectal cancer, but virome-based classification models were highly associated with colorectal cancer. Bacteriophages, not eukaryotic viruses, made up the majority of the CRC-associated virome, suggesting the community was indirectly linked to colorectal cancer, modulating bacterial community structure and functionality. Phages with broader host ranges had a more significant role in cancer development. These results provide foundational evidence that phage communities are associated with colorectal cancer, and that broadly tropic phages play more significant roles. Because of its importance, the virome should be considered in future colorectal cancer studies, as well as other cancer types.
@@ -185,6 +187,9 @@ Viral operational genomic units (OGUs) were identified using a reference databas
 ## Ecological Network Analysis & Correlations
 The ecological network of the bacterial and phage operational genomic units were constructed and analyzed as previously described (cite network preprint here). Briefly, a random forest model was used to predict interactions between bacterial and phage genomic units, and those interactions were recorded in a graph database using *neo4j* graph databasing software (v2.3.1). The degree of phage centrality was quantified using the alpha centrality metric in the igraph CRAN package. A Spearman correlation was performed between model importance and phage centrality scores.
 
+## Phage Replication Style Identification
+Phage OGU replication sytle was identified using methods described previously [@Minot:2011ez; @Hannigan:2015fz; @Hannigan:2017ky]. Briefly, we identified lysogenic phage OGUs as representative contigs containing at least one of three genomic markers: 1) phage integrase genes, 2) prophage genes from the ACLAME database, 3) genomic similarity to bacterial reference genomes. Integrase genes were identified in phage OGU representative contigs by aligning the contigs to a reference database of all known phage integrase genes from the Uniprot database (Uniprot search term: "organism:phage gene:int NOT putative"). Prophage genes were identified in the same way, using the ACLAME set of reference prophage genes. In both cases, the blastx algorithm was used with an e-value of 10e-5. Representative contigs were also identified as potential lysogenic phages by having a high genomic similarity to bacterial genomes. To accomplish this, representative phage contigs were aligned to the European Nucleotide Archive bacterial genome reference set using the blastn algorithm (e-value < 10e-25).
+
 # Conflicts of Interest
 The authors declare no conflicts of interest.
 
@@ -196,10 +201,6 @@ We thank the members of the Schloss lab for their underlying contributions. GD H
 # Figures
 
 ![*Cohort and sample processing outline. Thirty subject stool samples were collected from healthy, adenoma (pre-cancer), and carcinoma (cancer) patients. Stool samples were split into two aliquots, the first of which was used for bacterial sequencing and the second which was used for virus sequencing. Bacterial sequencing was done using both 16S rRNA amplicon and whole metagenomic shotgun sequencing techniques. Virus samples were purified for viruses using filtration and a combination of chloroform (bacterial lysis) and DNase (exposed genomic DNA degradation). The resulting encapsulated virus DNA was sequenced using whole metagenomic shotgun sequencing.* \label{sampleproc}](../figures/sample-processing.pdf){ width=100% }
-
-\newpage
-
-![*Diversity calculations comparing cancer states of the colorectal virome, based on relative abundance of operational genomic units in each sample. A) NMDS ordination of community samples, colored for cancerous (green), pre-cancerous (red), and healthy (yellow). B) Differences in means between disease group centroids with 95% confidence intervals based on an Anosim test with a post hoc multivariate Tukey test. Comparisons (indicated on y-axis) in which the intervals cross the zero mean difference line (dashed line) were not significantly different. C) Shannon diversity and D) richness alpha diversity quantification comparing pre-cancerous (grey), cancerous (red), and healthy (tan) states.*\label{betaogu}](../figures/diversity-beta-ogu.pdf){ width=100% }
 
 \newpage
 
@@ -235,7 +236,19 @@ We thank the members of the Schloss lab for their underlying contributions. GD H
 
 \newpage
 
+![*Diversity calculations comparing cancer states of the colorectal virome, based on relative abundance of operational genomic units in each sample. A) NMDS ordination of community samples, colored for cancerous (green), pre-cancerous (red), and healthy (yellow). B) Differences in means between disease group centroids with 95% confidence intervals based on an Anosim test with a post hoc multivariate Tukey test. Comparisons (indicated on y-axis) in which the intervals cross the zero mean difference line (dashed line) were not significantly different. C) Shannon diversity and D) richness alpha diversity quantification comparing pre-cancerous (grey), cancerous (red), and healthy (tan) states.*\label{betaogu}](../figures/diversity-beta-ogu.pdf){ width=100% }
+
+\newpage
+
 ![*Beta-diversity comparing disease states and the study negative controls. A) NMDS ordination of community samples, colored by disease state. B) Differences in means between disease group centroids with 95% confidence intervals based on an Anosim test with a post hoc multivariate Tukey test. Comparisons in which the intervals cross the zero mean difference line (dashed line) were not significantly different.*\label{betaogunegative}](../figures/diversity-beta-ogu-negative.pdf){ width=100% }
+
+\newpage
+
+![*Lysogenic phage relative abundance in disease states. Phage OGUs were predicted to be either lytic or lysogenic, and the relative abundance of lysogenic phages was quantified and represented as a boxplot. No disease groups were statistically significant.*\label{betaogunegative}](../figures/lysogenic-relabund.pdf){ width=50% }
+
+\newpage
+
+![*Relative abundance correlations between bacterial OTUs and virome OGUs. A) Pearson correlation R values between all bacterial OTUs (x-axis) and viral OGUs (y-axis) with blue being positively correlated and red being negatively correlated. Operational units are organized by importance in their colorectal cancer classification models, such that the most important units are in the top left corner. B) Magnification of the boxed region in pannel (A), highlighting the correlation between the most important bacterial OTUs and virome OGUs. The most important operational units are in the top left corner of the heatmap, and the correlation scale is the same as pannel (A). C) Histogram quantifying the frequencies of Pearson correlation coefficients between all bacterial OTUs and virome OGUs.*\label{betaogunegative}](../figures/phage-bacteria-cor.pdf){ width=100% }
 
 \newpage
 
