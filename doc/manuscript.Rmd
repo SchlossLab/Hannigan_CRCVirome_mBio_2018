@@ -1,5 +1,5 @@
 ---
-title: Characterizing the Role of the Human Virome in Colorectal Cancer
+title: The Colorectal Cancer Virome
 author: 
 - name: Geoffrey D Hannigan
   affiliation: 1
