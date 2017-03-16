@@ -62,6 +62,17 @@ caretmodel <- function(x) {
   return(model)
 }
 
+tcar <- function(x) {
+  fitControl <- trainControl(method = "repeatedcv",
+  repeats = 5,
+  number=5,
+  classProbs = TRUE,
+  summaryFunction = twoClassSummary,
+  savePredictions = TRUE)
+  model <- train(V30~., data=x, trControl=fitControl, method="rf", metric="ROC", tuneLength=5)
+  return(model)
+}
+
 plotnetwork <- function (nodeframe=nodeout, edgeframe=edgeout) {
   write("Preparing Data for Plotting", stderr())
   # Pull out the data for clustering
@@ -80,9 +91,15 @@ plotnetwork <- function (nodeframe=nodeout, edgeframe=edgeout) {
   return(outputgraph)
 }
 
-GetAverageImportance <- function(x, y) {
+GetAverageImportance <- function(x, y, twomodel = FALSE) {
   write(y, stderr())
-  functionmodel <- caretmodel(x)
+  if(twomodel == TRUE) {
+    print("Running two class model.")
+    functionmodel <- tcar(x)
+  } else {
+    print("Running multiclass model.")
+    functionmodel <- caretmodel(x)
+  }
   resultvardf <- data.frame(varImp(functionmodel$finalModel))
   resultvardf$categories <- rownames(resultvardf)
   resultvardf$categories <- factor(resultvardf$categories, levels = resultvardf$categories)
@@ -194,3 +211,50 @@ scorw <- data.frame("names" = c("pval", "rho"), "scores" = c(scor$p.value, as.nu
 
 write.table(scorw, file = "./rtables/cor-stats.tsv", quote = FALSE, sep = "\t", row.names = FALSE, col.names = TRUE)
 
+
+##############################################
+# Compare Importance Centrality Across Times #
+##############################################
+### Healthy Vs Adenoma
+abssubset <- castmerge[!c(castmerge$V30 %in% "Negative"),]
+abssubset <- abssubset[!c(abssubset$V30 %in% "Cancer"),]
+abssubset$V30 <- factor(abssubset$V30)
+abssubset <- abssubset[,c(colSums(abssubset != 0) > 30)]
+# Get rid of the IDs
+absmissingid <- abssubset[,-which(names(abssubset) %in% c("V22"))]
+
+caretmodel(absmissingid)
+
+avgimportance <- lapply(c(1:25), function(i) GetAverageImportance(absmissingid, i, twomodel = TRUE))
+avgimportance <- ldply(avgimportance, data.frame)
+avgimportance$sampleID <- gsub("Cluster", "Phage", avgimportance$categories)
+davg <- ddply(avgimportance, c("sampleID"), summarize, mean = mean(Overall))
+hva <- merge(alphacent, davg, by = "sampleID")
+
+### Adenoma Vs Cancer
+abssubset <- castmerge[!c(castmerge$V30 %in% "Negative"),]
+abssubset <- abssubset[!c(abssubset$V30 %in% "Healthy"),]
+abssubset$V30 <- factor(abssubset$V30)
+abssubset <- abssubset[,c(colSums(abssubset != 0) > 30)]
+# Get rid of the IDs
+absmissingid <- abssubset[,-which(names(abssubset) %in% c("V22"))]
+
+avgimportance <- lapply(c(1:25), function(i) GetAverageImportance(absmissingid, i, twomodel = TRUE))
+avgimportance <- ldply(avgimportance, data.frame)
+avgimportance$sampleID <- gsub("Cluster", "Phage", avgimportance$categories)
+davg <- ddply(avgimportance, c("sampleID"), summarize, mean = mean(Overall))
+avc <- merge(alphacent, davg, by = "sampleID")
+
+
+hvao <- hva[c(order(hva$mean, decreasing = TRUE)),][1:10,]
+hvao$class <- "hva"
+avco <- avc[c(order(avc$mean, decreasing = TRUE)),][1:10,]
+avco$class <- "avc"
+
+bo <- rbind(hvao, avco)
+
+ggplot(bo, aes(x = class, y = Centrality, group = class)) +
+  theme_classic() +
+  geom_dotplot(fill=wes_palette("Royal1")[2], binaxis = "y", stackdir = "center", dotsize = 0.5, stackratio = 0.5)
+
+wilcox.test(x = bo$Centrality, g = bo$class)

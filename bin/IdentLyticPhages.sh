@@ -15,6 +15,7 @@ export aclame="./data/metadata/aclame_proteins_prophages_0.4.fa"
 export bacteriadb="./data/metadata/BacteriaReference.fa"
 
 mkdir -p ./data/tmpidlytic
+mkdir -p ./data/repcycle
 
 RunBlastx () {
 	# 1 = Query Seqs
@@ -70,23 +71,35 @@ grep -A 1 -f ./data/tmpidlytic/contiglist.tsv ${fastafile} \
 RunBlastx \
 	./data/tmpidlytic/contigrepset.fa \
 	${integrase} \
-	./data/tmpidlytic/intblastout.tsv
+	./data/repcycle/intblastout.tsv
 
 # Align contigs to ACLAME database
 RunBlastx \
 	./data/tmpidlytic/contigrepset.fa \
 	${aclame} \
-	./data/tmpidlytic/aclameblastout.tsv
+	./data/repcycle/aclameblastout.tsv
 
 # Align contigs to bacterial database
 RunBlastn \
 	./data/tmpidlytic/contigrepset.fa \
 	${bacteriadb} \
-	./data/tmpidlytic/phagebacteriablastout.tsv
+	./data/repcycle/phagebacteriablastout.tsv
 
 # Combine the blast hits
 cat \
-	./data/tmpidlytic/intblastout.tsv \
-	./data/tmpidlytic/aclameblastout.tsv \
-	./data/tmpidlytic/phagebacteriablastout.tsv
+	./data/repcycle/intblastout.tsv \
+	./data/repcycle/aclameblastout.tsv \
+	./data/repcycle/phagebacteriablastout.tsv \
+	| cut -f 1 \
+	| sort \
+	| uniq \
+	> ./data/repcycle/phagereplicationcycle.tsv
+
+# Add the contig IDs to the table
+awk -F "\t" 'FNR==NR { a[$1] = $3; next } { for( i in a ) if($1 ~ i) {print "Cluster_"a[$1]"\tLysogenic"} next }' \
+	./data/contigclustersidentity/longestcontigsvirus.tsv \
+	./data/repcycle/phagereplicationcycle.tsv \
+	> ./data/repcycle/repclust.tsv
+
+
 

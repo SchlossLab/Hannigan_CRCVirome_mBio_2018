@@ -1,4 +1,3 @@
-library("optparse")
 library("ggplot2")
 library("plotROC")
 library("reshape2")
@@ -62,12 +61,12 @@ GetAverageImportance <- function(x, y) {
 plotimportance <- function(x, iterationcount = 25, topcount = 10) {
 	avgimportance <- lapply(c(1:iterationcount), function(i) GetAverageImportance(x, i))
 	avgimportancedf <- ldply(avgimportance, data.frame)
-	import <- ddply(avgimportancedf, c("categories"), summarize, mean = mean(Overall))
+	import <- ddply(avgimportancedf, c("categories"), summarize, mean = mean(Overall), stder = sd(Overall)/sqrt(length(Overall)))
 	importaverage <- merge(avgimportancedf, import, by = "categories")
 
-	virustax <- virustax[,c(1,3,7)]
+	virustaxdf <- virustax[,c(1,3,7)]
 
-	importaverage <- merge(importaverage, virustax, by.x = "categories", by.y = "V1", all = TRUE)
+	importaverage <- merge(importaverage, virustaxdf, by.x = "categories", by.y = "V1", all = TRUE)
 	importaverage$V7 <- as.character(importaverage$V7)
 	importaverage <- importaverage[!c(importaverage$Overall %in% NA),]
 	importaverage[is.na(importaverage)] <- "Unknown"
@@ -81,20 +80,52 @@ plotimportance <- function(x, iterationcount = 25, topcount = 10) {
 	dfplot <- importaverage[(length(importaverage[,1])-numberto):(length(importaverage[,1])),]
 	
 	importanceplot <- ggplot(dfplot, aes(x=categories, y=Overall)) +
-	  theme_classic() +
-	  theme(
-	    axis.line.x = element_line(colour = "black"),
-	    axis.line.y = element_line(colour = "black")
-	  ) +
-	  geom_dotplot(fill=wes_palette("Royal1")[2], binaxis = "y", stackdir = "center", dotsize = 0.25, stackratio = 0.5) +
-	  xlab("Virus Identity") +
-	  ylab("Mean Accuracy Decrease") +
-	  stat_summary(fun.y = mean, fun.ymin = mean, fun.ymax = mean, geom = "crossbar", width = 0.75) +
-	  geom_vline(xintercept=binlength,color="grey") +
-	  scale_x_discrete(labels=dfplot[c(0:(topcount - 1))*iterationcount+1,"V7"]) +
-	  coord_flip()
+		theme_classic() +
+		theme(
+			axis.line.x = element_line(colour = "black"),
+			axis.line.y = element_line(colour = "black")
+		) +
+		# geom_dotplot(
+		# 	fill=wes_palette("Royal1")[2],
+		# 	binaxis = "y",
+		# 	stackdir = "center",
+		# 	dotsize = 0.5,
+		# 	stackratio = 0.5
+		# ) +
+		# geom_boxplot(outlier.colour = NA, fill = "grey") +
+		xlab("Virus ID") +
+		ylab("Mean Accuracy Decrease") +
+		# stat_summary(
+		# 	fun.y = mean,
+		# 	fun.ymin = mean,
+		# 	fun.ymax = mean,
+		# 	geom = "crossbar",
+		# 	width = 0.75,
+		# 	color = "black"
+		# ) +
+		# Try bars only instead
+		stat_summary(fun.y = mean, geom = "point", width = 0.75) +
+		stat_summary(fun.data = mean_se, geom = "errorbar", width = 0.25) +
+		# geom_violin() +
+		geom_vline(xintercept=binlength,color="grey") +
+		scale_x_discrete(
+			labels=parse(
+				text = paste0(
+					"italic('",
+					dfplot[c(0:(topcount - 1))*iterationcount+1,"V7"],
+					"')~",
+					paste(
+						" (",
+						dfplot[c(0:(topcount - 1))*iterationcount+1,"categories"],
+						")",
+						sep = ""
+					)
+				)
+			)
+		) +
+		coord_flip()
 
-	  return(importanceplot)
+	return(importanceplot)
 }
 
 pbi <- function(x, iterationcount = 25, topcount = 10) {
@@ -118,12 +149,28 @@ pbi <- function(x, iterationcount = 25, topcount = 10) {
 	    axis.line.x = element_line(colour = "black"),
 	    axis.line.y = element_line(colour = "black")
 	  ) +
-	  geom_dotplot(fill=wes_palette("Royal1")[2], binaxis = "y", stackdir = "center", dotsize = 0.25, stackratio = 0.5) +
+	  # geom_dotplot(fill=wes_palette("Royal1")[2], binaxis = "y", stackdir = "center", dotsize = 0.25, stackratio = 0.5) +
 	  xlab("Bacteria Identity") +
 	  ylab("Mean Accuracy Decrease") +
-	  stat_summary(fun.y = mean, fun.ymin = mean, fun.ymax = mean, geom = "crossbar", width = 0.75) +
+	  # stat_summary(fun.y = mean, fun.ymin = mean, fun.ymax = mean, geom = "crossbar", width = 0.75) +
+	  stat_summary(fun.y = mean, geom = "point", width = 0.75) +
+	  stat_summary(fun.data = mean_se, geom = "errorbar", width = 0.25) +
 	  geom_vline(xintercept=binlength,color="grey") +
-	  scale_x_discrete(labels=dfplot[c(0:(topcount - 1))*iterationcount+1,"Taxonomy"]) +
+	  scale_x_discrete(
+			labels=parse(
+				text = paste0(
+					"italic('",
+					dfplot[c(0:(topcount - 1))*iterationcount+1,"Taxonomy"],
+					"')~",
+					paste(
+						" (",
+						dfplot[c(0:(topcount - 1))*iterationcount+1,"categories"],
+						")",
+						sep = ""
+					)
+				)
+			)
+		) +
 	  coord_flip()
 
 	  return(importanceplot)
@@ -145,6 +192,7 @@ input <- read.delim("./data/VirusClusteredContigAbund.tsv", header=TRUE, sep="\t
 datadisease <- read.delim("./data/metadata/MasterMeta.tsv", header=FALSE, sep="\t")[,c(2,30,22)]
 virustax <- read.delim("./data/contigclustersidentity/clustax.tsv", header = FALSE, sep = "\t")
 virustax$V1 <- sub("^", "Cluster_", virustax$V1, perl = TRUE)
+virustax <- unique(virustax)
 
 # Rarefy input table
 minimumsubsample <- 1000000
@@ -181,7 +229,7 @@ inputrelabund <- data.frame(inputmelt %>% group_by(V2) %>% mutate(RelAbund = 100
 relabundcast <- dcast(inputrelabund, V2 ~ V1, value.var = "RelAbund")
 relabundcast[is.na(relabundcast)] <- 0
 row.names(relabundcast) <- relabundcast$V2
-relabundcast <- relabundcast[,c(TRUE, colMedians(as.matrix(relabundcast[,-1])) > minavgrelabund)]
+relabundcast <- relabundcast[,c(TRUE, colMedians(as.matrix(relabundcast[,-1])) >= minavgrelabund)]
 
 castmerge <- merge(relabundcast, datadisease, by.x="V2", by.y="V2")
 castmerge <- castmerge[,-1]
@@ -204,7 +252,11 @@ modelmeanroc <- threeclassmeanroc(outmodel)
 meanrocvirome <- ggplot(modelmeanroc, aes(d = obs, m = one, color = class)) +
 	geom_roc(n.cuts = 0) +
 	style_roc() +
-	scale_color_manual(values = wes_palette("Royal1")[c(1,2,4)], name = "Disease")
+	scale_color_manual(values = wes_palette("Royal1")[c(1,2,4)], name = "Disease") +
+	theme(
+		legend.position = c(0.75, 0.25),
+		legend.background = element_rect(colour = "black")
+	)
 
 
 # Get the variable importance
@@ -224,6 +276,7 @@ melttry$V7 <- as.character(melttry$V7)
 melttry <- melttry[!c(melttry$value %in% NA),]
 melttry[is.na(melttry)] <- "Unknown"
 binlength <- c(1:5) + 0.5
+melttry$V30 <- factor(melttry$V30, levels = c("Healthy", "Adenoma", "Cancer"))
 importanceabundance <- ggplot(melttry, aes(x = factor(variable), y = (value + 1e-06), fill = factor(V30))) +
 	theme_classic() +
 	geom_dotplot(binaxis = "y", stackdir = "center", position = "dodge", dotsize = 0.75, stackratio = 0.5) +
@@ -233,12 +286,30 @@ importanceabundance <- ggplot(melttry, aes(x = factor(variable), y = (value + 1e
 	geom_vline(xintercept=binlength,color="grey") +
 	  theme(
 	  axis.line.x = element_line(colour = "black"),
-	  axis.line.y = element_line(colour = "black")
+	  axis.line.y = element_line(colour = "black"),
+	  axis.text.x = element_text(angle = 45, hjust = 1)
 	) +
 	xlab("Operational Genomic Units") +
 	ylab("Relative Abundance") +
-	scale_x_discrete(labels=melttry[c(0:(72 - 1))*72+1,"V7"]) +
+	scale_x_discrete(
+		labels=parse(
+			text = paste0(
+				"italic('",
+				melttry[c(0:(72 - 1))*72+1,"V7"],
+				"')~",
+				paste(
+					" (",
+					melttry[c(0:(72 - 1))*72+1,"variable"],
+					")",
+					sep = ""
+				)
+			)
+		)
+	) +
+	# scale_x_discrete(labels=melttry[c(0:(72 - 1))*72+1,"V7"]) +
 	scale_fill_manual(values = wes_palette("Royal1")[c(1,2,4)], name = "Disease")
+
+importanceabundance
 
 #############################
 # Bacteria Prediction Model #
@@ -290,7 +361,11 @@ modelmeanrocbacteria <- threeclassmeanroc(subsetmodel)
 meanrocbacteria <- ggplot(modelmeanrocbacteria, aes(d = obs, m = one, color = class)) +
 	geom_roc(n.cuts = 0) +
 	style_roc() +
-	scale_color_manual(values = wes_palette("Royal1")[c(1,2,4)], name = "Disease")
+	scale_color_manual(values = wes_palette("Royal1")[c(1,2,4)], name = "Disease") +
+	theme(
+		legend.position = c(0.75, 0.25),
+		legend.background = element_rect(colour = "black")
+	)
 
 
 # Get the variable importance
@@ -321,7 +396,7 @@ binlength <- c(1:2) + 0.5
 auccompareplot <- ggplot(megatron, aes(x = class, y = highAUC, fill = class)) +
 	theme_classic() +
 	theme(legend.position="none") +
-	geom_dotplot(fill=wes_palette("Royal1")[2], binaxis = "y", binwidth = 0.0025, stackdir = "center") +
+	geom_dotplot(fill=wes_palette("Royal1")[2], binaxis = "y", binwidth = 0.015, stackdir = "center") +
 	stat_summary(fun.y = mean, fun.ymin = mean, fun.ymax = mean, geom = "crossbar", width = 0.5) +
 	geom_vline(xintercept=binlength,color="grey") +
 	scale_fill_manual(values = wes_palette("Royal1")) +
@@ -331,9 +406,9 @@ auccompareplot <- ggplot(megatron, aes(x = class, y = highAUC, fill = class)) +
 	) +
 	xlab("") +
 	ylab("Area Under the Curve") +
-	geom_segment(x = 1, xend = 2, y = 0.8, yend = 0.8) +
-	annotate("text", x = 1.5, y = 0.805, label = paste("p-value = ", signif(statsig$p.value, digits = 2), sep = ""), size = 4) +
-	ylim(NA, 0.81)
+	geom_segment(x = 1, xend = 2, y = 0.82, yend = 0.82) +
+	annotate("text", x = 1.5, y = 0.84, label = paste("p-value = ", signif(statsig$p.value, digits = 2), sep = ""), size = 4) +
+	ylim(0, 0.85)
 
 aucstat <- ddply(megatron, "class", summarize, meanauc = mean(highAUC))
 
@@ -342,11 +417,11 @@ aucstat <- ddply(megatron, "class", summarize, meanauc = mean(highAUC))
 # Compare Bacteria and Virus  #
 ###############################
 importanceplots <- plot_grid(importanceplotvirus, importanceplotbac, labels = c("D", "E"), ncol = 2)
-boundplot <- plot_grid(meanrocvirome, meanrocbacteria, auccompareplot, labels = c("A", "B", "C"), rel_widths = c(2, 2, 1), ncol = 3)
+boundplot <- plot_grid(meanrocvirome, meanrocbacteria, auccompareplot, labels = c("A", "B", "C"), rel_widths = c(2, 2, 1.5), ncol = 3)
 lowerplot <- plot_grid(importanceabundance, labels = c("F"))
-topbottomplot <- plot_grid(boundplot, importanceplots, lowerplot, rel_heights = c(3, 2, 3), ncol = 1)
+topbottomplot <- plot_grid(boundplot, importanceplots, lowerplot, rel_heights = c(3, 1.75, 2.5), ncol = 1)
 
-pdf("./figures/predmodel-threewayclassification.pdf", height = 10, width = 12)
+pdf("./figures/predmodel-threewayclassification.pdf", height = 9, width = 10)
 	topbottomplot
 dev.off()
 

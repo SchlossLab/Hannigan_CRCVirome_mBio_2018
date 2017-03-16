@@ -12,6 +12,7 @@ library("caret")
 library("cowplot")
 library("matrixStats")
 library("parallel")
+library("cowplot")
 
 minavgrelabund <- 0
 minsamps <- 30
@@ -27,7 +28,7 @@ caretmodel <- function(x) {
   return(model)
 }
 
-impcalcs <- function(x, iterationcount = 5) {
+impcalcs <- function(x, iterationcount = 10) {
 	avgimportance <- lapply(c(1:iterationcount), function(i) GetAverageImportance(x, i))
 	avgimportancedf <- ldply(avgimportance, data.frame)
 	import <- ddply(avgimportancedf, c("categories"), summarize, mean = mean(Overall))
@@ -39,7 +40,7 @@ impcalcs <- function(x, iterationcount = 5) {
 	importaverage$V7 <- as.character(importaverage$V7)
 	importaverage <- importaverage[!c(importaverage$Overall %in% NA),]
 	importaverage[is.na(importaverage)] <- "Unknown"
-	importaverage <- importaverage[order(importaverage$mean, decreasing = FALSE),]
+	importaverage <- importaverage[order(importaverage$mean, decreasing = TRUE),]
 	importaverage$categories <- factor(importaverage$categories, levels = importaverage$categories)
 	importaverage$V7 <- factor(importaverage$V7, levels = importaverage$V7)
 	
@@ -167,60 +168,115 @@ virus <- virus[,-length(virus)]
 bacteria <- bacteria[,-1]
 
 cordf <- melt(cor(virus, bacteria))
-fcordf <- cordf[c(cordf$value > 0.75 | cordf$value < -0.75),]
 
-hm <- ggplot(cordf, aes(x = Var2, y = Var1, fill = value)) +
-	theme_classic() +
+# Iterate to get average importance plot
+importancevalsvirus <- impcalcs(absmissingid)
+importancevalsbacteria <- impcalcs(pasubset)
+
+virusclean <- unique(importancevalsvirus[, c(1,4)])
+colnames(virusclean) <- c("categories", "virusmean")
+bacteriaclean <- unique(importancevalsbacteria[, c(1,4)])
+colnames(bacteriaclean) <- c("categories", "bacteriamean")
+cordmerge <- merge(cordf, virusclean, by.x = "Var1", by.y = "categories")
+cordmerge <- merge(cordmerge, bacteriaclean, by.x = "Var2", by.y = "categories")
+ordermerge <- cordmerge[order(cordmerge[4], decreasing = FALSE),]
+ordermerge <- ordermerge[order(ordermerge[5], decreasing = TRUE),]
+ordermerge$Var1 <- factor(ordermerge$Var1, levels = ordermerge$Var1)
+ordermerge$Var2 <- factor(ordermerge$Var2, levels = ordermerge$Var2)
+
+# Top left has the most important OGUs and OTUs
+allplot <- ggplot(ordermerge, aes(x = Var2, y = Var1, fill = value)) +
+	theme_bw() +
 	geom_tile(color = "white") +
 	theme(
 		axis.text.x=element_blank(),
 		axis.ticks.x=element_blank(),
 		axis.text.y=element_blank(),
 		axis.ticks.y=element_blank()
+		# axis.text.x = element_text(angle = 90, hjust = 1)
 	) +
-	scale_fill_gradient2(low = "tomato4", mid = "white", high = "steelblue4", limits=c(-1,1)) +
-	ylab("Viral OGUs") +
-	xlab("Bacterial OTUs")
-
-ggplot(fcordf, aes(x = Var2, y = Var1, fill = value)) +
-	theme_classic() +
-	geom_tile(color = "white") +
-	scale_fill_gradient2(low = "tomato4", mid = "white", high = "steelblue4", limits=c(-1,1)) +
+	scale_fill_gradient2(low = "tomato4", mid = "white", high = "steelblue4", limits=c(-1,1), name = "Correlation") +
 	ylab("Viral OGUs") +
 	xlab("Bacterial OTUs") +
-	theme(axis.text.x = element_text(angle = 90, hjust = 1))
+	geom_rect(xmax = 10, ymax = length(unique(ordermerge$Var1)), xmin = 1, ymin = length(unique(ordermerge$Var1)) - 10, color = "black", alpha = 0)
 
-outmodel <- caretmodel(absmissingid)
-outmodel
+topdf <- ordermerge[c(ordermerge$Var2 %in% bacteriaclean[1:10,"categories"] & ordermerge$Var1 %in% virusclean[1:10,"categories"]),]
+fcordf <- ordermerge[c(ordermerge$value > 0.50 | ordermerge$value < -0.50),]
+topvirus <- ordermerge[c(ordermerge$Var1 %in% virusclean[1:5,"categories"] & ordermerge$value > 0.5),]
+topbac <- ordermerge[c(ordermerge$Var2 %in% bacteriaclean[1:5,"categories"] & ordermerge$value > 0.5),]
 
-# Iterate to get average importance plot
-importancevals <- impcalcs(absmissingid)
-importancevals <- impcalcs(pasubset)
 
-clusterorder <- data.frame(cluster = rev(unique(importancevals$categories)), order = c(1:length(unique(importancevals$categories))))
-cmer <- merge(clusterorder, fcordf, by.x = "cluster", by.y = "Var1")
-cordforder <- cmer[order(cmer$order, decreasing = TRUE),]
-cordforder$cluster <- factor(cordforder$cluster, levels = cordforder$cluster)
-cordforder$Var2 <- factor(cordforder$Var2, levels = cordforder$Var2)
-cordforder[c(cordforder$cluster %in% "Cluster_115"),]
-
-ggplot(cordforder, aes(x = Var2, y = cluster, fill = value)) +
-	theme_bw() +
+hcplot <- ggplot(fcordf, aes(x = Var2, y = Var1, fill = value)) +
+	theme_classic() +
 	geom_tile(color = "white") +
 	theme(
-	# 	axis.text.x=element_blank(),
-	# 	axis.ticks.x=element_blank(),
-	# 	axis.text.y=element_blank(),
-	# 	axis.ticks.y=element_blank(),
-	axis.text.x = element_text(angle = 90, hjust = 1)
+		axis.text.x=element_blank(),
+		axis.ticks.x=element_blank(),
+		axis.text.y=element_blank(),
+		axis.ticks.y=element_blank(),
+		# axis.text.x = element_text(angle = 90, hjust = 1)
+		legend.position = "none"
 	) +
 	scale_fill_gradient2(low = "tomato4", mid = "white", high = "steelblue4", limits=c(-1,1)) +
 	ylab("Viral OGUs") +
 	xlab("Bacterial OTUs")
 
+topplot <- ggplot(topdf, aes(x = Var2, y = Var1, fill = value)) +
+	theme_classic() +
+	geom_tile(color = "white") +
+	theme(
+		# axis.text.x=element_blank(),
+		# axis.ticks.x=element_blank(),
+		# axis.text.y=element_blank(),
+		# axis.ticks.y=element_blank()
+		axis.text.x = element_text(angle = 90, hjust = 1),
+		legend.position = "none"
+	) +
+	scale_fill_gradient2(low = "tomato4", mid = "white", high = "steelblue4", limits=c(-1,1)) +
+	ylab("Viral OGUs") +
+	xlab("Bacterial OTUs")
 
-pdf("./figures/phage-bacteria-cor.pdf", height = 4, width = 6)
-	hm
+ggplot(topvirus, aes(x = Var2, y = Var1, fill = value)) +
+	theme_classic() +
+	geom_tile(color = "white") +
+	theme(
+		# axis.text.x=element_blank(),
+		# axis.ticks.x=element_blank(),
+		# axis.text.y=element_blank(),
+		# axis.ticks.y=element_blank()
+		axis.text.x = element_text(angle = 90, hjust = 1)
+	) +
+	scale_fill_gradient2(low = "tomato4", mid = "white", high = "steelblue4", limits=c(-1,1)) +
+	ylab("Viral OGUs") +
+	xlab("Bacterial OTUs")
+
+ggplot(topbac, aes(x = Var1, y = Var2, fill = value)) +
+	theme_classic() +
+	geom_tile(color = "white") +
+	theme(
+		# axis.text.x=element_blank(),
+		# axis.ticks.x=element_blank(),
+		# axis.text.y=element_blank(),
+		# axis.ticks.y=element_blank()
+		axis.text.x = element_text(angle = 90, hjust = 1)
+	) +
+	scale_fill_gradient2(low = "tomato4", mid = "white", high = "steelblue4", limits=c(-1,1)) +
+	xlab("Viral OGUs") +
+	ylab("Bacterial OTUs")
+
+histplot <- ggplot(ordermerge, aes(x = value)) +
+	theme_classic() +
+	geom_histogram() +
+	scale_x_continuous(limits = c(-1, 1)) +
+	xlab("Pearson Correlation") +
+	ylab("Frequency")
+
+subsets <- plot_grid(topplot, histplot, ncol = 1, labels = c("B", "C"))
+finalplot <- plot_grid(allplot, subsets, labels = "A")
+
+
+pdf("./figures/phage-bacteria-cor.pdf", height = 5, width = 12)
+	finalplot
 dev.off()
 
 
