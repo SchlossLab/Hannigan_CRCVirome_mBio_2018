@@ -57,7 +57,7 @@ dnaconcplot <- ggplot(metadata, aes(x = V2, y = V26, fill = V30)) +
 	) +
 	geom_bar(stat="identity") +
 	coord_flip() +
-	scale_fill_manual(values = wes_palette("Royal1")[c(1,2,4,3)]) +
+	scale_fill_manual(values = c(wes_palette("Royal1")[c(1,2,4)], wes_palette("Darjeeling")[5]), name = "Disease") +
 	ylab("VLP Genomic DNA Yield (ng/uL)") +
 	xlab("Prepared Samples")
 
@@ -73,7 +73,7 @@ depthplot <- ggplot(inputmerge, aes(x = V2, y = V1, fill = V30)) +
     ) +
     geom_bar(stat="identity") +
     coord_flip() +
-    scale_fill_manual(values = wes_palette("Royal1")[c(1,2,4,3)]) +
+    scale_fill_manual(values = c(wes_palette("Royal1")[c(1,2,4)], wes_palette("Darjeeling")[5]), name = "Disease") +
     ylab("VLP Genomic DNA Yield (ng/uL)") +
     xlab("")
 
