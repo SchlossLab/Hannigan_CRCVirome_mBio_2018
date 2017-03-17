@@ -74,7 +74,7 @@ depthplot <- ggplot(inputmerge, aes(x = V2, y = V1, fill = V30)) +
     geom_bar(stat="identity") +
     coord_flip() +
     scale_fill_manual(values = c(wes_palette("Royal1")[c(1,2,4)], wes_palette("Darjeeling")[5]), name = "Disease") +
-    ylab("VLP Genomic DNA Yield (ng/uL)") +
+    ylab("VLP Sequence Yield (ng/uL)") +
     xlab("")
 
 gridplot <- plot_grid(dnaconcplot, depthplot, labels = c("A", "B"))

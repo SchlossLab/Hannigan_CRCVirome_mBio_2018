@@ -453,7 +453,7 @@ GetAverageAUC <- function(x, y) {
 	return(resultdf)
 }
 
-iterationcount <- 15
+iterationcount <- 25
 
 viromeauc <- lapply(c(1:iterationcount), function(i) GetAverageAUC(absmissingid, i))
 viromeaucdf <- ldply(viromeauc, data.frame)
@@ -523,7 +523,7 @@ boundmodel <- rbind(subsetmodel$pred, outmodel$pred, combomodel$pred, metaoutmod
 boundplot <- ggplot(boundmodel, aes(d = obs, m = Healthy, color = class)) +
 	geom_roc(n.cuts = 0) +
 	style_roc() +
-	scale_color_manual(values = wes_palette("Royal1"), name = "Disease") +
+	scale_color_manual(values = c(wes_palette("Royal1")[c(1,2,4)], wes_palette("Darjeeling")[5]), name = "Disease") +
 	theme(
 		legend.position = c(0.75, 0.25),
 		legend.background = element_rect(colour = "black")
