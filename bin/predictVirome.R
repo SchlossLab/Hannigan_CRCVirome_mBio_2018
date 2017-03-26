@@ -453,7 +453,7 @@ GetAverageAUC <- function(x, y) {
 	return(resultdf)
 }
 
-iterationcount <- 25
+iterationcount <- 15
 
 viromeauc <- lapply(c(1:iterationcount), function(i) GetAverageAUC(absmissingid, i))
 viromeaucdf <- ldply(viromeauc, data.frame)
@@ -473,7 +473,7 @@ metagenomeaucdf$class <- "Metagenomic"
 
 megatron <- rbind(viromeaucdf, bacteriaaucdf, metagenomeaucdf, comboaucdf)
 
-aucstat <- pairwise.wilcox.test(x=megatron$highAUC, g=megatron$class, p.adjust.method="bonferroni")
+aucstat <- pairwise.wilcox.test(x=megatron$highAUC, g=megatron$class, p.adjust.method="BH")
 aucpv <- melt(aucstat$p.value)
 da <- as.data.frame(sort(unique(c(as.character(aucpv[,1]), as.character(aucpv[,2])))))
 colnames(da) <- "name"
