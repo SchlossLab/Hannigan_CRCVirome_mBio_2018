@@ -186,7 +186,7 @@ OVU replication sytle was identified using methods described previously [@Minot:
 The authors declare no conflicts of interest.
 
 # Acknowledgments
-The authors thank the Schloss lab members for their underlying contributions, and the Great Lakes-New England Early Detection Research Network for providing the fecal samples that were used in this study. GD Hannigan was supported by the Michigan Molecular Mechanisms of Microbial Pathogenesis Fellowship. PD Schloss was supported by funding from the National Institutes of Health (P30DK034933). MT Ruffin was supported by funding from the National Institutes of Health (5U01CA86400).
+The authors thank the Schloss lab members for their underlying contributions, and the Great Lakes-New England Early Detection Research Network for providing the fecal samples that were used in this study. GD Hannigan was supported in part by the Molecular Mechanisms in Microbial Pathogenesis Training Program (T32 AI007528). PD Schloss was supported by funding from the National Institutes of Health (P30DK034933). MT Ruffin was supported by funding from the National Institutes of Health (5U01CA86400).
 
 \newpage
 
