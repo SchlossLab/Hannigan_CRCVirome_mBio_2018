@@ -113,7 +113,7 @@ plotimportance <- function(x, iterationcount = 25, topcount = 10) {
 
 	numberto <- topcount * iterationcount - 1
 	dfplot <- importaverage[(length(importaverage[,1])-numberto):(length(importaverage[,1])),]
-	
+
 	importanceplot <- ggplot(dfplot, aes(x=categories, y=Overall)) +
 		theme_classic() +
 		theme(
@@ -142,14 +142,14 @@ plotimportance <- function(x, iterationcount = 25, topcount = 10) {
 		stat_summary(fun.data = mean_se, geom = "errorbar", width = 0.25) +
 		geom_vline(xintercept=binlength,color="grey") +
 		scale_x_discrete(
-			labels=parse(
+			labels = parse(
 				text = paste0(
 					"italic('",
 					dfplot[c(0:(topcount - 1))*iterationcount+1,"V7"],
 					"')~",
 					paste(
 						" (",
-						dfplot[c(0:(topcount - 1))*iterationcount+1,"categories"],
+						gsub("Cluster_", "Cluster~ ", dfplot[c(0:(topcount - 1))*iterationcount+1,"categories"]),
 						")",
 						sep = ""
 					)
@@ -196,7 +196,7 @@ pbi <- function(x, iterationcount = 25, topcount = 10) {
 				"')~",
 				paste(
 					" (",
-					dfplot[c(0:(topcount - 1))*iterationcount+1,"categories"],
+					gsub("Otu0+", "OTU~ ", dfplot[c(0:(topcount - 1))*iterationcount+1,"categories"]),
 					")",
 					sep = ""
 				)
@@ -250,7 +250,7 @@ pcomb <- function(x, iterationcount = 25, topcount = 10) {
 				"')~",
 				paste(
 					" (",
-					dfplot[c(0:(topcount - 1))*iterationcount+1,"categories"],
+					gsub("Otu0+", "OTU~ ", gsub("Cluster_", "Cluster~ ", dfplot[c(0:(topcount - 1))*iterationcount+1,"categories"])),
 					")",
 					sep = ""
 				)
@@ -453,7 +453,7 @@ GetAverageAUC <- function(x, y) {
 	return(resultdf)
 }
 
-iterationcount <- 15
+iterationcount <- 20
 
 viromeauc <- lapply(c(1:iterationcount), function(i) GetAverageAUC(absmissingid, i))
 viromeaucdf <- ldply(viromeauc, data.frame)
@@ -472,12 +472,16 @@ metagenomeaucdf <- ldply(metagenomeauc, data.frame)
 metagenomeaucdf$class <- "Metagenomic"
 
 megatron <- rbind(viromeaucdf, bacteriaaucdf, metagenomeaucdf, comboaucdf)
+ordervector <- c("Bacteria", "Virus", "Combined", "Metagenomic")
+
+megatron <- megatron[order(ordered(megatron$class, levels = ordervector), decreasing = FALSE),]
+megatron$class <- factor(megatron$class, levels = megatron$class)
 
 aucstat <- pairwise.wilcox.test(x=megatron$highAUC, g=megatron$class, p.adjust.method="BH")
 aucpv <- melt(aucstat$p.value)
-da <- as.data.frame(sort(unique(c(as.character(aucpv[,1]), as.character(aucpv[,2])))))
+da <- as.data.frame(ordervector)
 colnames(da) <- "name"
-da <- data.frame(da$name, as.numeric(da$name))
+da <- data.frame(da$name, 1:4)
 colnames(da) <- c("name", "id")
 aucpvg <- aucpv[c(aucpv$value > 0.01),]
 aucpvg <- aucpvg[!c(is.na(aucpvg$value)),]
@@ -519,6 +523,9 @@ combomodel$pred$class <- "Combined"
 metaoutmodel$pred$class <- "Metagenome"
 boundmodel <- rbind(subsetmodel$pred, outmodel$pred, combomodel$pred, metaoutmodel$pred)
 
+boundmodel <- boundmodel[order(ordered(boundmodel$class, levels = ordervector), decreasing = FALSE),]
+boundmodel$class <- factor(boundmodel$class, levels = boundmodel$class)
+
 # Plot the ROC curve
 boundplot <- ggplot(boundmodel, aes(d = obs, m = Healthy, color = class)) +
 	geom_roc(n.cuts = 0) +
@@ -526,7 +533,8 @@ boundplot <- ggplot(boundmodel, aes(d = obs, m = Healthy, color = class)) +
 	scale_color_manual(values = c(wes_palette("Royal1")[c(1,2,4)], wes_palette("Darjeeling")[5]), name = "Disease") +
 	theme(
 		legend.position = c(0.75, 0.25),
-		legend.background = element_rect(colour = "black")
+		legend.background = element_rect(colour = "black"),
+		legend.title=element_blank()
 	)
 boundplot
 
@@ -597,7 +605,7 @@ selectauccompareplot <- ggplot(megatron[c(megatron$class %in% "Bacteria" | megat
 selectauccompareplot
 
 # Compare importance
-bottomgrid <- plot_grid(importanceplotbac, importanceplot, importanceplotcombo, labels = LETTERS[3:5], ncol = 1)
+bottomgrid <- plot_grid(importanceplotbac, importanceplot, importanceplotcombo, labels = LETTERS[3:5], ncol = 1, align = "v")
 topgrid <- plot_grid(boundplot, auccompareplot, labels = LETTERS[1:2], nrow = 1, rel_widths = c(2,1))
 finalgridplot <- plot_grid(topgrid, bottomgrid, nrow=1, rel_widths = c(1.75,1))
 finalgridplot

@@ -279,7 +279,7 @@ binlength <- c(1:5) + 0.5
 melttry$V30 <- factor(melttry$V30, levels = c("Healthy", "Adenoma", "Cancer"))
 importanceabundance <- ggplot(melttry, aes(x = factor(variable), y = (value + 1e-06), fill = factor(V30))) +
 	theme_classic() +
-	geom_dotplot(binaxis = "y", stackdir = "center", position = "dodge", dotsize = 0.75, stackratio = 0.5) +
+	geom_dotplot(binaxis = "y", stackdir = "center", position = "dodge", dotsize = 0.75, stackratio = 0.25) +
 	stat_summary_bin(fun.y = median, fun.ymin = median, fun.ymax = median,
                  geom = "crossbar", width = 0.5, position = "dodge") +
 	scale_y_log10() +
@@ -289,7 +289,7 @@ importanceabundance <- ggplot(melttry, aes(x = factor(variable), y = (value + 1e
 	  axis.line.y = element_line(colour = "black"),
 	  axis.text.x = element_text(angle = 45, hjust = 1)
 	) +
-	xlab("Operational Genomic Units") +
+	xlab("Operational Viral Units") +
 	ylab("Relative Abundance") +
 	scale_x_discrete(
 		labels=parse(
@@ -419,9 +419,9 @@ aucstat <- ddply(megatron, "class", summarize, meanauc = mean(highAUC))
 importanceplots <- plot_grid(importanceplotvirus, importanceplotbac, labels = c("D", "E"), ncol = 2)
 boundplot <- plot_grid(meanrocvirome, meanrocbacteria, auccompareplot, labels = c("A", "B", "C"), rel_widths = c(2, 2, 1.5), ncol = 3)
 lowerplot <- plot_grid(importanceabundance, labels = c("F"))
-topbottomplot <- plot_grid(boundplot, importanceplots, lowerplot, rel_heights = c(3, 1.75, 2.5), ncol = 1)
+topbottomplot <- plot_grid(boundplot, importanceplots, lowerplot, rel_heights = c(3, 1.75, 3.5), ncol = 1)
 
-pdf("./figures/predmodel-threewayclassification.pdf", height = 9, width = 10)
+pdf("./figures/predmodel-threewayclassification.pdf", height = 10, width = 10)
 	topbottomplot
 dev.off()
 

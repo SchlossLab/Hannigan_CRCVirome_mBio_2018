@@ -14,9 +14,9 @@ export MappingFile=$2
 export Outputfilename=$3
 
 # Dependencies
-export DeconsSeq=/mnt/EXT/Schloss-data/bin/deconseq-standalone-0.4.3/deconseq.pl
-export fastx=/home/ghannig/bin/fastq_quality_trimmer
-export CutAdapt=/mnt/EXT/Schloss-data/bin/cutadapt-1.9.1/bin/cutadapt
+export DeconsSeq=/nfs/turbo/pschloss/bin/deconseq-standalone-0.4.3/deconseq.pl
+export fastx=/nfs/turbo/pschloss/bin/fastx_0.0.13_precompiled/fastq_quality_trimmer
+export CutAdapt=/nfs/turbo/pschloss/bin/cutadapt-1.9.1/bin/cutadapt
 
 ###################
 # Set Subroutines #
