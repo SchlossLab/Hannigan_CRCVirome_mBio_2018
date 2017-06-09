@@ -3,3 +3,4 @@
 data/**
 !data/metadata/
 !data/metadata/**
+.DS_Store

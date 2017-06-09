@@ -712,9 +712,3 @@ finalrelationships \
 		./data/contigclustersidentity/longestcontigsvirus.tsv \
 		"/home/ghannig/bin/ncbi-blast-2.4.0+/bin/"
 
-
-
-
-
-
-

@@ -16,6 +16,8 @@ library("dplyr")
 library("reshape2")
 library("cowplot")
 library("vegan")
+library("extrafont")
+loadfonts()
 
 ###################
 # Set Subroutines #
@@ -87,7 +89,9 @@ plotnetwork <- function (nodeframe=nodeout, edgeframe=edgeout) {
         geom_edge_link0(edge_alpha = 0.05) +
         geom_node_point(aes(color = label), size = 1.5) +
         ggforce::theme_no_axes() +
-        scale_color_manual(values = wes_palette("Royal1")[c(1,2)])
+        scale_color_manual(values = wes_palette("Royal1")[c(1,2)]) +
+        theme_graph(border = FALSE) +
+        theme(legend.position = "bottom", legend.title = element_blank())
   return(outputgraph)
 }
 
@@ -192,14 +196,15 @@ scatterplotconnect <- ggplot(mergeddf, aes(x = Centrality, y = log10(mean))) +
   theme_classic() +
   geom_point() +
   geom_smooth(method=lm, se=FALSE) +
-  ylab("OGU Importance (log10)") +
-  xlab("OGU Alpha Centrality")
+  ylab("OVU Importance (log10)") +
+  xlab("OVU Alpha Centrality")
 
 scatterplotconnect
 
 networkplot <- plotnetwork()
 
 finalplot <- plot_grid(networkplot, scatterplotconnect, ncol = 2, labels = c("A", "B"))
+finalplot
 
 pdf(file="./figures/NetworkAndScatter.pdf",
 width=10,

@@ -191,9 +191,10 @@ allplot <- ggplot(ordermerge, aes(x = Var2, y = Var1, fill = value)) +
 	theme(
 		axis.text.x=element_blank(),
 		axis.ticks.x=element_blank(),
+		axis.title.x=element_blank(),
 		axis.text.y=element_blank(),
-		axis.ticks.y=element_blank()
-		# axis.text.x = element_text(angle = 90, hjust = 1)
+		axis.ticks.y=element_blank(),
+		axis.title.y=element_blank()
 	) +
 	scale_fill_gradient2(low = "tomato4", mid = "white", high = "steelblue4", limits=c(-1,1), name = "Correlation") +
 	ylab("Viral OGUs") +
@@ -205,6 +206,42 @@ fcordf <- ordermerge[c(ordermerge$value > 0.50 | ordermerge$value < -0.50),]
 topvirus <- ordermerge[c(ordermerge$Var1 %in% virusclean[1:5,"categories"] & ordermerge$value > 0.5),]
 topbac <- ordermerge[c(ordermerge$Var2 %in% bacteriaclean[1:5,"categories"] & ordermerge$value > 0.5),]
 
+# Try adding a bar plot
+vimp <- ggplot(ordermerge, aes(x = Var1, y = virusmean)) +
+	theme_classic() +
+	theme(
+		axis.text.x=element_blank(),
+		axis.ticks.x=element_blank(),
+		axis.text.y=element_blank(),
+		axis.ticks.y=element_blank(),
+		axis.title.x=element_blank(),
+		axis.line.x=element_blank(),
+		axis.line.y=element_blank()
+	) +
+	geom_bar(stat = "identity", position = "dodge", width=1) +
+	coord_flip() +
+	scale_y_reverse() +
+	xlab("Viral OVUs")
+
+bimp <- ggplot(ordermerge, aes(x = Var2, y = bacteriamean)) +
+	theme_classic() +
+	theme(
+		axis.text.x=element_blank(),
+		axis.ticks.x=element_blank(),
+		axis.text.y=element_blank(),
+		axis.ticks.y=element_blank(),
+		axis.title.y=element_blank(),
+		axis.line.x=element_blank(),
+		axis.line.y=element_blank()
+	) +
+	geom_bar(stat = "identity", position = "dodge", width=1) +
+	xlab("Bacterial OTUs") +
+	scale_y_reverse()
+
+allleg <- get_legend(allplot)
+anl <- allplot + theme(legend.position = "none")
+ap1 <- plot_grid(vimp, anl, NULL, bimp, nrow = 2, align = "hv", rel_widths = c(2, 10), rel_heights = c(10, 2))
+allplotf <- plot_grid(ap1, allleg, nrow = 1, rel_widths = c(4, 1))
 
 hcplot <- ggplot(fcordf, aes(x = Var2, y = Var1, fill = value)) +
 	theme_classic() +
@@ -218,10 +255,10 @@ hcplot <- ggplot(fcordf, aes(x = Var2, y = Var1, fill = value)) +
 		legend.position = "none"
 	) +
 	scale_fill_gradient2(low = "tomato4", mid = "white", high = "steelblue4", limits=c(-1,1)) +
-	ylab("Viral OGUs") +
+	ylab("Viral OVUs") +
 	xlab("Bacterial OTUs")
 
-topplot <- ggplot(topdf, aes(x = Var2, y = Var1, fill = value)) +
+topplot <- ggplot(topdf, aes(x = gsub("Otu0+", "OTU ", Var2), y = Var1, fill = value)) +
 	theme_classic() +
 	geom_tile(color = "white") +
 	theme(
@@ -233,8 +270,10 @@ topplot <- ggplot(topdf, aes(x = Var2, y = Var1, fill = value)) +
 		legend.position = "none"
 	) +
 	scale_fill_gradient2(low = "tomato4", mid = "white", high = "steelblue4", limits=c(-1,1)) +
-	ylab("Viral OGUs") +
-	xlab("Bacterial OTUs")
+	ylab("Viral OVUs") +
+	xlab("Bacterial OTUs") +
+	scale_x_discrete(labels = gsub("Otu0+", "OTU ", unique(topdf$Var2))) +
+	scale_y_discrete(labels = gsub("_", " ", unique(topdf$Var1)))
 
 ggplot(topvirus, aes(x = Var2, y = Var1, fill = value)) +
 	theme_classic() +
@@ -271,8 +310,8 @@ histplot <- ggplot(ordermerge, aes(x = value)) +
 	xlab("Pearson Correlation") +
 	ylab("Frequency")
 
-subsets <- plot_grid(topplot, histplot, ncol = 1, labels = c("B", "C"))
-finalplot <- plot_grid(allplot, subsets, labels = "A")
+subsets <- plot_grid(topplot, histplot, ncol = 1, labels = c("B", "C"), align = "v")
+finalplot <- plot_grid(allplotf, subsets, labels = "A")
 
 
 pdf("./figures/phage-bacteria-cor.pdf", height = 5, width = 12)
