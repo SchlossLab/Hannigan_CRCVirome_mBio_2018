@@ -4,7 +4,7 @@ draft: no
 sig:
  include: yes
  sign: yes
- post: Associate Professor
+ post: Professor
 cc:
 ---
 
