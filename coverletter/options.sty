@@ -1,0 +1,16 @@
+\usepackage{setspace}
+\doublespacing
+\usepackage[vmargin=1in,hmargin=1in]{geometry}
+\usepackage{lineno}
+\linenumbers
+\usepackage{parskip}
+\setlength{\parskip}{7.5pt}
+\exhyphenpenalty=10000
+\hyphenpenalty=10000
+
+\newcommand{\beginsupplement}{%
+        \setcounter{table}{0}
+        \renewcommand{\thetable}{S\arabic{table}}%
+        \setcounter{figure}{0}
+        \renewcommand{\thefigure}{S\arabic{figure}}%
+     }
