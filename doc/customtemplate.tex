@@ -198,12 +198,14 @@ $if(subtitle)$
 $endif$
 $if(author)$
     \usepackage{authblk}
+    \font\myfont=Helvetica at 12pt
+    \font\nextfont=Helvetica at 10pt
     $if(address)$
         $for(author)$
-            \author[$author.affiliation$]{$author.name$}
+            \author[$author.affiliation$]{\myfont $author.name$}
         $endfor$
         $for(address)$
-            \affil[$address.code$]{$address.address$}
+            \affil[$address.code$]{\nextfont $address.address$}
         $endfor$
     $else$
         $for(author)$
