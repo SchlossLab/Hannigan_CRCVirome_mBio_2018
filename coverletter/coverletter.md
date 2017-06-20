@@ -4,7 +4,8 @@ draft: no
 sig:
  include: yes
  sign: yes
- post: Professor
+ post: Associate Professor
+ secondpost: Frederick G. Novy Collegiat Professor of Microbiome Research
 cc:
 ---
 
@@ -20,6 +21,8 @@ Our lab strives to set high standards of reproducibility and transparency, while
 
 The data presented in this manuscript are original and the manuscript is not under consideration elsewhere. A preprint version of this manuscript has been made available through BioRxiv (doi: PENDING). All authors have read and approve the manuscript for publication.
 
+As editors, we suggest the following three editorial board members: **Jeffrey Miller**, **Dianne Griffin**, and **Todd Klaenhammer**. **Jeffrey Miller** is qualified to handle this paper because of his expertise in bacteriophage biology and phage interactions with their bacterial hosts. **Dianne Griffin** is qualified to handle this paper because of her expertise in virus pathogenesis. **Todd Klaenhammer** is qualified to handle this paper because of his expertise in the mechanisms involved in bacteriophage-bacteria interactions.
+
 We suggest the following reviewers for this publication:
 
 | **Alejandro Reyes Muñoz, PhD**
@@ -28,6 +31,8 @@ We suggest the following reviewers for this publication:
 | Universidad de los Andes
 | Email: a.reyes@uniandes.edu.co
 
+\newpage
+
 | **Katrine Whiteson, PhD**
 | Assistant Professor
 | School of Biological Sciences
@@ -35,13 +40,23 @@ We suggest the following reviewers for this publication:
 | University of California, Irvine
 | Email: katrine@uci.edu
 
-\newpage
-
 | **John Kirby, PhD**
 | Professor
 | Department of Microbiology and Immunology
 | Medical College of Wisconsin
 | Email: jkirby@mcw.edu
+
+| **Mya Breitbart, PhD**
+| Associate Professor
+| Dept. of Biological Oceanography
+| University of South Florida
+| Email: mya@usf.edu
+
+| **Bonnie Hurwitz, PhD**
+| Assistant Professor
+| Dept. of Agricultural and BioSystems Engineering
+| University of Arizona
+| Email: bhurwitz@email.arizona.edu
 
 Unfortunately, we must ask that Rob Knight and Matthew Sullivan not be used as an editor or reviewers since previous interactions with these individuals indicate that they are unable to provide an unbiased assessment of our work.
 
