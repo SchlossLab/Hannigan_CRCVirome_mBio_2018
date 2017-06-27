@@ -190,7 +190,7 @@ $header-includes$
 $endfor$
 
 $if(title)$
-\title{$title$$if(thanks)$\thanks{$thanks$}$endif$}
+  \title{$title$$if(thanks)$\thanks{$thanks$}$endif$}
 $endif$
 $if(subtitle)$
 \providecommand{\subtitle}[1]{}
@@ -198,8 +198,8 @@ $if(subtitle)$
 $endif$
 $if(author)$
     \usepackage{authblk}
-    \font\myfont=Helvetica at 12pt
-    \font\nextfont=Helvetica at 10pt
+    \font\myfont=Times at 12pt
+    \font\nextfont=Times at 10pt
     $if(address)$
         $for(author)$
             \author[$author.affiliation$]{\myfont $author.name$}
