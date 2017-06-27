@@ -44,11 +44,13 @@ We suggest the following reviewers for this publication:
 | Medical College of Wisconsin
 | Email: jkirby@mcw.edu
 
-| **Mya Breitbart, PhD**
-| Associate Professor
-| Dept. of Biological Oceanography
-| University of South Florida
-| Email: mya@usf.edu
+| **Nicholas Chia, PhD**
+| Assistant Professor
+| Center for Individualized Medicine
+| Department of Surgery
+| Department of Physiology and Biomedical Engineering
+| Mayo Clinic
+| Email: chia.nicholas@mayo.edu
 
 | **Bonnie Hurwitz, PhD**
 | Assistant Professor
