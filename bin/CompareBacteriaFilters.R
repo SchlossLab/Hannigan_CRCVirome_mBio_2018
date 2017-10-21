@@ -75,14 +75,14 @@ rarefybig <- function(x, subdepth) {
 }
 
 caretmodel <- function(x) {
-  fitControl <- trainControl(method = "repeatedcv",
+fitControl <- trainControl(method = "repeatedcv",
 	repeats = 5,
 	number=5,
 	classProbs = TRUE,
 	summaryFunction = twoClassSummary,
 	savePredictions = TRUE)
-  model <- train(V30~., data=x, trControl=fitControl, method="C5.0", metric="ROC", tuneLength=5)
-  return(model)
+model <- train(V30~., data=x, trControl=fitControl, method="rf", metric="ROC", tuneLength=5)
+return(model)
 }
 
 GetAverageImportance <- function(x, y) {
@@ -203,16 +203,54 @@ pcomb <- function(x, iterationcount = 25, topcount = 10) {
 	  return(importanceplot)
 }
 
+nestedcv <- function(x, iterations = 5, split = 0.75) {
+  outlist <- lapply(1:iterations, function(i) {
+    write(i, stdout())
+
+    trainIndex <- createDataPartition(
+      x$V30,
+      p = split,
+      list = FALSE, 
+      times = 1
+    )
+
+    dftrain <- x[trainIndex,]
+    dftest <- x[-trainIndex,]
+    
+    outmodel <- caretmodel(dftrain)
+    
+    x_test <- dftest[,-length(dftest)]
+    y_test <- dftest[,length(dftest)]
+    
+    outpred <- predict(outmodel, x_test, type="prob")
+    outpred$pred <- predict(outmodel, x_test)
+    outpred$obs <- y_test
+
+    # confusionMatrix(outpred, y_test)
+    # postResample(pred = outpred$pred, obs = outpred$obs)
+    sumout <- twoClassSummary(outpred, lev = levels(outpred$obs))
+    sumroc <- sumout[[1]]
+    sumsens <- sumout[[2]]
+    sumspec <- sumout[[3]]
+    return(list(sumroc, outpred, sumsens, sumspec))
+  })
+  
+  # Get the max and min values
+  rocpositions <- sapply(outlist,`[`,1)
+  maxl <- outlist[[match(max(unlist(rocpositions)), rocpositions)]]
+  medl <- outlist[[match(median(unlist(rocpositions)), rocpositions)]]
+  minl <- outlist[[match(min(unlist(rocpositions)), rocpositions)]]
+
+  return(c(maxl, medl, minl))
+}
+
 GetAverageAUC <- function(x, y) {
 	write(y, stderr())
-	functionmodel <- caretmodel(x)
-	highAUC <- functionmodel$results$ROC[order(functionmodel$results$ROC, decreasing = TRUE)[1]]
-	highSpec <- functionmodel$results$Spec[order(functionmodel$results$Spec, decreasing = TRUE)[1]]
-	highSens <- functionmodel$results$Sens[order(functionmodel$results$Sens, decreasing = TRUE)[1]]
-	# Get the number of features used
-	# Minux one because it will include the disease class as a feature
-	features <- length(attr(functionmodel$terms, "predvars")) - 1
-	resultdf <- data.frame(y,highAUC, highSpec, highSens, features)
+	functionmodel <- nestedcv(x)
+	avgAUC <- functionmodel[[5]]
+	avgSpec <- functionmodel[[8]]
+	avgSens <- functionmodel[[7]]
+	resultdf <- data.frame(y, avgAUC, avgSpec, avgSens)
 	return(resultdf)
 }
 
@@ -239,6 +277,7 @@ rareoutputbacteria <- do.call(rbind, rareoutput)
 ###################################
 # Bacteria Without Zero Filtering #
 ###################################
+
 inputbacteria$Group <- sub("^(\\D)(\\d)$","\\10\\2", sub("(.)\\D+(\\d+)", "\\1\\2", inputbacteria$Group, perl=TRUE))
 inputbacteria$Group <- as.factor(inputbacteria$Group)
 # Calculate as relative abundance
@@ -264,8 +303,8 @@ relabundremove$V30 <- droplevels(relabundremove$V30)
 pasubset <- relabundremove[,c(colSums(relabundremove != 0) > minsamps)]
 pasubsetmissingwozf <- pasubset[,-which(names(pasubset) %in% c("Group", "V2"))]
 
-subsetmodel <- caretmodel(pasubsetmissingwozf)
-subsetmodel
+caretmodel(pasubsetmissingwozf)
+nestedsubset <- nestedcv(pasubsetmissingwozf)
 
 withoutzerofilter <- lapply(c(1:iterationcount), function(i) GetAverageAUC(pasubsetmissingwozf, i))
 withoutzerofilterdf <- ldply(withoutzerofilter, data.frame)
@@ -298,6 +337,8 @@ relabundremove$V30 <- droplevels(relabundremove$V30)
 # Filter by presence/absence
 pasubset <- relabundremove[,c(colSums(relabundremove != 0) > minsamps)]
 pasubsetmissingwzf <- pasubset[,-which(names(pasubset) %in% c("Group", "V2"))]
+
+caretmodel(pasubsetmissingwzf)
 
 withzerofilter <- lapply(c(1:iterationcount), function(i) GetAverageAUC(pasubsetmissingwzf, i))
 withzerofilterdf <- ldply(withzerofilter, data.frame)
@@ -340,9 +381,9 @@ fmod
 # Combine the data frames with and without filtering
 cf <- rbind(withoutzerofilterdf, withzerofilterdf)
 
-statsig <- wilcox.test(cf$highAUC ~ cf$class)
+statsig <- wilcox.test(cf$avgAUC ~ cf$class)
 
-compplot <- ggplot(cf, aes(x = class, y = highAUC, fill = class)) +
+compplot <- ggplot(cf, aes(x = class, y = avgAUC, fill = class)) +
 	theme_classic() +
 	theme(legend.position="none") +
 	geom_dotplot(fill=wes_palette("Royal1")[4], binaxis = "y", stackdir = "center", position = "dodge", dotsize = 0.6) +
@@ -354,9 +395,9 @@ compplot <- ggplot(cf, aes(x = class, y = highAUC, fill = class)) +
 	) +
 	xlab("") +
 	ylab("Area Under the Curve") +
-	geom_segment(x = 1, xend = 2, y = 0.85, yend = 0.85) +
-	annotate("text", x = 1.5, y = 0.88, label = paste("p-value = ", signif(statsig$p.value, digits = 2), sep = ""), size = 4) +
-	ylim(0, 0.9) +
+	geom_segment(x = 1, xend = 2, y = 0.90, yend = 0.90) +
+	annotate("text", x = 1.5, y = 0.92, label = paste("p-value = ", signif(statsig$p.value, digits = 2), sep = ""), size = 4) +
+	ylim(0, 1) +
 	geom_hline(yintercept = 0.5, linetype = "dashed")
 
 allplot <- plot_grid(compplot, frabund, rel_widths = c(1.5,5), labels = c("A", "B"))

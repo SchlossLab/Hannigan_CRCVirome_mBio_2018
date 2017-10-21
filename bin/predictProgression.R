@@ -95,8 +95,8 @@ GetAverageImportance <- function(x, y) {
 	return(resultvardf)
 }
 
-plotimportance <- function(x, iterationcount = 10, topcount = 10) {
-	avgimportance <- lapply(c(1:iterationcount), function(i) GetAverageImportance(x, i))
+plotimportance <- function(x, iterationcount = 10, topcount = 10, corecount = 5) {
+	avgimportance <- mclapply(c(1:iterationcount), mc.cores = corecount, function(i) GetAverageImportance(x, i))
 	avgimportancedf <- ldply(avgimportance, data.frame)
 	import <- ddply(avgimportancedf, c("categories"), summarize, mean = mean(Overall))
 	importaverage <- merge(avgimportancedf, import, by = "categories")
@@ -199,13 +199,55 @@ pbi <- function(x, iterationcount = 10, topcount = 10) {
 
 GetAverageAUC <- function(x, y) {
 	write(y, stderr())
-	functionmodel <- caretmodel(x)
-	highAUC <- functionmodel$results$ROC[order(functionmodel$results$ROC, decreasing = TRUE)[1]]
-	highSpec <- functionmodel$results$Spec[order(functionmodel$results$Spec, decreasing = TRUE)[1]]
-	highSens <- functionmodel$results$Sens[order(functionmodel$results$Sens, decreasing = TRUE)[1]]
-	resultdf <- data.frame(y,highAUC, highSpec, highSens)
+	functionmodel <- nestedcv(x)
+	avgAUC <- functionmodel[[5]]
+	avgSpec <- functionmodel[[8]]
+	avgSens <- functionmodel[[7]]
+	resultdf <- data.frame(y, avgAUC, avgSpec, avgSens)
 	return(resultdf)
 }
+
+nestedcv <- function(x, iterations = 5, split = 0.75) {
+  outlist <- lapply(1:iterations, function(i) {
+    write(i, stdout())
+
+    trainIndex <- createDataPartition(
+      x$V30,
+      p = split,
+      list = FALSE, 
+      times = 1
+    )
+
+    dftrain <- x[trainIndex,]
+    dftest <- x[-trainIndex,]
+    
+    outmodel <- caretmodel(dftrain)
+    
+    x_test <- dftest[,-length(dftest)]
+    y_test <- dftest[,length(dftest)]
+    
+    outpred <- predict(outmodel, x_test, type="prob")
+    outpred$pred <- predict(outmodel, x_test)
+    outpred$obs <- y_test
+
+    # confusionMatrix(outpred, y_test)
+    # postResample(pred = outpred$pred, obs = outpred$obs)
+    sumout <- twoClassSummary(outpred, lev = levels(outpred$obs))
+    sumroc <- sumout[[1]]
+    sumsens <- sumout[[2]]
+    sumspec <- sumout[[3]]
+    return(list(sumroc, outpred, sumsens, sumspec))
+  })
+  
+  # Get the max and min values
+  rocpositions <- sapply(outlist,`[`,1)
+  maxl <- outlist[[match(max(unlist(rocpositions)), rocpositions)]]
+  medl <- outlist[[match(median(unlist(rocpositions)), rocpositions)]]
+  minl <- outlist[[match(min(unlist(rocpositions)), rocpositions)]]
+
+  return(c(maxl, medl, minl))
+}
+
 
 ##########################
 # Virus Prediction Model #
@@ -268,7 +310,9 @@ absmissingid <- abssubset[,-which(names(abssubset) %in% c("V22"))]
 
 length(absmissingid[,1])
 
-hva <- lapply(c(1:iterationcount), function(i) GetAverageAUC(absmissingid, i))
+nt <- nestedcv(absmissingid)
+
+hva <- mclapply(c(1:iterationcount), mc.cores = 5, function(i) GetAverageAUC(absmissingid, i))
 hvadf <- ldply(hva, data.frame)
 hvadf$class <- "hva"
 
@@ -285,7 +329,7 @@ absmissingid <- abssubset[,-which(names(abssubset) %in% c("V22"))]
 
 length(absmissingid[,1])
 
-avc <- lapply(c(1:iterationcount), function(i) GetAverageAUC(absmissingid, i))
+avc <- mclapply(c(1:iterationcount), mc.cores = 5, function(i) GetAverageAUC(absmissingid, i))
 avcdf <- ldply(avc, data.frame)
 avcdf$class <- "avc"
 
@@ -301,7 +345,7 @@ absmissingid <- abssubset[,-which(names(abssubset) %in% c("V22"))]
 
 length(absmissingid[,1])
 
-hvc <- lapply(c(1:iterationcount), function(i) GetAverageAUC(absmissingid, i))
+hvc <- mclapply(c(1:iterationcount), mc.cores = 5, function(i) GetAverageAUC(absmissingid, i))
 hvcdf <- ldply(hvc, data.frame)
 hvcdf$class <- "hvc"
 
@@ -352,7 +396,7 @@ relabundremove$V30 <- droplevels(relabundremove$V30)
 pasubset <- relabundremove[,c(colSums(relabundremove != 0) > minsamps)]
 pasubsetmissing <- pasubset[,-which(names(pasubset) %in% c("Group", "V2"))]
 
-bhva <- lapply(c(1:iterationcount), function(i) GetAverageAUC(absmissingid, i))
+bhva <- mclapply(c(1:iterationcount), mc.cores = 5, function(i) GetAverageAUC(absmissingid, i))
 bhvadf <- ldply(bhva, data.frame)
 bhvadf$class <- "bhva"
 
@@ -367,7 +411,7 @@ relabundremove$V30 <- droplevels(relabundremove$V30)
 pasubset <- relabundremove[,c(colSums(relabundremove != 0) > minsamps)]
 pasubsetmissing <- pasubset[,-which(names(pasubset) %in% c("Group", "V2"))]
 
-bavc <- lapply(c(1:iterationcount), function(i) GetAverageAUC(absmissingid, i))
+bavc <- mclapply(c(1:iterationcount), mc.cores = 5, function(i) GetAverageAUC(absmissingid, i))
 bavcdf <- ldply(bavc, data.frame)
 bavcdf$class <- "bavc"
 
@@ -382,7 +426,7 @@ relabundremove$V30 <- droplevels(relabundremove$V30)
 pasubset <- relabundremove[,c(colSums(relabundremove != 0) > minsamps)]
 pasubsetmissing <- pasubset[,-which(names(pasubset) %in% c("Group", "V2"))]
 
-bhvc <- lapply(c(1:iterationcount), function(i) GetAverageAUC(absmissingid, i))
+bhvc <- mclapply(c(1:iterationcount), mc.cores = 5, function(i) GetAverageAUC(absmissingid, i))
 bhvcdf <- ldply(bhvc, data.frame)
 bhvcdf$class <- "bhvc"
 
@@ -398,7 +442,7 @@ vauc$class <- factor(vauc$class, levels = vauc$class)
 bauc <- rbind(bhvadf, bavcdf, bhvcdf)
 bauc$class <- factor(bauc$class, levels = bauc$class)
 
-vplot <- ggplot(vauc, aes(x = class, y = highAUC)) +
+vplot <- ggplot(vauc, aes(x = class, y = avgAUC)) +
 	theme_classic() +
 	theme(axis.text.x = element_text(angle=45, hjust = 1)) +
 	geom_point() +
@@ -408,7 +452,7 @@ vplot <- ggplot(vauc, aes(x = class, y = highAUC)) +
 	xlab("") +
 	scale_x_discrete(labels = c("Healthy vs Adenoma", "Adenoma vs Cancer", "Healthy vs Cancer"))
 
-bplot <- ggplot(bauc, aes(x = class, y = highAUC)) +
+bplot <- ggplot(bauc, aes(x = class, y = avgAUC)) +
 	theme_classic() +
 	theme(axis.text.x = element_text(angle=45, hjust = 1)) +
 	geom_point() +

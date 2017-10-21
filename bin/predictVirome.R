@@ -93,8 +93,8 @@ GetAverageImportance <- function(x, y) {
 	return(resultvardf)
 }
 
-plotimportance <- function(x, iterationcount = 25, topcount = 10) {
-	avgimportance <- lapply(c(1:iterationcount), function(i) GetAverageImportance(x, i))
+plotimportance <- function(x, iterationcount = 25, topcount = 10, corecount = 5) {
+	avgimportance <- mclapply(c(1:iterationcount), mc.cores = corecount, function(i) GetAverageImportance(x, i))
 	avgimportancedf <- ldply(avgimportance, data.frame)
 	import <- ddply(avgimportancedf, c("categories"), summarize, mean = mean(Overall))
 	importaverage <- merge(avgimportancedf, import, by = "categories")
@@ -161,8 +161,8 @@ plotimportance <- function(x, iterationcount = 25, topcount = 10) {
 	return(importanceplot)
 }
 
-pbi <- function(x, iterationcount = 25, topcount = 10) {
-	avgimportance <- lapply(c(1:iterationcount), function(i) GetAverageImportance(x, i))
+pbi <- function(x, iterationcount = 25, topcount = 10, corecount = 5) {
+	avgimportance <- mclapply(c(1:iterationcount), mc.cores = corecount, function(i) GetAverageImportance(x, i))
 	avgimportancedf <- ldply(avgimportance, data.frame)
 	import <- ddply(avgimportancedf, c("categories"), summarize, mean = mean(Overall))
 	importaverage <- merge(avgimportancedf, import, by = "categories")
@@ -208,8 +208,8 @@ pbi <- function(x, iterationcount = 25, topcount = 10) {
 	return(importanceplot)
 }
 
-pcomb <- function(x, iterationcount = 25, topcount = 10) {
-	avgimportance <- lapply(c(1:iterationcount), function(i) GetAverageImportance(x, i))
+pcomb <- function(x, iterationcount = 25, topcount = 10, corecount = 5) {
+	avgimportance <- mclapply(c(1:iterationcount), mc.cores = corecount, function(i) GetAverageImportance(x, i))
 	avgimportancedf <- ldply(avgimportance, data.frame)
 	import <- ddply(avgimportancedf, c("categories"), summarize, mean = mean(Overall))
 	importaverage <- merge(avgimportancedf, import, by = "categories")
@@ -260,6 +260,47 @@ pcomb <- function(x, iterationcount = 25, topcount = 10) {
 	coord_flip()
 
 	return(importanceplot)
+}
+
+nestedcv <- function(x, iterations = 5, split = 0.75) {
+  outlist <- lapply(1:iterations, function(i) {
+    write(i, stdout())
+
+    trainIndex <- createDataPartition(
+      x$V30,
+      p = split,
+      list = FALSE, 
+      times = 1
+    )
+
+    dftrain <- x[trainIndex,]
+    dftest <- x[-trainIndex,]
+    
+    outmodel <- caretmodel(dftrain)
+    
+    x_test <- dftest[,-length(dftest)]
+    y_test <- dftest[,length(dftest)]
+    
+    outpred <- predict(outmodel, x_test, type="prob")
+    outpred$pred <- predict(outmodel, x_test)
+    outpred$obs <- y_test
+
+    # confusionMatrix(outpred, y_test)
+    # postResample(pred = outpred$pred, obs = outpred$obs)
+    sumout <- twoClassSummary(outpred, lev = levels(outpred$obs))
+    sumroc <- sumout[[1]]
+    sumsens <- sumout[[2]]
+    sumspec <- sumout[[3]]
+    return(list(sumroc, outpred, sumsens, sumspec))
+  })
+  
+  # Get the max and min values
+  rocpositions <- sapply(outlist,`[`,1)
+  maxl <- outlist[[match(max(unlist(rocpositions)), rocpositions)]]
+  medl <- outlist[[match(median(unlist(rocpositions)), rocpositions)]]
+  minl <- outlist[[match(min(unlist(rocpositions)), rocpositions)]]
+
+  return(c(maxl, medl, minl))
 }
 
 ##########################
@@ -326,6 +367,8 @@ length(absmissingid[,1])
 outmodel <- caretmodel(absmissingid)
 outmodel
 
+virusnested <- nestedcv(absmissingid)
+
 # Iterate to get average importance plot
 importanceplot <- plotimportance(absmissingid)
 
@@ -375,6 +418,8 @@ pasubsetmissing <- pasubset[,-which(names(pasubset) %in% c("Group", "V2"))]
 
 subsetmodel <- caretmodel(pasubsetmissing)
 subsetmodel
+
+bacterianested <- nestedcv(pasubsetmissing)
 
 importanceplotbac <- pbi(pasubsetmissing)
 
@@ -427,6 +472,8 @@ metaabsmissingid <- metaabssubset[,-which(names(metaabssubset) %in% c("V22"))]
 metaoutmodel <- caretmodel(metaabsmissingid)
 metaoutmodel
 
+metanested <- nestedcv(metaabsmissingid)
+
 #################################
 # Merge Bacteria and Viral Data #
 #################################
@@ -437,6 +484,8 @@ colnames(virusbacteria)[colnames(virusbacteria)=="V30.y"] <- "V30"
 combomodel <- caretmodel(virusbacteria)
 combomodel
 
+combonested <- nestedcv(virusbacteria)
+
 # Get the variable importance
 importanceplotcombo <- pcomb(virusbacteria)
 
@@ -445,29 +494,29 @@ importanceplotcombo <- pcomb(virusbacteria)
 ############################
 GetAverageAUC <- function(x, y) {
 	write(y, stderr())
-	functionmodel <- caretmodel(x)
-	highAUC <- functionmodel$results$ROC[order(functionmodel$results$ROC, decreasing = TRUE)[1]]
-	highSpec <- functionmodel$results$Spec[order(functionmodel$results$Spec, decreasing = TRUE)[1]]
-	highSens <- functionmodel$results$Sens[order(functionmodel$results$Sens, decreasing = TRUE)[1]]
-	resultdf <- data.frame(y,highAUC, highSpec, highSens)
+	functionmodel <- nestedcv(x)
+	avgAUC <- functionmodel[[5]]
+	avgSpec <- functionmodel[[8]]
+	avgSens <- functionmodel[[7]]
+	resultdf <- data.frame(y, avgAUC, avgSpec, avgSens)
 	return(resultdf)
 }
 
 iterationcount <- 20
 
-viromeauc <- lapply(c(1:iterationcount), function(i) GetAverageAUC(absmissingid, i))
+viromeauc <- mclapply(c(1:iterationcount), mc.cores = 5, function(i) GetAverageAUC(absmissingid, i))
 viromeaucdf <- ldply(viromeauc, data.frame)
 viromeaucdf$class <- "Virus"
 
-bacteriaauc <- lapply(c(1:iterationcount), function(i) GetAverageAUC(pasubsetmissing, i))
+bacteriaauc <- mclapply(c(1:iterationcount), mc.cores = 5, function(i) GetAverageAUC(pasubsetmissing, i))
 bacteriaaucdf <- ldply(bacteriaauc, data.frame)
 bacteriaaucdf$class <- "Bacteria"
 
-comboauc <- lapply(c(1:iterationcount), function(i) GetAverageAUC(virusbacteria, i))
+comboauc <- mclapply(c(1:iterationcount), mc.cores = 5, function(i) GetAverageAUC(virusbacteria, i))
 comboaucdf <- ldply(comboauc, data.frame)
 comboaucdf$class <- "Combined"
 
-metagenomeauc <- lapply(c(1:iterationcount), function(i) GetAverageAUC(metaabsmissingid, i))
+metagenomeauc <- mclapply(c(1:iterationcount), mc.cores = 5, function(i) GetAverageAUC(metaabsmissingid, i))
 metagenomeaucdf <- ldply(metagenomeauc, data.frame)
 metagenomeaucdf$class <- "Metagenomic"
 
@@ -477,7 +526,7 @@ ordervector <- c("Bacteria", "Virus", "Combined", "Metagenomic")
 megatron <- megatron[order(ordered(megatron$class, levels = ordervector), decreasing = FALSE),]
 megatron$class <- factor(megatron$class, levels = megatron$class)
 
-aucstat <- pairwise.wilcox.test(x=megatron$highAUC, g=megatron$class, p.adjust.method="BH")
+aucstat <- pairwise.wilcox.test(x=megatron$avgAUC, g=megatron$class, p.adjust.method="BH")
 aucpv <- melt(aucstat$p.value)
 da <- as.data.frame(ordervector)
 colnames(da) <- "name"
@@ -491,9 +540,17 @@ aucpvg <- merge(aucpvg, da, by.x = "Var2", by.y = "name")
 binlength <- c(1:4) + 0.5
 
 # Get average stats for each category
-aucstats <- ddply(megatron, "class", summarize, meanAUC = mean(highAUC), meanSPEC = mean(highSpec), meanSENS = mean(highSens))
+aucstats <- ddply(megatron, "class", summarize, meanAUC = mean(avgAUC), meanSPEC = mean(avgSpec), meanSENS = mean(avgSens))
 
-auccompareplot <- ggplot(megatron, aes(x = class, y = highAUC, fill = class)) +
+megatron$class <- gsub("Bacteria", "Bac (16S)", megatron$class)
+megatron$class <- gsub("Virus", "Virus MG", megatron$class)
+megatron$class <- gsub("Combined", "Bac (16S) + Virus MG", megatron$class)
+megatron$class <- gsub("Metagenomic", "Whole MG", megatron$class)
+megatron$class <- factor(megatron$class, levels = megatron$class)
+
+# To save some time I manually added the sig bars this round. Could
+# come back and automate it later...
+auccompareplot <- ggplot(megatron, aes(x = class, y = avgAUC, fill = class)) +
 	theme_classic() +
 	theme(legend.position="none") +
 	geom_dotplot(fill=wes_palette("Royal1")[2], binaxis = "y", binwidth = 0.005, stackdir = "center") +
@@ -507,9 +564,13 @@ auccompareplot <- ggplot(megatron, aes(x = class, y = highAUC, fill = class)) +
 	) +
 	xlab("") +
 	ylab("Area Under the Curve") +
-	geom_segment(x = aucpvg[1,"id.x"], xend = aucpvg[1,"id.y"], y = 0.88, yend = 0.88) +
-	annotate("text", x = mean(c(aucpvg[1,"id.x"], aucpvg[1,"id.y"])), y = 0.89, label = "N.S.", size = 4) +
-	ylim(0, 0.9) +
+	geom_segment(x = 1, xend = 4, y = 0.95, yend = 0.95) +
+	annotate("text", x = 2.5, y = 0.955, label = "*", size = 7) +
+	geom_segment(x = 2, xend = 4, y = 0.99, yend = 0.99) +
+	annotate("text", x = 3, y = 0.995, label = "*", size = 7) +
+	geom_segment(x = 3, xend = 4, y = 1.03, yend = 1.03) +
+	annotate("text", x = 3.5, y = 1.035, label = "*", size = 7) +
+	ylim(0, 1.05) +
 	geom_hline(yintercept = 0.5, linetype = "dashed")
 
 auccompareplot
@@ -517,14 +578,24 @@ auccompareplot
 ###############################
 # Compare Bacteria and Virus#
 ###############################
-subsetmodel$pred$class <- "Bacteria"
-outmodel$pred$class <- "Virus"
-combomodel$pred$class <- "Combined"
-metaoutmodel$pred$class <- "Metagenome"
-boundmodel <- rbind(subsetmodel$pred, outmodel$pred, combomodel$pred, metaoutmodel$pred)
+vn <- virusnested[[6]]
+bn <- bacterianested[[6]]
+mn <- metanested[[6]]
+cn <- combonested[[6]]
+bn$class <- "Bacteria"
+vn$class <- "Virus"
+cn$class <- "Combined"
+mn$class <- "Metagenome"
+boundmodel <- rbind(bn, vn, cn, mn)
 
 boundmodel <- boundmodel[order(ordered(boundmodel$class, levels = ordervector), decreasing = FALSE),]
 boundmodel$class <- factor(boundmodel$class, levels = boundmodel$class)
+
+# Change the label IDs
+boundmodel$class <- gsub("Bacteria", "Bac (16S)", boundmodel$class)
+boundmodel$class <- gsub("Virus", "Virus MG", boundmodel$class)
+boundmodel$class <- gsub("Combined", "Bac (16S) + Virus MG", boundmodel$class)
+boundmodel$class <- gsub("Metagenome", "Whole MG", boundmodel$class)
 
 # Plot the ROC curve
 boundplot <- ggplot(boundmodel, aes(d = obs, m = Healthy, color = class)) +
@@ -538,72 +609,6 @@ boundplot <- ggplot(boundmodel, aes(d = obs, m = Healthy, color = class)) +
 	)
 boundplot
 
-# Plot just bacteria
-bacplot <- ggplot(boundmodel[c(boundmodel$class %in% "Bacteria"),], aes(d = obs, m = Healthy, color = class)) +
-	geom_roc(n.cuts = 0) +
-	style_roc() +
-	scale_color_manual(values = wes_palette("Royal1")[1], name = "Disease") +
-	theme(
-		legend.position = "none",
-		legend.background = element_rect(colour = "black")
-		) +
-	annotate("text", label = "Bacterial 16S", x = 0.5, y = 0.9, color = wes_palette("Royal1")[1], size = 5)
-
-bacmetplot <- ggplot(boundmodel[c(boundmodel$class %in% "Bacteria" | boundmodel$class %in% "Metagenome"),], aes(d = obs, m = Healthy, color = class)) +
-	geom_roc(n.cuts = 0) +
-	style_roc() +
-	scale_color_manual(values = wes_palette("Royal1")[c(1,3)], name = "Disease") +
-	theme(
-		legend.position = "none",
-		legend.background = element_rect(colour = "black")
-		) +
-	annotate("text", label = "Bacterial 16S", x = 0.5, y = 0.9, color = wes_palette("Royal1")[1], size = 5) +
-	annotate("text", label = "Bacterial\nMetagenome", x = 0.75, y = 0.5, color = "tan", size = 5)
-
-bacmetvirplot <- ggplot(boundmodel[c(boundmodel$class %in% "Bacteria" | boundmodel$class %in% "Virus"),], aes(d = obs, m = Healthy, color = class)) +
-	geom_roc(n.cuts = 0) +
-	style_roc() +
-	scale_color_manual(values = wes_palette("Royal1")[c(1,4)], name = "Disease") +
-	theme(
-		legend.position = "none",
-		legend.background = element_rect(colour = "black")
-		) +
-	annotate("text", label = "Bacterial 16S", x = 0.5, y = 0.63, color = wes_palette("Royal1")[1], size = 5) +
-	annotate("text", label = "Virome", x = 0.35, y = 0.9, color = wes_palette("Royal1")[4], size = 5)
-
-totalplot <- ggplot(boundmodel[c(boundmodel$class %in% "Bacteria" | boundmodel$class %in% "Virus" | boundmodel$class %in% "Combined"),], aes(d = obs, m = Healthy, color = class)) +
-	geom_roc(n.cuts = 0) +
-	style_roc() +
-	scale_color_manual(values = wes_palette("Royal1")[c(1,2,4)], name = "Disease") +
-	theme(
-		legend.position = "none",
-		legend.background = element_rect(colour = "black")
-		) +
-	annotate("text", label = "Bacterial 16S", x = 0.5, y = 0.63, color = wes_palette("Royal1")[1], size = 5) +
-	annotate("text", label = "Virome", x = 0.35, y = 0.9, color = wes_palette("Royal1")[4], size = 5) +
-	annotate("text", label = "Virome\n+ 16S rRNA", x = 0.1, y = 0.75, color = wes_palette("Royal1")[2], size = 5)
-
-selectauccompareplot <- ggplot(megatron[c(megatron$class %in% "Bacteria" | megatron$class %in% "Virus" | megatron$class %in% "Combined"),], aes(x = class, y = highAUC, fill = class)) +
-	theme_classic() +
-	theme(legend.position="none") +
-	geom_dotplot(fill=wes_palette("Royal1")[2], binaxis = "y", binwidth = 0.005, stackdir = "center") +
-	stat_summary(fun.y = mean, fun.ymin = mean, fun.ymax = mean, geom = "crossbar", width = 0.5) +
-	geom_vline(xintercept=binlength,color="grey") +
-	scale_fill_manual(values = wes_palette("Royal1")) +
-	theme(
-		axis.line.x = element_line(colour = "black"),
-		axis.line.y = element_line(colour = "black"),
-		axis.text.x = element_text(angle = 45, hjust = 1)
-	) +
-	xlab("") +
-	ylab("Area Under the Curve") +
-	geom_segment(x = 1, xend = 3, y = 0.88, yend = 0.88) +
-	annotate("text", x = 2, y = 0.9, label = "N.S.", size = 4) +
-	ylim(0, 0.9) +
-	geom_hline(yintercept = 0.5, linetype = "dashed")
-
-selectauccompareplot
-
 # Compare importance
 bottomgrid <- plot_grid(importanceplotbac, importanceplot, importanceplotcombo, labels = LETTERS[3:5], ncol = 1, align = "v")
 topgrid <- plot_grid(boundplot, auccompareplot, labels = LETTERS[1:2], nrow = 1, rel_widths = c(2,1))
@@ -612,13 +617,6 @@ finalgridplot
 
 pdf("./figures/predmodel-viromebacteria.pdf", height = 6, width = 13)
 	finalgridplot
-dev.off()
-
-pdf("./figures/auc-for-pres.pdf", height = 5, width = 5)
-	bacplot
-	bacmetplot
-	bacmetvirplot
-	totalplot
 dev.off()
 
 pdf("./figures/auccomp-for-pres.pdf", height = 5, width = 3)

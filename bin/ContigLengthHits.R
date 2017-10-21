@@ -50,7 +50,8 @@ viruscontigplot <- ggplot(mergedabund, aes(x=Length, y=sum)) +
     scale_y_log10() +
     scale_x_log10() +
     xlab("Contig Length (log bp)") +
-    ylab("Sequences Mapping to Contigs (log)")
+    ylab("Sequences Mapping to Contigs (log)") +
+    ggtitle("Virus")
 
 mergedclusters <- merge(mergedabund, clusters, by = "ContigID")
 
@@ -61,9 +62,10 @@ virusclusterplot <- ggplot(clusterstats, aes(x=avglength, y=sumcount)) +
     geom_point() +
     scale_fill_gradientn(colours=c("steelblue4", "steelblue3", "steelblue2","steelblue1","slategray1")) +
     scale_y_log10() +
-    scale_x_log10() +
+    scale_x_log10(limits = 10^c(3,5.5)) +
     xlab("Average Cluster Length (log bp)") +
-    ylab("Sequences Mapping to Clusters (log)")
+    ylab("Sequences Mapping to Clusters (log)") +
+    ggtitle("Virus")
 
 # Bacteria
 
@@ -85,7 +87,8 @@ bacteriacontigplot <- ggplot(mergedabundbac, aes(x=Length, y=sum)) +
     scale_y_log10() +
     scale_x_log10() +
     xlab("Contig Length (log bp)") +
-    ylab("Sequences Mapping to Contigs (log)")
+    ylab("Sequences Mapping to Contigs (log)") +
+    ggtitle("Bacteria")
 
 mergedclustersbac <- merge(mergedabundbac, clustersbac, by = "ContigID")
 
@@ -94,11 +97,11 @@ clustersbactats <- ddply(mergedclustersbac, "Cluster", summarize, sumcount = sum
 bacteriaclusterplot <- ggplot(clustersbactats, aes(x=avglength, y=sumcount)) +
     theme_classic() +
     geom_point() +
-    scale_fill_gradientn(colours=c("steelblue4", "steelblue3", "steelblue2","steelblue1","slategray1")) +
     scale_y_log10() +
-    scale_x_log10() +
+    scale_x_log10(limits = 10^c(3,5.5)) +
     xlab("Average Cluster Length (log bp)") +
-    ylab("Sequences Mapping to Clusters (log)")
+    ylab("Sequences Mapping to Clusters (log)") +
+    ggtitle("Bacteria")
 
 totalplot <- plot_grid(viruscontigplot, virusclusterplot, bacteriacontigplot, bacteriaclusterplot, ncol = 2, labels = c("A", "B", "C", "D"))
 

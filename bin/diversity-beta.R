@@ -183,7 +183,7 @@ shannonplot <- ggplot(mergedshannon, aes(x=V30, y=ShannonDiv, fill=V30)) +
     geom_boxplot(notch=FALSE) +
     xlab("Health Status") +
     ylab("Shannon Diversity") +
-    scale_fill_manual(values = alpha(wes_palette("Royal1"), 0.75))
+    scale_fill_manual(values = alpha(wes_palette("Darjeeling"), 0.75))
 pairwise.wilcox.test(x=mergedshannon$ShannonDiv, g=mergedshannon$V30, p.adjust.method="bonferroni")
 
 inputrich <- data.frame(rownames(negcast), rarefy(negcast, sample=100000))
@@ -196,7 +196,7 @@ richplot <- ggplot(mergedrich, aes(x=V30, y=Rich, fill=V30)) +
     geom_boxplot(notch=FALSE) +
     xlab("Health Status") +
     ylab("Richness") +
-    scale_fill_manual(values = alpha(wes_palette("Royal1"), 0.75))
+    scale_fill_manual(values = alpha(wes_palette("Darjeeling"), 0.75))
 pairwise.wilcox.test(x=mergedrich$Rich, g=mergedrich$V30, p.adjust.method="bonferroni")
 
 
@@ -208,8 +208,8 @@ pdf(file="./figures/diversity-beta-ogu.pdf", width=14, height=4)
     gridplotnoneg
 dev.off()
 
-pdf(file="./figures/diversity-beta-ogu-negative.pdf", width=10, height=4)
-    gridplot
+pdf(file="./figures/diversity-beta-ogu-negative.pdf", width=6, height=4)
+    plotdiffs
 dev.off()
 
 fortable <- data.frame(rbind(anovastatwithneg, anovastatwithoutneg))

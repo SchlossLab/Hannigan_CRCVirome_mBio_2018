@@ -8,6 +8,7 @@ library("dplyr")
 library("caret")
 library("cowplot")
 library("matrixStats")
+library("parallel")
 
 minavgrelabund <- 0
 minsamps <- 30
@@ -27,7 +28,7 @@ caretmodel <- function(x) {
 }
 
 makemeanroc <- function(x, keep = "Cancer", remove = "Adenoma", one = "Healthy") {
-	plotx <- x$pred
+	plotx <- x
 	plotx[plotx==remove]<-keep
 	plotx$all <- plotx[, keep] + plotx[, remove]
 	plotx$one <- plotx[, one]
@@ -58,8 +59,8 @@ GetAverageImportance <- function(x, y) {
 	return(resultvardf)
 }
 
-plotimportance <- function(x, iterationcount = 25, topcount = 10) {
-	avgimportance <- lapply(c(1:iterationcount), function(i) GetAverageImportance(x, i))
+plotimportance <- function(x, iterationcount = 25, topcount = 10, corecount = 5) {
+	avgimportance <- mclapply(c(1:iterationcount), mc.cores = corecount, function(i) GetAverageImportance(x, i))
 	avgimportancedf <- ldply(avgimportance, data.frame)
 	import <- ddply(avgimportancedf, c("categories"), summarize, mean = mean(Overall), stder = sd(Overall)/sqrt(length(Overall)))
 	importaverage <- merge(avgimportancedf, import, by = "categories")
@@ -178,10 +179,51 @@ pbi <- function(x, iterationcount = 25, topcount = 10) {
 
 GetAverageAUC <- function(x, y) {
 	write(y, stderr())
-	functionmodel <- caretmodel(x)
-	highAUC <- functionmodel$results$Mean_AUC[order(functionmodel$results$Mean_AUC, decreasing = TRUE)[1]]
-	resultdf <- data.frame(y,highAUC)
+	functionmodel <- nestedcv(x)
+	avgAUC <- functionmodel[[5]]
+	avgSpec <- functionmodel[[8]]
+	avgSens <- functionmodel[[7]]
+	resultdf <- data.frame(y, avgAUC, avgSpec, avgSens)
 	return(resultdf)
+}
+
+nestedcv <- function(x, iterations = 5, split = 0.75) {
+  outlist <- lapply(1:iterations, function(i) {
+    write(i, stdout())
+
+    trainIndex <- createDataPartition(
+      x$V30,
+      p = split,
+      list = FALSE, 
+      times = 1
+    )
+
+    dftrain <- x[trainIndex,]
+    dftest <- x[-trainIndex,]
+    
+    outmodel <- caretmodel(dftrain)
+    
+    x_test <- dftest[,-length(dftest)]
+    y_test <- dftest[,length(dftest)]
+    
+    outpred <- predict(outmodel, x_test, type="prob")
+    outpred$pred <- predict(outmodel, x_test)
+    outpred$obs <- y_test
+
+    sumout <- multiClassSummary(outpred, lev = levels(outpred$obs))
+    sumroc <- sumout[[2]]
+    sumsens <- sumout[[6]]
+    sumspec <- sumout[[7]]
+    return(list(sumroc, outpred, sumsens, sumspec))
+  })
+  
+  # Get the max and min values
+  rocpositions <- sapply(outlist,`[`,1)
+  maxl <- outlist[[match(max(unlist(rocpositions)), rocpositions)]]
+  medl <- outlist[[match(median(unlist(rocpositions)), rocpositions)]]
+  minl <- outlist[[match(min(unlist(rocpositions)), rocpositions)]]
+
+  return(c(maxl, medl, minl))
 }
 
 
@@ -246,7 +288,9 @@ length(absmissingid[,1])
 outmodel <- caretmodel(absmissingid)
 outmodel
 
-modelmeanroc <- threeclassmeanroc(outmodel)
+virusnested <- nestedcv(absmissingid)
+
+modelmeanroc <- threeclassmeanroc(virusnested[[6]])
 
 # Plot the ROC curve
 meanrocvirome <- ggplot(modelmeanroc, aes(d = obs, m = one, color = class)) +
@@ -355,7 +399,10 @@ pasubsetmissing <- pasubset[,-which(names(pasubset) %in% c("Group", "V2"))]
 subsetmodel <- caretmodel(pasubsetmissing)
 subsetmodel
 
-modelmeanrocbacteria <- threeclassmeanroc(subsetmodel)
+
+bacterianested <- nestedcv(pasubsetmissing)
+
+modelmeanrocbacteria <- threeclassmeanroc(bacterianested[[6]])
 
 # Plot the ROC curve
 meanrocbacteria <- ggplot(modelmeanrocbacteria, aes(d = obs, m = one, color = class)) +
@@ -378,22 +425,23 @@ importanceplotbac <- pbi(pasubsetmissing)
 # Quantify AUC Differences #
 ############################
 iterationcount <- 10
+cores <- 5
 
-viromeauc <- lapply(c(1:iterationcount), function(i) GetAverageAUC(absmissingid, i))
+viromeauc <- mclapply(c(1:iterationcount), mc.cores = cores, function(i) GetAverageAUC(absmissingid, i))
 viromeaucdf <- ldply(viromeauc, data.frame)
 viromeaucdf$class <- "Virus"
 
-bacteriaauc <- lapply(c(1:iterationcount), function(i) GetAverageAUC(pasubsetmissing, i))
+bacteriaauc <- mclapply(c(1:iterationcount), mc.cores = cores, function(i) GetAverageAUC(pasubsetmissing, i))
 bacteriaaucdf <- ldply(bacteriaauc, data.frame)
 bacteriaaucdf$class <- "Bacteria"
 
 megatron <- rbind(viromeaucdf, bacteriaaucdf)
 
-statsig <- wilcox.test(megatron$highAUC ~ megatron$class)
+statsig <- wilcox.test(megatron$avgAUC ~ megatron$class)
 
 binlength <- c(1:2) + 0.5
 
-auccompareplot <- ggplot(megatron, aes(x = class, y = highAUC, fill = class)) +
+auccompareplot <- ggplot(megatron, aes(x = class, y = avgAUC, fill = class)) +
 	theme_classic() +
 	theme(legend.position="none") +
 	geom_dotplot(fill=wes_palette("Royal1")[2], binaxis = "y", binwidth = 0.015, stackdir = "center") +
@@ -410,7 +458,7 @@ auccompareplot <- ggplot(megatron, aes(x = class, y = highAUC, fill = class)) +
 	annotate("text", x = 1.5, y = 0.84, label = paste("p-value = ", signif(statsig$p.value, digits = 2), sep = ""), size = 4) +
 	ylim(0, 0.85)
 
-aucstat <- ddply(megatron, "class", summarize, meanauc = mean(highAUC))
+aucstat <- ddply(megatron, "class", summarize, meanauc = mean(avgAUC))
 
 
 ###############################
