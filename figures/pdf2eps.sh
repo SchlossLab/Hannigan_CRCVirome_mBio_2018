@@ -1,0 +1,14 @@
+pdftops -eps sample-processing.pdf
+pdftops -eps predmodel-viromebacteria.pdf
+pdftops -eps phage-bacteria-cor.pdf
+pdftops -eps lysogenic-relabund.pdf
+pdftops -eps WorkingHypothesis.pdf
+pdftops -eps qualitycontrol.pdf
+pdftops -eps qc-contiglengthcoverage.pdf
+pdftops -eps diversity-beta-ogu.pdf
+pdftops -eps diversity-beta-ogu-negative.pdf
+pdftops -eps filtered16S.pdf
+pdftops -eps temporalmodels.pdf
+pdftops -eps predmodel-threewayclassification.pdf
+pdftops -eps NetworkAndScatter.pdf
+convert ./contiglengthbycluster.png contiglengthbycluster.tiff

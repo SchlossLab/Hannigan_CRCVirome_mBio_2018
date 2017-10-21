@@ -1,0 +1,5982 @@
+%!PS-Adobe-3.0 EPSF-3.0
+%XpdfVersion: 3.04
+%%Creator: R
+%%Title: R Graphics Output
+%%LanguageLevel: 2
+%%DocumentSuppliedResources: (atend)
+%%BoundingBox: 0 0 1152 432
+%%EndComments
+%%BeginProlog
+%%BeginResource: procset xpdf 3.04 0
+%%Copyright: Copyright 1996-2014 Glyph & Cog, LLC
+/xpdf 75 dict def xpdf begin
+% PDF special state
+/pdfDictSize 15 def
+/pdfSetup {
+  /pdfDuplex exch def
+  /setpagedevice where {
+    pop 2 dict begin
+      /Policies 1 dict dup begin /PageSize 6 def end def
+      pdfDuplex { /Duplex true def } if
+    currentdict end setpagedevice
+  } if
+  /pdfPageW 0 def
+  /pdfPageH 0 def
+} def
+/pdfSetupPaper {
+  2 copy pdfPageH ne exch pdfPageW ne or {
+    /pdfPageH exch def
+    /pdfPageW exch def
+    /setpagedevice where {
+      pop 3 dict begin
+        /PageSize [pdfPageW pdfPageH] def
+        pdfDuplex { /Duplex true def } if
+        /ImagingBBox null def
+      currentdict end setpagedevice
+    } if
+  } {
+    pop pop
+  } ifelse
+} def
+/pdfStartPage {
+  pdfDictSize dict begin
+  /pdfFillCS [] def
+  /pdfFillXform {} def
+  /pdfStrokeCS [] def
+  /pdfStrokeXform {} def
+  /pdfFill [0] def
+  /pdfStroke [0] def
+  /pdfFillOP false def
+  /pdfStrokeOP false def
+  /pdfLastFill false def
+  /pdfLastStroke false def
+  /pdfTextMat [1 0 0 1 0 0] def
+  /pdfFontSize 0 def
+  /pdfCharSpacing 0 def
+  /pdfTextRender 0 def
+  /pdfTextRise 0 def
+  /pdfWordSpacing 0 def
+  /pdfHorizScaling 1 def
+  /pdfTextClipPath [] def
+} def
+/pdfEndPage { end } def
+% PDF color state
+/cs { /pdfFillXform exch def dup /pdfFillCS exch def
+      setcolorspace } def
+/CS { /pdfStrokeXform exch def dup /pdfStrokeCS exch def
+      setcolorspace } def
+/sc { pdfLastFill not { pdfFillCS setcolorspace } if
+      dup /pdfFill exch def aload pop pdfFillXform setcolor
+     /pdfLastFill true def /pdfLastStroke false def } def
+/SC { pdfLastStroke not { pdfStrokeCS setcolorspace } if
+      dup /pdfStroke exch def aload pop pdfStrokeXform setcolor
+     /pdfLastStroke true def /pdfLastFill false def } def
+/op { /pdfFillOP exch def
+      pdfLastFill { pdfFillOP setoverprint } if } def
+/OP { /pdfStrokeOP exch def
+      pdfLastStroke { pdfStrokeOP setoverprint } if } def
+/fCol {
+  pdfLastFill not {
+    pdfFillCS setcolorspace
+    pdfFill aload pop pdfFillXform setcolor
+    pdfFillOP setoverprint
+    /pdfLastFill true def /pdfLastStroke false def
+  } if
+} def
+/sCol {
+  pdfLastStroke not {
+    pdfStrokeCS setcolorspace
+    pdfStroke aload pop pdfStrokeXform setcolor
+    pdfStrokeOP setoverprint
+    /pdfLastStroke true def /pdfLastFill false def
+  } if
+} def
+% build a font
+/pdfMakeFont {
+  4 3 roll findfont
+  4 2 roll matrix scale makefont
+  dup length dict begin
+    { 1 index /FID ne { def } { pop pop } ifelse } forall
+    /Encoding exch def
+    currentdict
+  end
+  definefont pop
+} def
+/pdfMakeFont16 {
+  exch findfont
+  dup length dict begin
+    { 1 index /FID ne { def } { pop pop } ifelse } forall
+    /WMode exch def
+    currentdict
+  end
+  definefont pop
+} def
+% graphics state operators
+/q { gsave pdfDictSize dict begin } def
+/Q {
+  end grestore
+  /pdfLastFill where {
+    pop
+    pdfLastFill {
+      pdfFillOP setoverprint
+    } {
+      pdfStrokeOP setoverprint
+    } ifelse
+  } if
+} def
+/cm { concat } def
+/d { setdash } def
+/i { setflat } def
+/j { setlinejoin } def
+/J { setlinecap } def
+/M { setmiterlimit } def
+/w { setlinewidth } def
+% path segment operators
+/m { moveto } def
+/l { lineto } def
+/c { curveto } def
+/re { 4 2 roll moveto 1 index 0 rlineto 0 exch rlineto
+      neg 0 rlineto closepath } def
+/h { closepath } def
+% path painting operators
+/S { sCol stroke } def
+/Sf { fCol stroke } def
+/f { fCol fill } def
+/f* { fCol eofill } def
+% clipping operators
+/W { clip newpath } def
+/W* { eoclip newpath } def
+/Ws { strokepath clip newpath } def
+% text state operators
+/Tc { /pdfCharSpacing exch def } def
+/Tf { dup /pdfFontSize exch def
+      dup pdfHorizScaling mul exch matrix scale
+      pdfTextMat matrix concatmatrix dup 4 0 put dup 5 0 put
+      exch findfont exch makefont setfont } def
+/Tr { /pdfTextRender exch def } def
+/Ts { /pdfTextRise exch def } def
+/Tw { /pdfWordSpacing exch def } def
+/Tz { /pdfHorizScaling exch def } def
+% text positioning operators
+/Td { pdfTextMat transform moveto } def
+/Tm { /pdfTextMat exch def } def
+% text string operators
+/xyshow where {
+  pop
+  /xyshow2 {
+    dup length array
+    0 2 2 index length 1 sub {
+      2 index 1 index 2 copy get 3 1 roll 1 add get
+      pdfTextMat dtransform
+      4 2 roll 2 copy 6 5 roll put 1 add 3 1 roll dup 4 2 roll put
+    } for
+    exch pop
+    xyshow
+  } def
+}{
+  /xyshow2 {
+    currentfont /FontType get 0 eq {
+      0 2 3 index length 1 sub {
+        currentpoint 4 index 3 index 2 getinterval show moveto
+        2 copy get 2 index 3 2 roll 1 add get
+        pdfTextMat dtransform rmoveto
+      } for
+    } {
+      0 1 3 index length 1 sub {
+        currentpoint 4 index 3 index 1 getinterval show moveto
+        2 copy 2 mul get 2 index 3 2 roll 2 mul 1 add get
+        pdfTextMat dtransform rmoveto
+      } for
+    } ifelse
+    pop pop
+  } def
+} ifelse
+/cshow where {
+  pop
+  /xycp {
+    0 3 2 roll
+    {
+      pop pop currentpoint 3 2 roll
+      1 string dup 0 4 3 roll put false charpath moveto
+      2 copy get 2 index 2 index 1 add get
+      pdfTextMat dtransform rmoveto
+      2 add
+    } exch cshow
+    pop pop
+  } def
+}{
+  /xycp {
+    currentfont /FontType get 0 eq {
+      0 2 3 index length 1 sub {
+        currentpoint 4 index 3 index 2 getinterval false charpath moveto
+        2 copy get 2 index 3 2 roll 1 add get
+        pdfTextMat dtransform rmoveto
+      } for
+    } {
+      0 1 3 index length 1 sub {
+        currentpoint 4 index 3 index 1 getinterval false charpath moveto
+        2 copy 2 mul get 2 index 3 2 roll 2 mul 1 add get
+        pdfTextMat dtransform rmoveto
+      } for
+    } ifelse
+    pop pop
+  } def
+} ifelse
+/Tj {
+  fCol
+  0 pdfTextRise pdfTextMat dtransform rmoveto
+  currentpoint 4 2 roll
+  pdfTextRender 1 and 0 eq {
+    2 copy xyshow2
+  } if
+  pdfTextRender 3 and dup 1 eq exch 2 eq or {
+    3 index 3 index moveto
+    2 copy
+    currentfont /FontType get 3 eq { fCol } { sCol } ifelse
+    xycp currentpoint stroke moveto
+  } if
+  pdfTextRender 4 and 0 ne {
+    4 2 roll moveto xycp
+    /pdfTextClipPath [ pdfTextClipPath aload pop
+      {/moveto cvx}
+      {/lineto cvx}
+      {/curveto cvx}
+      {/closepath cvx}
+    pathforall ] def
+    currentpoint newpath moveto
+  } {
+    pop pop pop pop
+  } ifelse
+  0 pdfTextRise neg pdfTextMat dtransform rmoveto
+} def
+/TJm { 0.001 mul pdfFontSize mul pdfHorizScaling mul neg 0
+       pdfTextMat dtransform rmoveto } def
+/TJmV { 0.001 mul pdfFontSize mul neg 0 exch
+        pdfTextMat dtransform rmoveto } def
+/Tclip { pdfTextClipPath cvx exec clip newpath
+         /pdfTextClipPath [] def } def
+% Level 2/3 image operators
+/pdfImBuf 100 string def
+/pdfImStr {
+  2 copy exch length lt {
+    2 copy get exch 1 add exch
+  } {
+    ()
+  } ifelse
+} def
+/skipEOD {
+  { currentfile pdfImBuf readline
+    not { pop exit } if
+    (%-EOD-) eq { exit } if } loop
+} def
+/pdfIm { image skipEOD } def
+/pdfImM { fCol imagemask skipEOD } def
+/pr {
+  4 2 roll exch 5 index div exch 4 index div moveto
+  exch 3 index div dup 0 rlineto
+  exch 2 index div 0 exch rlineto
+  neg 0 rlineto
+  closepath
+} def
+/pdfImClip { gsave clip } def
+/pdfImClipEnd { grestore } def
+% shading operators
+/colordelta {
+  false 0 1 3 index length 1 sub {
+    dup 4 index exch get 3 index 3 2 roll get sub abs 0.004 gt {
+      pop true
+    } if
+  } for
+  exch pop exch pop
+} def
+/funcCol { func n array astore } def
+/funcSH {
+  dup 0 eq {
+    true
+  } {
+    dup 6 eq {
+      false
+    } {
+      4 index 4 index funcCol dup
+      6 index 4 index funcCol dup
+      3 1 roll colordelta 3 1 roll
+      5 index 5 index funcCol dup
+      3 1 roll colordelta 3 1 roll
+      6 index 8 index funcCol dup
+      3 1 roll colordelta 3 1 roll
+      colordelta or or or
+    } ifelse
+  } ifelse
+  {
+    1 add
+    4 index 3 index add 0.5 mul exch 4 index 3 index add 0.5 mul exch
+    6 index 6 index 4 index 4 index 4 index funcSH
+    2 index 6 index 6 index 4 index 4 index funcSH
+    6 index 2 index 4 index 6 index 4 index funcSH
+    5 3 roll 3 2 roll funcSH pop pop
+  } {
+    pop 3 index 2 index add 0.5 mul 3 index  2 index add 0.5 mul
+    funcCol sc
+    dup 4 index exch mat transform m
+    3 index 3 index mat transform l
+    1 index 3 index mat transform l
+    mat transform l pop pop h f*
+  } ifelse
+} def
+/axialCol {
+  dup 0 lt {
+    pop t0
+  } {
+    dup 1 gt {
+      pop t1
+    } {
+      dt mul t0 add
+    } ifelse
+  } ifelse
+  func n array astore
+} def
+/axialSH {
+  dup 2 lt {
+    true
+  } {
+    dup 8 eq {
+      false
+    } {
+      2 index axialCol 2 index axialCol colordelta
+    } ifelse
+  } ifelse
+  {
+    1 add 3 1 roll 2 copy add 0.5 mul
+    dup 4 3 roll exch 4 index axialSH
+    exch 3 2 roll axialSH
+  } {
+    pop 2 copy add 0.5 mul
+    axialCol sc
+    exch dup dx mul x0 add exch dy mul y0 add
+    3 2 roll dup dx mul x0 add exch dy mul y0 add
+    dx abs dy abs ge {
+      2 copy yMin sub dy mul dx div add yMin m
+      yMax sub dy mul dx div add yMax l
+      2 copy yMax sub dy mul dx div add yMax l
+      yMin sub dy mul dx div add yMin l
+      h f*
+    } {
+      exch 2 copy xMin sub dx mul dy div add xMin exch m
+      xMax sub dx mul dy div add xMax exch l
+      exch 2 copy xMax sub dx mul dy div add xMax exch l
+      xMin sub dx mul dy div add xMin exch l
+      h f*
+    } ifelse
+  } ifelse
+} def
+/radialCol {
+  dup t0 lt {
+    pop t0
+  } {
+    dup t1 gt {
+      pop t1
+    } if
+  } ifelse
+  func n array astore
+} def
+/radialSH {
+  dup 0 eq {
+    true
+  } {
+    dup 8 eq {
+      false
+    } {
+      2 index dt mul t0 add radialCol
+      2 index dt mul t0 add radialCol colordelta
+    } ifelse
+  } ifelse
+  {
+    1 add 3 1 roll 2 copy add 0.5 mul
+    dup 4 3 roll exch 4 index radialSH
+    exch 3 2 roll radialSH
+  } {
+    pop 2 copy add 0.5 mul dt mul t0 add
+    radialCol sc
+    encl {
+      exch dup dx mul x0 add exch dup dy mul y0 add exch dr mul r0 add
+      0 360 arc h
+      dup dx mul x0 add exch dup dy mul y0 add exch dr mul r0 add
+      360 0 arcn h f
+    } {
+      2 copy
+      dup dx mul x0 add exch dup dy mul y0 add exch dr mul r0 add
+      a1 a2 arcn
+      dup dx mul x0 add exch dup dy mul y0 add exch dr mul r0 add
+      a2 a1 arcn h
+      dup dx mul x0 add exch dup dy mul y0 add exch dr mul r0 add
+      a1 a2 arc
+      dup dx mul x0 add exch dup dy mul y0 add exch dr mul r0 add
+      a2 a1 arc h f
+    } ifelse
+  } ifelse
+} def
+end
+%%EndResource
+%%EndProlog
+%%BeginSetup
+xpdf begin
+/F10_0 /ZapfDingbats 1 1
+[ /.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+  /.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+  /.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+  /.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+  /space/a1/a2/a202/a3/a4/a5/a119
+  /a118/a117/a11/a12/a13/a14/a15/a16
+  /a105/a17/a18/a19/a20/a21/a22/a23
+  /a24/a25/a26/a27/a28/a6/a7/a8
+  /a9/a10/a29/a30/a31/a32/a33/a34
+  /a35/a36/a37/a38/a39/a40/a41/a42
+  /a43/a44/a45/a46/a47/a48/a49/a50
+  /a51/a52/a53/a54/a55/a56/a57/a58
+  /a59/a60/a61/a62/a63/a64/a65/a66
+  /a67/a68/a69/a70/a71/a72/a73/a74
+  /a203/a75/a204/a76/a77/a78/a79/a81
+  /a82/a83/a84/a97/a98/a99/a100/.notdef
+  /.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+  /.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+  /.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+  /.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+  /.notdef/a101/a102/a103/a104/a106/a107/a108
+  /a112/a111/a110/a109/a120/a121/a122/a123
+  /a124/a125/a126/a127/a128/a129/a130/a131
+  /a132/a133/a134/a135/a136/a137/a138/a139
+  /a140/a141/a142/a143/a144/a145/a146/a147
+  /a148/a149/a150/a151/a152/a153/a154/a155
+  /a156/a157/a158/a159/a160/a161/a163/a164
+  /a196/a165/a192/a166/a167/a168/a169/a170
+  /a171/a172/a173/a162/a174/a175/a176/a177
+  /a178/a179/a193/a180/a199/a181/a200/a182
+  /.notdef/a201/a183/a184/a197/a185/a194/a198
+  /a186/a195/a187/a188/a189/a190/a191/.notdef]
+pdfMakeFont
+/F11_0 /Helvetica 1 1
+[ /.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+  /.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+  /.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+  /.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+  /space/exclam/quotedbl/numbersign/dollar/percent/ampersand/quotesingle
+  /parenleft/parenright/asterisk/plus/comma/minus/period/slash
+  /zero/one/two/three/four/five/six/seven
+  /eight/nine/colon/semicolon/less/equal/greater/question
+  /at/A/B/C/D/E/F/G
+  /H/I/J/K/L/M/N/O
+  /P/Q/R/S/T/U/V/W
+  /X/Y/Z/bracketleft/backslash/bracketright/asciicircum/underscore
+  /quoteleft/a/b/c/d/e/f/g
+  /h/i/j/k/l/m/n/o
+  /p/q/r/s/t/u/v/w
+  /x/y/z/braceleft/bar/braceright/asciitilde/bullet
+  /Euro/bullet/quotesinglbase/florin/quotedblbase/ellipsis/dagger/daggerdbl
+  /circumflex/perthousand/Scaron/guilsinglleft/OE/bullet/Zcaron/bullet
+  /dotlessi/grave/acute/circumflex/tilde/macron/breve/dotaccent
+  /dieresis/.notdef/ring/cedilla/.notdef/hungarumlaut/ogonek/caron
+  /space/exclamdown/cent/sterling/currency/yen/brokenbar/section
+  /dieresis/copyright/ordfeminine/guillemotleft/logicalnot/hyphen/registered/macron
+  /degree/plusminus/twosuperior/threesuperior/acute/mu/paragraph/periodcentered
+  /cedilla/onesuperior/ordmasculine/guillemotright/onequarter/onehalf/threequarters/questiondown
+  /Agrave/Aacute/Acircumflex/Atilde/Adieresis/Aring/AE/Ccedilla
+  /Egrave/Eacute/Ecircumflex/Edieresis/Igrave/Iacute/Icircumflex/Idieresis
+  /Eth/Ntilde/Ograve/Oacute/Ocircumflex/Otilde/Odieresis/multiply
+  /Oslash/Ugrave/Uacute/Ucircumflex/Udieresis/Yacute/Thorn/germandbls
+  /agrave/aacute/acircumflex/atilde/adieresis/aring/ae/ccedilla
+  /egrave/eacute/ecircumflex/edieresis/igrave/iacute/icircumflex/idieresis
+  /eth/ntilde/ograve/oacute/ocircumflex/otilde/odieresis/divide
+  /oslash/ugrave/uacute/ucircumflex/udieresis/yacute/thorn/ydieresis]
+pdfMakeFont
+/F12_0 /Helvetica-Bold 1 1
+[ /.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+  /.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+  /.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+  /.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+  /space/exclam/quotedbl/numbersign/dollar/percent/ampersand/quotesingle
+  /parenleft/parenright/asterisk/plus/comma/minus/period/slash
+  /zero/one/two/three/four/five/six/seven
+  /eight/nine/colon/semicolon/less/equal/greater/question
+  /at/A/B/C/D/E/F/G
+  /H/I/J/K/L/M/N/O
+  /P/Q/R/S/T/U/V/W
+  /X/Y/Z/bracketleft/backslash/bracketright/asciicircum/underscore
+  /quoteleft/a/b/c/d/e/f/g
+  /h/i/j/k/l/m/n/o
+  /p/q/r/s/t/u/v/w
+  /x/y/z/braceleft/bar/braceright/asciitilde/bullet
+  /Euro/bullet/quotesinglbase/florin/quotedblbase/ellipsis/dagger/daggerdbl
+  /circumflex/perthousand/Scaron/guilsinglleft/OE/bullet/Zcaron/bullet
+  /dotlessi/grave/acute/circumflex/tilde/macron/breve/dotaccent
+  /dieresis/.notdef/ring/cedilla/.notdef/hungarumlaut/ogonek/caron
+  /space/exclamdown/cent/sterling/currency/yen/brokenbar/section
+  /dieresis/copyright/ordfeminine/guillemotleft/logicalnot/hyphen/registered/macron
+  /degree/plusminus/twosuperior/threesuperior/acute/mu/paragraph/periodcentered
+  /cedilla/onesuperior/ordmasculine/guillemotright/onequarter/onehalf/threequarters/questiondown
+  /Agrave/Aacute/Acircumflex/Atilde/Adieresis/Aring/AE/Ccedilla
+  /Egrave/Eacute/Ecircumflex/Edieresis/Igrave/Iacute/Icircumflex/Idieresis
+  /Eth/Ntilde/Ograve/Oacute/Ocircumflex/Otilde/Odieresis/multiply
+  /Oslash/Ugrave/Uacute/Ucircumflex/Udieresis/Yacute/Thorn/germandbls
+  /agrave/aacute/acircumflex/atilde/adieresis/aring/ae/ccedilla
+  /egrave/eacute/ecircumflex/edieresis/igrave/iacute/icircumflex/idieresis
+  /eth/ntilde/ograve/oacute/ocircumflex/otilde/odieresis/divide
+  /oslash/ugrave/uacute/ucircumflex/udieresis/yacute/thorn/ydieresis]
+pdfMakeFont
+end
+%%EndSetup
+xpdf begin
+pdfStartPage
+[] 0 d
+1 i
+0 j
+0 J
+10 M
+1 w
+/DeviceGray {} cs
+[0] sc
+/DeviceGray {} CS
+[0] SC
+false op
+false OP
+{} settransfer
+0 0 1152 432 re
+W
+q
+1 J
+1 j
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+3.49 3.49 265.04 428.51 re
+W
+/DeviceRGB {} cs
+[0 0 0] sc
+[1 1 1] sc
+/DeviceRGB {} CS
+[0 0 0] SC
+[1 1 1] SC
+1.07 w
+[] 0 d
+1 J
+1 j
+10 M
+3.49 3.49 265.04 428.51 re
+f
+3.49 3.49 265.04 428.51 re
+S
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+45.02 33.74 218.03 392.78 re
+W
+/DeviceRGB {} cs
+[0 0 0] sc
+[1 1 1] sc
+45.02 33.74 218.03 392.78 re
+f
+[0.863 0.525 0.231] sc
+/DeviceRGB {} CS
+[0 0 0] SC
+[0 0 0] SC
+0.75 w
+[] 0 d
+1 J
+1 j
+10 M
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[9.89 0 0 9.89 93.42 310.5] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[9.89 0 0 9.89 100.56 310.5] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[9.89 0 0 9.89 107.71 310.5] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[9.89 0 0 9.89 86.28 330.54] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[9.89 0 0 9.89 93.42 330.54] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[9.89 0 0 9.89 100.56 330.54] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[9.89 0 0 9.89 107.71 330.54] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[9.89 0 0 9.89 114.85 330.54] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[9.89 0 0 9.89 86.28 343.29] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[9.89 0 0 9.89 93.42 343.29] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[9.89 0 0 9.89 100.56 343.29] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[9.89 0 0 9.89 107.71 343.29] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[9.89 0 0 9.89 114.85 343.29] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[9.89 0 0 9.89 96.99 357.87] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[9.89 0 0 9.89 104.13 357.87] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[9.89 0 0 9.89 199.67 172.04] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[9.89 0 0 9.89 199.67 186.62] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[9.89 0 0 9.89 181.82 217.59] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[9.89 0 0 9.89 188.96 217.59] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[9.89 0 0 9.89 196.1 217.59] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[9.89 0 0 9.89 203.24 217.59] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[9.89 0 0 9.89 210.38 217.59] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[9.89 0 0 9.89 217.52 217.59] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[9.89 0 0 9.89 188.96 228.52] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[9.89 0 0 9.89 196.1 228.52] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[9.89 0 0 9.89 203.24 228.52] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[9.89 0 0 9.89 210.38 228.52] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[9.89 0 0 9.89 199.67 241.27] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[9.89 0 0 9.89 196.1 264.95] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[9.89 0 0 9.89 203.24 264.95] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[0.537 0.616 0.643] sc
+1.07 w
+[] 0 d
+79.7 337.49 49.56 0 re
+f
+79.7 337.49 49.56 0 re
+S
+[0.788 0.2 0.071] sc
+178.81 226.97 49.55 0 re
+f
+178.81 226.97 49.55 0 re
+S
+2.67 w
+[] 0 d
+0 J
+79.7 337.49 m
+129.26 337.49 l
+S
+178.81 226.97 m
+228.36 226.97 l
+S
+1.07 w
+[] 0 d
+104.48 372.96 m
+203.59 372.96 l
+S
+104.48 372.96 m
+203.59 372.96 l
+S
+104.48 372.96 m
+203.59 372.96 l
+S
+104.48 372.96 m
+203.59 372.96 l
+S
+104.48 372.96 m
+203.59 372.96 l
+S
+104.48 372.96 m
+203.59 372.96 l
+S
+104.48 372.96 m
+203.59 372.96 l
+S
+104.48 372.96 m
+203.59 372.96 l
+S
+104.48 372.96 m
+203.59 372.96 l
+S
+104.48 372.96 m
+203.59 372.96 l
+S
+104.48 372.96 m
+203.59 372.96 l
+S
+104.48 372.96 m
+203.59 372.96 l
+S
+104.48 372.96 m
+203.59 372.96 l
+S
+104.48 372.96 m
+203.59 372.96 l
+S
+104.48 372.96 m
+203.59 372.96 l
+S
+104.48 372.96 m
+203.59 372.96 l
+S
+104.48 372.96 m
+203.59 372.96 l
+S
+104.48 372.96 m
+203.59 372.96 l
+S
+104.48 372.96 m
+203.59 372.96 l
+S
+104.48 372.96 m
+203.59 372.96 l
+S
+104.48 372.96 m
+203.59 372.96 l
+S
+104.48 372.96 m
+203.59 372.96 l
+S
+104.48 372.96 m
+203.59 372.96 l
+S
+104.48 372.96 m
+203.59 372.96 l
+S
+104.48 372.96 m
+203.59 372.96 l
+S
+104.48 372.96 m
+203.59 372.96 l
+S
+104.48 372.96 m
+203.59 372.96 l
+S
+104.48 372.96 m
+203.59 372.96 l
+S
+104.48 372.96 m
+203.59 372.96 l
+S
+104.48 372.96 m
+203.59 372.96 l
+S
+[1 0 0 1 0 0] Tm
+0 0 Td
+[0 0 0] sc
+[11 0 0 11 108.45 376.15] Tm
+0 0 Td
+/F11_0 1 Tf
+(p-v)
+[0.556
+0
+0.584
+0
+0.5
+0] Tj
+25 TJm
+(alue = 3.3e-06)
+[0.556
+0
+0.222
+0
+0.556
+0
+0.556
+0
+0.278
+0
+0.584
+0
+0.278
+0
+0.556
+0
+0.278
+0
+0.556
+0
+0.556
+0
+0.584
+0
+0.556
+0
+0.556
+0] Tj
+1.07 w
+[4.27 4.27] 0 d
+45.02 230.13 m
+263.05 230.13 l
+S
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+Q
+q
+/DeviceRGB {} CS
+[0 0 0] SC
+[0 0 0] SC
+1.07 w
+[] 0 d
+0 J
+1 j
+10 M
+45.02 33.74 m
+45.02 426.52 l
+S
+Q
+q
+Q
+q
+Q
+q
+[1 0 0 1 0 0] Tm
+0 0 Td
+/DeviceRGB {} cs
+[0 0 0] sc
+[0.302 0.302 0.302] sc
+[9 0 0 9 22.57 48.36] Tm
+0 0 Td
+/F11_0 1 Tf
+(0.00)
+[0.556
+0
+0.278
+0
+0.556
+0
+0.556
+0] Tj
+[1 0 0 1 0 0] Tm
+0 0 Td
+[9 0 0 9 22.57 137.63] Tm
+0 0 Td
+/F11_0 1 Tf
+(0.25)
+[0.556
+0
+0.278
+0
+0.556
+0
+0.556
+0] Tj
+[1 0 0 1 0 0] Tm
+0 0 Td
+[9 0 0 9 22.57 226.9] Tm
+0 0 Td
+/F11_0 1 Tf
+(0.50)
+[0.556
+0
+0.278
+0
+0.556
+0
+0.556
+0] Tj
+[1 0 0 1 0 0] Tm
+0 0 Td
+[9 0 0 9 22.57 316.17] Tm
+0 0 Td
+/F11_0 1 Tf
+(0.75)
+[0.556
+0
+0.278
+0
+0.556
+0
+0.556
+0] Tj
+[1 0 0 1 0 0] Tm
+0 0 Td
+[9 0 0 9 22.57 405.44] Tm
+0 0 Td
+/F11_0 1 Tf
+(1.00)
+[0.556
+0
+0.278
+0
+0.556
+0
+0.556
+0] Tj
+Q
+q
+Q
+q
+/DeviceRGB {} CS
+[0 0 0] SC
+[0.2 0.2 0.2] SC
+1.07 w
+[] 0 d
+0 J
+1 j
+10 M
+42.28 51.59 m
+45.02 51.59 l
+S
+42.28 140.86 m
+45.02 140.86 l
+S
+42.28 230.13 m
+45.02 230.13 l
+S
+42.28 319.4 m
+45.02 319.4 l
+S
+42.28 408.67 m
+45.02 408.67 l
+S
+Q
+q
+Q
+q
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+Q
+q
+/DeviceRGB {} CS
+[0 0 0] SC
+[0 0 0] SC
+1.07 w
+[] 0 d
+0 J
+1 j
+10 M
+45.02 33.74 m
+263.05 33.74 l
+S
+Q
+q
+Q
+q
+Q
+q
+/DeviceRGB {} CS
+[0 0 0] SC
+[0.2 0.2 0.2] SC
+1.07 w
+[] 0 d
+0 J
+1 j
+10 M
+104.48 31 m
+104.48 33.74 l
+S
+203.59 31 m
+203.59 33.74 l
+S
+Q
+q
+Q
+q
+[1 0 0 1 0 0] Tm
+0 0 Td
+/DeviceRGB {} cs
+[0 0 0] sc
+[0.302 0.302 0.302] sc
+[9 0 0 9 69.97 22.34] Tm
+0 0 Td
+/F11_0 1 Tf
+(WithoutZeroFilter)
+[0.944
+0
+0.222
+0
+0.278
+0
+0.556
+0
+0.556
+0
+0.556
+0
+0.278
+0
+0.611
+0
+0.556
+0
+0.333
+0
+0.556
+0
+0.611
+0
+0.222
+0
+0.222
+0
+0.278
+0
+0.556
+0
+0.333
+0] Tj
+[1 0 0 1 0 0] Tm
+0 0 Td
+[9 0 0 9 175.33 22.34] Tm
+0 0 Td
+/F11_0 1 Tf
+(WithZeroFilter)
+[0.944
+0
+0.222
+0
+0.278
+0
+0.556
+0
+0.611
+0
+0.556
+0
+0.333
+0
+0.556
+0
+0.611
+0
+0.222
+0
+0.222
+0
+0.278
+0
+0.556
+0
+0.333
+0] Tj
+Q
+q
+Q
+q
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+[1 0 0 1 0 0] Tm
+0 0 Td
+/DeviceRGB {} cs
+[0 0 0] sc
+[0 0 0] sc
+[0 11 -11 0 16.86 176.61] Tm
+0 0 Td
+/F11_0 1 Tf
+(Area Under the Cur)
+[0.667
+0
+0.333
+0
+0.556
+0
+0.556
+0
+0.278
+0
+0.722
+0
+0.556
+0
+0.556
+0
+0.556
+0
+0.333
+0
+0.278
+0
+0.278
+0
+0.556
+0
+0.556
+0
+0.278
+0
+0.722
+0
+0.556
+0
+0.333
+0] Tj
+-30 TJm
+(v)
+[0.5
+0] Tj
+25 TJm
+(e)
+[0.556
+0] Tj
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+[1 0 0 1 0 0] Tm
+0 0 Td
+/DeviceRGB {} cs
+[0 0 0] sc
+[0 0 0] sc
+[14 0 0 14 8.54 416.92] Tm
+0 0 Td
+/F12_0 1 Tf
+(A)
+[0.722
+0] Tj
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+268.53 3.49 883.47 428.51 re
+W
+/DeviceRGB {} cs
+[0 0 0] sc
+[1 1 1] sc
+/DeviceRGB {} CS
+[0 0 0] SC
+[1 1 1] SC
+1.07 w
+[] 0 d
+1 J
+1 j
+10 M
+268.53 3.49 883.47 428.51 re
+f
+268.53 3.49 883.47 428.51 re
+S
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+317.77 36.22 756.39 390.3 re
+W
+/DeviceRGB {} cs
+[0 0 0] sc
+[1 1 1] sc
+317.77 36.22 756.39 390.3 re
+f
+[0.537 0.616 0.643] sc
+/DeviceRGB {} CS
+[0 0 0] SC
+[0 0 0] SC
+0.75 w
+[] 0 d
+1 J
+1 j
+10 M
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 355.59 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 358.6 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 361.6 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 364.6 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 367.61 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 351.08 209.01] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 354.09 209.01] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 357.09 209.01] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 360.1 209.01] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 363.1 209.01] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 366.11 209.01] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 369.11 209.01] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 372.12 209.01] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 358.6 224.4] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 361.6 224.4] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 364.6 224.4] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 358.6 243.77] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 361.6 243.77] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 364.6 243.77] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 354.09 256.82] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 357.09 256.82] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 360.1 256.82] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 363.1 256.82] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 366.11 256.82] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 369.11 256.82] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 360.1 268.43] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 363.1 268.43] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 361.6 286.08] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 361.6 398.93] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[0.788 0.2 0.071] sc
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 387.96 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 390.96 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 393.97 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 396.97 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 399.97 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 402.98 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 405.98 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 408.99 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 411.99 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 415 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 418 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 421.01 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 424.01 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 427.02 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 430.02 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 433.02 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 436.03 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 439.03 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 442.04 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 445.04 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 413.5 195.32] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 416.5 195.32] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 419.5 195.32] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 413.5 224] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 416.5 224] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 419.5 224] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 416.5 246.25] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 416.5 293.02] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 416.5 338.85] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[0.537 0.616 0.643] sc
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 459.56 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 462.57 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 465.57 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 468.58 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 471.58 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 474.59 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 477.59 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 480.59 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 483.6 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 486.6 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 489.61 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 492.61 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 495.62 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 498.62 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 501.63 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 504.63 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 507.64 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 479.09 187.17] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 482.1 187.17] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 485.1 187.17] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 488.11 187.17] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 482.1 200.71] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 485.1 200.71] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 480.59 218.03] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 483.6 218.03] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 486.6 218.03] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 483.6 253.69] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 483.6 300.11] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 483.6 386.88] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[0.788 0.2 0.071] sc
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 533.99 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 537 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 540 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 543.01 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 535.49 188.76] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 538.5 188.76] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 541.5 188.76] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 530.99 210.98] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 533.99 210.98] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 537 210.98] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 540 210.98] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 543.01 210.98] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 546.01 210.98] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 535.49 223.95] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 538.5 223.95] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 541.5 223.95] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 535.49 234.2] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 538.5 234.2] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 541.5 234.2] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 537 258.81] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 540 258.81] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 537 277.45] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 540 277.45] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 538.5 292.07] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 538.5 324.32] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 537 359.18] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 540 359.18] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 537 379.65] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 540 379.65] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[0.537 0.616 0.643] sc
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 589.07 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 592.08 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 595.08 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 598.09 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 601.09 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 604.1 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 607.1 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 610.11 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 613.11 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 616.11 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 619.12 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 622.12 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 601.09 193.18] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 604.1 193.18] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 607.1 193.18] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 610.11 193.18] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 601.09 203.92] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 604.1 203.92] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 607.1 203.92] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 610.11 203.92] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 604.1 219.94] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 607.1 219.94] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 605.6 255.61] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 605.6 277.58] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 604.1 304.45] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 607.1 304.45] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 604.1 329.42] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 607.1 329.42] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 605.6 342.81] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[0.788 0.2 0.071] sc
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 639.47 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 642.47 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 645.48 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 648.48 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 651.48 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 654.49 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 657.49 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 660.5 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 663.5 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 666.51 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 669.51 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 672.52 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 675.52 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 678.52 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 681.53 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 657.49 184.38] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 660.5 184.38] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 663.5 184.38] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 655.99 201.2] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 659 201.2] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 662 201.2] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 665 201.2] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 659 241.02] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 662 241.02] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 660.5 278.38] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 659 317.72] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 662 317.72] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 659 336.91] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 662 336.91] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[0.537 0.616 0.643] sc
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 711.07 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 714.08 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 717.08 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 720.09 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 723.09 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 726.1 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 729.1 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 732.1 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 735.11 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 738.11 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 741.12 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 744.12 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 721.59 187.84] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 724.59 187.84] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 727.6 187.84] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 730.6 187.84] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 733.61 187.84] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 727.6 211.61] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 726.1 240.99] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 729.1 240.99] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 726.1 264.32] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 729.1 264.32] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 726.1 278.24] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 729.1 278.24] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 721.59 293.33] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 724.59 293.33] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 727.6 293.33] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 730.6 293.33] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 733.61 293.33] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[0.788 0.2 0.071] sc
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 764.47 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 767.47 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 770.48 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 773.48 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 776.49 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 779.49 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 782.5 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 785.5 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 788.51 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 791.51 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 794.52 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 797.52 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 800.52 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 777.99 191.55] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 780.99 191.55] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 784 191.55] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 787 191.55] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 779.49 207.08] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 782.5 207.08] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 785.5 207.08] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 780.99 217.14] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 784 217.14] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 782.5 240.29] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 782.5 255.69] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 780.99 296.63] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 784 296.63] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 782.5 315.39] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 780.99 341.23] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 784 341.23] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[0.537 0.616 0.643] sc
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 836.08 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 839.08 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 842.09 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 845.09 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 848.09 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 851.1 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 854.1 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 857.11 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 860.11 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 863.12 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 843.59 207.39] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 846.59 207.39] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 849.6 207.39] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 852.6 207.39] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 855.61 207.39] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 843.59 223.02] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 846.59 223.02] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 849.6 223.02] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 852.6 223.02] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 855.61 223.02] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 845.09 236.04] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 848.09 236.04] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 851.1 236.04] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 854.1 236.04] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 846.59 248.5] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 849.6 248.5] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 852.6 248.5] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 849.6 256.89] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 849.6 273.46] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[0.788 0.2 0.071] sc
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 881.96 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 884.97 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 887.97 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 890.98 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 893.98 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 896.98 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 899.99 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 902.99 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 906 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 909 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 912.01 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 915.01 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 918.02 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 921.02 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 924.03 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 927.03 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 904.5 167.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 902.99 188.63] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 906 188.63] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 902.99 205.84] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 906 205.84] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 902.99 220.67] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 906 220.67] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 898.49 234.7] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 901.49 234.7] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 904.5 234.7] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 907.5 234.7] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 910.51 234.7] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 904.5 249.06] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[0.537 0.616 0.643] sc
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 949.06 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 952.07 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 955.07 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 958.08 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 961.08 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 964.08 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 967.09 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 970.09 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 973.1 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 976.1 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 979.11 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 982.11 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 985.12 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 988.12 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 991.12 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 994.13 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 971.6 193.25] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 970.09 208.88] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 973.1 208.88] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 965.59 223.67] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 968.59 223.67] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 971.6 223.67] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 974.6 223.67] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 977.6 223.67] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 968.59 237.55] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 971.6 237.55] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 974.6 237.55] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 970.09 248.03] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 973.1 248.03] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[0.788 0.2 0.071] sc
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 1012.98 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 1015.98 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 1018.98 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 1021.99 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 1024.99 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 1028 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 1031 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 1034.01 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 1037.01 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 1040.02 55.56] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 1026.5 179.03] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 1023.49 203.31] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 1026.5 203.31] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 1029.5 203.31] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 1020.49 214.02] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 1023.49 214.02] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 1026.5 214.02] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 1029.5 214.02] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 1032.5 214.02] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 1020.49 227.94] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 1023.49 227.94] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 1026.5 227.94] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 1029.5 227.94] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 1032.5 227.94] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 1023.49 247.67] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 1026.5 247.67] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 1029.5 247.67] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 1026.5 256.74] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[11.89 0 0 11.89 1026.5 277.35] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+1.07 w
+[] 0 d
+390.97 59.69 54.9 0 re
+f
+390.97 59.69 54.9 0 re
+S
+[0.537 0.616 0.643] sc
+336.07 226.49 54.9 0 re
+f
+336.07 226.49 54.9 0 re
+S
+[0.788 0.2 0.071] sc
+512.97 228.67 54.9 0 re
+f
+512.97 228.67 54.9 0 re
+S
+[0.537 0.616 0.643] sc
+458.07 59.69 54.9 0 re
+f
+458.07 59.69 54.9 0 re
+S
+[0.788 0.2 0.071] sc
+634.97 59.69 54.9 0 re
+f
+634.97 59.69 54.9 0 re
+S
+[0.537 0.616 0.643] sc
+580.07 200.42 54.9 0 re
+f
+580.07 200.42 54.9 0 re
+S
+[0.788 0.2 0.071] sc
+756.97 195.11 54.9 0 re
+f
+756.97 195.11 54.9 0 re
+S
+[0.537 0.616 0.643] sc
+702.07 194.22 54.9 0 re
+f
+702.07 194.22 54.9 0 re
+S
+[0.788 0.2 0.071] sc
+878.96 59.69 54.9 0 re
+f
+878.96 59.69 54.9 0 re
+S
+[0.537 0.616 0.643] sc
+824.07 217.21 54.89 0 re
+f
+824.07 217.21 54.89 0 re
+S
+[0.788 0.2 0.071] sc
+1000.96 213.83 54.9 0 re
+f
+1000.96 213.83 54.9 0 re
+S
+[0.537 0.616 0.643] sc
+946.06 59.69 54.9 0 re
+f
+946.06 59.69 54.9 0 re
+S
+2.67 w
+[] 0 d
+0 J
+390.97 59.69 m
+445.87 59.69 l
+S
+336.07 226.49 m
+390.97 226.49 l
+S
+512.97 228.67 m
+567.87 228.67 l
+S
+458.07 59.69 m
+512.97 59.69 l
+S
+634.97 59.69 m
+689.87 59.69 l
+S
+580.07 200.42 m
+634.97 200.42 l
+S
+756.97 195.11 m
+811.87 195.11 l
+S
+702.07 194.22 m
+756.97 194.22 l
+S
+878.96 59.69 m
+933.86 59.69 l
+S
+824.07 217.21 m
+878.96 217.21 l
+S
+1000.96 213.83 m
+1055.86 213.83 l
+S
+946.06 59.69 m
+1000.96 59.69 l
+S
+[0.745 0.745 0.745] SC
+1.07 w
+[] 0 d
+451.97 36.22 m
+451.97 426.52 l
+S
+573.97 36.22 m
+573.97 426.52 l
+S
+695.97 36.22 m
+695.97 426.52 l
+S
+817.97 36.22 m
+817.97 426.52 l
+S
+939.96 36.22 m
+939.96 426.52 l
+S
+1061.96 36.22 m
+1061.96 426.52 l
+S
+[0 0 0] SC
+1.07 w
+[4.27 4.27] 0 d
+317.77 332.25 m
+1074.16 332.25 l
+S
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+Q
+q
+/DeviceRGB {} CS
+[0 0 0] SC
+[0 0 0] SC
+1.07 w
+[] 0 d
+0 J
+1 j
+10 M
+317.77 36.22 m
+317.77 426.52 l
+S
+Q
+q
+Q
+q
+Q
+q
+[1 0 0 1 0 0] Tm
+0 0 Td
+/DeviceRGB {} cs
+[0 0 0] sc
+[0.302 0.302 0.302] sc
+[9 0 0 9 287.57 147.31] Tm
+0 0 Td
+/F11_0 1 Tf
+(1e-04)
+[0.556
+0
+0.556
+0
+0.584
+0
+0.556
+0
+0.556
+0] Tj
+[1 0 0 1 0 0] Tm
+0 0 Td
+[9 0 0 9 287.57 283.59] Tm
+0 0 Td
+/F11_0 1 Tf
+(1e-01)
+[0.556
+0
+0.556
+0
+0.584
+0
+0.556
+0
+0.556
+0] Tj
+[1 0 0 1 0 0] Tm
+0 0 Td
+[9 0 0 9 287.57 419.88] Tm
+0 0 Td
+/F11_0 1 Tf
+(1e+02)
+[0.556
+0
+0.556
+0
+0.584
+0
+0.556
+0
+0.556
+0] Tj
+Q
+q
+Q
+q
+/DeviceRGB {} CS
+[0 0 0] SC
+[0.2 0.2 0.2] SC
+1.07 w
+[] 0 d
+0 J
+1 j
+10 M
+315.03 150.54 m
+317.77 150.54 l
+S
+315.03 286.83 m
+317.77 286.83 l
+S
+315.03 423.11 m
+317.77 423.11 l
+S
+Q
+q
+Q
+q
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+Q
+q
+/DeviceRGB {} CS
+[0 0 0] SC
+[0 0 0] SC
+1.07 w
+[] 0 d
+0 J
+1 j
+10 M
+317.77 36.22 m
+1074.16 36.22 l
+S
+Q
+q
+Q
+q
+Q
+q
+/DeviceRGB {} CS
+[0 0 0] SC
+[0.2 0.2 0.2] SC
+1.07 w
+[] 0 d
+0 J
+1 j
+10 M
+390.97 33.48 m
+390.97 36.22 l
+S
+512.97 33.48 m
+512.97 36.22 l
+S
+634.97 33.48 m
+634.97 36.22 l
+S
+756.97 33.48 m
+756.97 36.22 l
+S
+878.96 33.48 m
+878.96 36.22 l
+S
+1000.96 33.48 m
+1000.96 36.22 l
+S
+Q
+q
+Q
+q
+[1 0 0 1 0 0] Tm
+0 0 Td
+/DeviceRGB {} cs
+[0 0 0] sc
+[0.302 0.302 0.302] sc
+[9 0 0 9 373.71 24.83] Tm
+0 0 Td
+/F11_0 1 Tf
+(Otu0004)
+[0.778
+0
+0.278
+0
+0.556
+0
+0.556
+0
+0.556
+0
+0.556
+0
+0.556
+0] Tj
+[1 0 0 1 0 0] Tm
+0 0 Td
+[9 0 0 9 495.71 24.83] Tm
+0 0 Td
+/F11_0 1 Tf
+(Otu0068)
+[0.778
+0
+0.278
+0
+0.556
+0
+0.556
+0
+0.556
+0
+0.556
+0
+0.556
+0] Tj
+[1 0 0 1 0 0] Tm
+0 0 Td
+[9 0 0 9 617.7 24.83] Tm
+0 0 Td
+/F11_0 1 Tf
+(Otu0145)
+[0.778
+0
+0.278
+0
+0.556
+0
+0.556
+0
+0.556
+0
+0.556
+0
+0.556
+0] Tj
+[1 0 0 1 0 0] Tm
+0 0 Td
+[9 0 0 9 739.7 24.83] Tm
+0 0 Td
+/F11_0 1 Tf
+(Otu0149)
+[0.778
+0
+0.278
+0
+0.556
+0
+0.556
+0
+0.556
+0
+0.556
+0
+0.556
+0] Tj
+[1 0 0 1 0 0] Tm
+0 0 Td
+[9 0 0 9 861.7 24.83] Tm
+0 0 Td
+/F11_0 1 Tf
+(Otu0392)
+[0.778
+0
+0.278
+0
+0.556
+0
+0.556
+0
+0.556
+0
+0.556
+0
+0.556
+0] Tj
+[1 0 0 1 0 0] Tm
+0 0 Td
+[9 0 0 9 983.7 24.83] Tm
+0 0 Td
+/F11_0 1 Tf
+(Otu0660)
+[0.778
+0
+0.278
+0
+0.556
+0
+0.556
+0
+0.556
+0
+0.556
+0
+0.556
+0] Tj
+Q
+q
+Q
+q
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+[1 0 0 1 0 0] Tm
+0 0 Td
+/DeviceRGB {} cs
+[0 0 0] sc
+[0 0 0] sc
+[11 0 0 11 625.77 11.45] Tm
+0 0 Td
+/F11_0 1 Tf
+(Oper)
+[0.778
+0
+0.556
+0
+0.556
+0
+0.333
+0] Tj
+10 TJm
+(ational T)
+[0.556
+0
+0.278
+0
+0.222
+0
+0.556
+0
+0.556
+0
+0.556
+0
+0.222
+0
+0.278
+0
+0.611
+0] Tj
+120 TJm
+(axonomic Units)
+[0.556
+0
+0.5
+0
+0.556
+0
+0.556
+0
+0.556
+0
+0.833
+0
+0.222
+0
+0.5
+0
+0.278
+0
+0.722
+0
+0.556
+0
+0.222
+0
+0.278
+0
+0.5
+0] Tj
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+[1 0 0 1 0 0] Tm
+0 0 Td
+/DeviceRGB {} cs
+[0 0 0] sc
+[0 0 0] sc
+[0 11 -11 0 281.91 182.4] Tm
+0 0 Td
+/F11_0 1 Tf
+(Relativ)
+[0.722
+0
+0.556
+0
+0.222
+0
+0.556
+0
+0.278
+0
+0.222
+0
+0.5
+0] Tj
+25 TJm
+(e Ab)
+[0.556
+0
+0.278
+0
+0.667
+0
+0.556
+0] Tj
+20 TJm
+(undance)
+[0.556
+0
+0.556
+0
+0.556
+0
+0.556
+0
+0.556
+0
+0.5
+0
+0.556
+0] Tj
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+/DeviceRGB {} cs
+[0 0 0] sc
+[1 1 1] sc
+1085.5 202.31 61.02 58.12 re
+f
+Q
+q
+Q
+q
+[1 0 0 1 0 0] Tm
+0 0 Td
+/DeviceRGB {} cs
+[0 0 0] sc
+[0 0 0] sc
+[11 0 0 11 1091.17 246.86] Tm
+0 0 Td
+/F11_0 1 Tf
+(Disease)
+[0.722
+0
+0.222
+0
+0.5
+0
+0.556
+0
+0.556
+0
+0.5
+0
+0.556
+0] Tj
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+/DeviceRGB {} cs
+[0 0 0] sc
+[0.537 0.616 0.643] sc
+/DeviceRGB {} CS
+[0 0 0] SC
+[0 0 0] SC
+0.75 w
+[] 0 d
+1 J
+1 j
+10 M
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[8.98 0 0 8.98 1096.26 230.79] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+Q
+q
+Q
+q
+/DeviceRGB {} cs
+[0 0 0] sc
+[0.537 0.616 0.643] sc
+/DeviceRGB {} CS
+[0 0 0] SC
+[0 0 0] SC
+1.07 w
+[] 0 d
+1 J
+1 j
+10 M
+1093.33 229.58 12.96 8.64 re
+f
+1093.33 229.58 12.96 8.64 re
+S
+1093.33 233.9 m
+1106.29 233.9 l
+S
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+/DeviceRGB {} cs
+[0 0 0] sc
+[0.788 0.2 0.071] sc
+/DeviceRGB {} CS
+[0 0 0] SC
+[0 0 0] SC
+0.75 w
+[] 0 d
+1 J
+1 j
+10 M
+[1 0 0 1 0 0] Tm
+0 0 Td
+2 Tr
+[8.98 0 0 8.98 1096.26 213.51] Tm
+0 0 Td
+/F10_0 1 Tf
+(l)
+[0.791
+0] Tj
+0 Tr
+Q
+q
+Q
+q
+/DeviceRGB {} cs
+[0 0 0] sc
+[0.788 0.2 0.071] sc
+/DeviceRGB {} CS
+[0 0 0] SC
+[0 0 0] SC
+1.07 w
+[] 0 d
+1 J
+1 j
+10 M
+1093.33 212.3 12.96 8.64 re
+f
+1093.33 212.3 12.96 8.64 re
+S
+1093.33 216.62 m
+1106.29 216.62 l
+S
+Q
+q
+Q
+q
+[1 0 0 1 0 0] Tm
+0 0 Td
+/DeviceRGB {} cs
+[0 0 0] sc
+[0 0 0] sc
+[9 0 0 9 1110.61 230.67] Tm
+0 0 Td
+/F11_0 1 Tf
+(Cancer)
+[0.722
+0
+0.556
+0
+0.556
+0
+0.5
+0
+0.556
+0
+0.333
+0] Tj
+Q
+q
+Q
+q
+[1 0 0 1 0 0] Tm
+0 0 Td
+/DeviceRGB {} cs
+[0 0 0] sc
+[0 0 0] sc
+[9 0 0 9 1110.61 213.39] Tm
+0 0 Td
+/F11_0 1 Tf
+(Health)
+[0.722
+0
+0.556
+0
+0.556
+0
+0.222
+0
+0.278
+0
+0.556
+0] Tj
+30 TJm
+(y)
+[0.5
+0] Tj
+Q
+q
+Q
+q
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+Q
+q
+3.49 3.49 1148.51 428.51 re
+W
+[1 0 0 1 0 0] Tm
+0 0 Td
+/DeviceRGB {} cs
+[0 0 0] sc
+[0 0 0] sc
+[14 0 0 14 273.58 416.92] Tm
+0 0 Td
+/F12_0 1 Tf
+(B)
+[0.722
+0] Tj
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+q
+Q
+Q
+showpage
+%%PageTrailer
+pdfEndPage
+end
+%%Trailer
+%%DocumentSuppliedResources:
+%%EOF
