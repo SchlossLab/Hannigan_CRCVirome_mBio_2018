@@ -23,41 +23,4 @@ The data presented in this manuscript are original and the manuscript is not und
 
 This study utilized a cohort of human subjects. This study was approved by the University of Michigan Institutional Review Board and all subjects provided informed consent.
 
-We recommend Jeffery Miller, Vincent Racaniello, and Diane Griffin as appropriate handling editors.
-
-We suggest the following reviewers for this publication:
-
-| **Katrine Whiteson, PhD**
-| Assistant Professor
-| School of Biological Sciences
-| School of Medicine
-| University of California, Irvine
-| Email: katrine@uci.edu
-
-\newpage
-
-| **Bonnie Hurwitz, PhD**
-| Assistant Professor
-| Dept. of Agricultural and BioSystems Engineering
-| University of Arizona
-| Email: bhurwitz@email.arizona.edu
-
-| **Alejandro Reyes Muñoz, PhD**
-| Assistant Professor
-| Dept. of Biological Sciences
-| Universidad de los Andes
-| Email: a.reyes@uniandes.edu.co
-
-| **John Kirby, PhD**
-| Professor
-| Department of Microbiology and Immunology
-| Medical College of Wisconsin
-| Email: jkirby@mcw.edu
-
-| **Mya Breitbart, PhD**
-| Associate Professor
-| Dept. of Biological Oceanography
-| University of South Florida
-| Email: mya@usf.edu
-
 We thank you for your consideration and look forward to your response.
