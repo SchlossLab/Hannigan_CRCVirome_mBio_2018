@@ -178,6 +178,12 @@ The authors thank the Schloss lab members for their underlying contributions, an
 
 \newpage
 
+# References
+
+<div id = 'refs'></div>
+
+\newpage
+
 # Figure Legends
 
 ![*Cohort and sample processing outline. Thirty subject stool samples were collected from healthy, adenoma (pre-cancer), and carcinoma (cancer) patients. Stool samples were split into two aliquots, the first of which was used for bacterial sequencing and the second which was used for virus sequencing. Bacterial sequencing was done using both 16S rRNA amplicon and whole metagenomic shotgun sequencing techniques. Virus samples were purified for viruses using filtration and a combination of chloroform (bacterial lysis) and DNase (exposed genomic DNA degradation). The resulting encapsulated virus DNA was sequenced using whole metagenomic shotgun sequencing.* \label{sampleproc}]()
@@ -237,7 +243,3 @@ The authors thank the Schloss lab members for their underlying contributions, an
 \newpage
 
 ![*Community network analysis utilizing predicted interactions between bacteria and phage operational genomic units. A) Visualization of the community network for our colorectal cancer cohort. B) Scatter plot illustrating the correlation between importance (mean decrease in accuracy) and the degree of centrality for each OVU. A linear regression line was fit to illustrate the correlation (blue) which was found to be statistically significantly and weakly correlated (p-value = `r signif(corstats[c(corstats$names %in% "pval"),"scores"], digits = sigfig)`, R = `r signif(corstats[c(corstats$names %in% "rho"),"scores"], digits = sigfig)`).*\label{network}]()
-
-\newpage
-
-# References
