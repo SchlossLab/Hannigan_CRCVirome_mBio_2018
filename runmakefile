@@ -5,24 +5,25 @@
 # University of Michigan
 # Use this to submit the makefile to the server
 
-#PBS -N runmakefile-CRC
-#PBS -q first
-#PBS -l nodes=4:ppn=2,pmem=40gb
-#PBS -l walltime=600:00:00
+#PBS -N runmakefile-conjviribus
+#PBS -q fluxod
+#PBS -l qos=flux
+#PBS -l nodes=1:ppn=4,mem=32GB
+#PBS -l walltime=50:00:00
 #PBS -j oe
 #PBS -V
-#PBS -A schloss_lab
+#PBS -A pschloss_fluxod
 
-# Load in modules
-module load gcc/4.9.2
-# Set the proper R module
-module load R/3.3.2
-# Load perl modules
-module load perl/5.22.1
-module load perl-modules/5.22.1
-# Python is a module dependency
-module load python/2.7.10
-module load concoct/0.4.0
+# # Load in modules
+# module load gcc/4.9.2
+# # Set the proper R module
+# module load R/3.3.2
+# # Load perl modules
+# module load perl/5.22.1
+# module load perl-modules/5.22.1
+# # Python is a module dependency
+# module load python/2.7.10
+# module load concoct/0.4.0
 
 cd /mnt/EXT/Schloss-data/ghannig/Hannigan-2016-ColonCancerVirome || exit
 
