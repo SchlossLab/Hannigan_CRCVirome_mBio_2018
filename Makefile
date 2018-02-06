@@ -145,7 +145,7 @@ $(variable4): data/HumanDecon/%_R2.fastq: data/QC/%_R2.fastq
 		--input ./data/ProjectSeqDepth.tsv \
 		--metadata ./data/metadata/NexteraXT003Map.tsv \
 		--out ./figures/qualitycontrol.pdf \
-		--sdepth 100000
+		--sdepth 1000000
 
 ############################################# CONTIGS #############################################
 
