@@ -138,7 +138,8 @@ $(variable4): data/HumanDecon/%_R2.fastq: data/QC/%_R2.fastq
 ./data/ProjectSeqDepth.tsv :
 	bash ./bin/getPairedCount.sh \
 		./data/HumanDecon \
-		./data/ProjectSeqDepth.tsv
+		./data/ProjectSeqDepth.tsv \
+		./data/ProjectSeqDepthHumanCon.tsv
 
 ./figures/qualitycontrol.pdf :
 	Rscript ./bin/QualityControlStats.R \
