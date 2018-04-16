@@ -145,8 +145,12 @@ $(variable4): data/HumanDecon/%_R2.fastq: data/QC/%_R2.fastq
 	Rscript ./bin/QualityControlStats.R \
 		--input ./data/ProjectSeqDepth.tsv \
 		--metadata ./data/metadata/NexteraXT003Map.tsv \
+		--metadatat ./data/metadata/NexteraXT004Map.tsv \
 		--out ./figures/qualitycontrol.pdf \
-		--sdepth 1000000
+		--sdepth 1000000 \
+		--contamination ./data/ProjectSeqDepthHumanCon.tsv \
+		--contout ./figures/qualitycontrolcont.pdf
+
 
 ############################################# CONTIGS #############################################
 
@@ -663,7 +667,7 @@ finalrelationships \
 		./data/PredictedRelationshipTable.tsv
 
 ################################## CONTIG CLUSTER IDENTIFICATION ##################################
-# Get ID for longest contig in each cluster
+# Get ID for longest contig in each clustered virus
 ./data/contigclustersidentity/longestcontigsvirus.tsv : ./data/VirusContigLength.tsv
 	mkdir -p ./data/contigclustersidentity
 	Rscript ./bin/GetLongestContig.R \
@@ -679,6 +683,15 @@ finalrelationships \
 		./data/metadata/VirusPhageReferenceFormat.fa \
 		./data/contigclustersidentity/longestcontigsvirus.tsv \
 		./data/contigclustersidentity/VirusRepsetIds.tsv \
+		"/nfs/turbo/schloss-lab/bin/ncbi-blast-2.4.0+/bin/"
+
+# Also align the contig seqs to the bacteria reference database
+./data/contigclustersidentity/VirusRepsetIdsAgainstBacteria.tsv :
+	bash ./bin/IdentifyContigs.sh \
+		./data/totalcontigsvirus.fa \
+		./data/metadata/BacteriaReference.fa \
+		./data/contigclustersidentity/longestcontigsvirus.tsv \
+		./data/contigclustersidentity/VirusRepsetIdsAgainstBacteria.tsv \
 		"/nfs/turbo/schloss-lab/bin/ncbi-blast-2.4.0+/bin/"
 
 ./rtables/idcount.tsv :
