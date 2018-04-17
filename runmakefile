@@ -31,4 +31,4 @@ cd /nfs/turbo/schloss-lab/ghannig/Hannigan-2016-ColonCancerVirome || exit
 echo Working in $(pwd)
 
 # Run make
-make ./data/contigclustersidentity/VirusRepsetIds.tsv
+make ./data/contigclustersidentity/VirusRepsetIdsAgainstBacteria.tsv

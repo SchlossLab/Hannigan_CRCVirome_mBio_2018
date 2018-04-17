@@ -710,7 +710,7 @@ finalrelationships \
 		--toplength 1 \
 		--out $@
 
-# Align the contig seqs to the virus reference database
+# Align the contig seqs to the bacteria reference database
 ./data/contigclustersidentity/BacteriaRepsetIds.tsv :
 	bash ./bin/IdentifyContigsBac.sh \
 		./data/totalcontigsbacteria.fa \
