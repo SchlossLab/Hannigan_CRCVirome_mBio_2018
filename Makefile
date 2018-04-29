@@ -683,7 +683,8 @@ finalrelationships \
 		./data/metadata/VirusPhageReferenceFormat.fa \
 		./data/contigclustersidentity/longestcontigsvirus.tsv \
 		./data/contigclustersidentity/VirusRepsetIds.tsv \
-		"/nfs/turbo/schloss-lab/bin/ncbi-blast-2.4.0+/bin/"
+		"/nfs/turbo/schloss-lab/bin/ncbi-blast-2.4.0+/bin/" \
+		"false"
 
 # Also align the contig seqs to the bacteria reference database
 ./data/contigclustersidentity/VirusRepsetIdsAgainstBacteria.tsv :
