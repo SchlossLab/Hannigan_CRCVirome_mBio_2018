@@ -23,12 +23,12 @@ RunBlast () {
 		-in "${2}" \
 		-out ./data/tmpid/ReferenceGenomes
 
-	echo Running tblastx...
-	${BlastPath}tblastx \
+	echo Running blastn...
+	${BlastPath}blastn \
     	-query "${1}" \
     	-out ./data/tmpid/blastout.tsv \
     	-db ./data/tmpid/ReferenceGenomes \
-    	-evalue 1e-25 \
+    	-evalue 1e-5 \
     	-num_threads 8 \
     	-max_target_seqs 1 \
     	-outfmt 6
