@@ -111,6 +111,6 @@ paste ./data/tmpcter/* > ./data/tmpid/fullcols.tsv
 awk -F "\t" 'FNR==NR { a[$3] = $1"\t"$2; next } { for( i in a ) if($1 ~ i) {print a[$1]"\t"$0} }' \
 	./data/tmpid/ctax.tsv  \
 	./data/tmpid/fullcols.tsv \
-	> ./data/contigclustersidentity/clustax.tsv
+	> ${outputfile}
 
 

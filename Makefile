@@ -693,7 +693,8 @@ finalrelationships \
 		./data/metadata/BacteriaReference.fa \
 		./data/contigclustersidentity/longestcontigsvirus.tsv \
 		./data/contigclustersidentity/VirusRepsetIdsAgainstBacteria.tsv \
-		"/nfs/turbo/schloss-lab/bin/ncbi-blast-2.4.0+/bin/"
+		"/nfs/turbo/schloss-lab/bin/ncbi-blast-2.4.0+/bin/" \
+		"true"
 
 ./rtables/idcount.tsv :
 	bc <<< "scale=8; 100 * `wc -l < ./data/contigclustersidentity/clustax.tsv` / `wc -l < ./data/contigclustersidentity/longestcontigsvirus.tsv`" > ./rtables/idcount.tsv
