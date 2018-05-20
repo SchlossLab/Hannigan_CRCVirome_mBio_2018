@@ -261,6 +261,13 @@ taxonomy$Taxonomy <- sub(".+\\;(.+)\\(\\d+\\)\\;$", "\\1", taxonomy$Taxonomy, pe
 virustax$V1 <- sub("^", "Cluster_", virustax$V1, perl = TRUE)
 virustax <- unique(virustax)
 
+# Remove the bacteria-not-virus clusters
+removaltable <- read.delim("./data/contigclustersidentity/BacteriaNotVirus.tsv", header = FALSE, sep = "\t")
+removaltable$V1 <- gsub("^", "Cluster_", removaltable$V1, perl = TRUE)
+# Clean input
+input <- input[!c(input$V1 %in% removaltable$V1),]
+virustax <- virustax[!c(virustax$V1 %in% removaltable$V1),]
+
 # Rarefy input table
 minimumsubsample <- 1000000
 inputcast <- dcast(input, V1 ~ V2)
