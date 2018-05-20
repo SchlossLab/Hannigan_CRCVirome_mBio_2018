@@ -1,8 +1,6 @@
 gcinfo(FALSE)
 
-library("optparse")
 library("ggplot2")
-library("plotROC")
 library("reshape2")
 library("wesanderson")
 library("vegan")
@@ -96,11 +94,14 @@ GetAverageImportance <- function(x, y) {
 }
 
 plotimportance <- function(x, iterationcount = 10, topcount = 10, corecount = 5) {
+	write("Getting Avg Importance", stderr())
 	avgimportance <- mclapply(c(1:iterationcount), mc.cores = corecount, function(i) GetAverageImportance(x, i))
+	write("Formatting Importance", stderr())
 	avgimportancedf <- ldply(avgimportance, data.frame)
 	import <- ddply(avgimportancedf, c("categories"), summarize, mean = mean(Overall))
 	importaverage <- merge(avgimportancedf, import, by = "categories")
 
+	write("Getting Virus Tax", stderr())
 	virustax <- virustax[,c(1,3,7)]
 
 	importaverage <- merge(importaverage, virustax, by.x = "categories", by.y = "V1", all = TRUE)
@@ -108,8 +109,8 @@ plotimportance <- function(x, iterationcount = 10, topcount = 10, corecount = 5)
 	importaverage <- importaverage[!c(importaverage$Overall %in% NA),]
 	importaverage[is.na(importaverage)] <- "Unknown"
 	importaverage <- importaverage[order(importaverage$mean, decreasing = FALSE),]
-	importaverage$categories <- factor(importaverage$categories, levels = importaverage$categories)
-	importaverage$V7 <- factor(importaverage$V7, levels = importaverage$V7)
+	importaverage$categories <- factor(importaverage$categories, levels = unique(importaverage$categories))
+	importaverage$V7 <- factor(importaverage$V7)
 	
 	binlength <- c(1:topcount) + 0.5
 
@@ -149,6 +150,8 @@ plotimportance <- function(x, iterationcount = 10, topcount = 10, corecount = 5)
 	  return(importanceplot)
 }
 
+hvai <- plotimportance(absmissingid, iterationcount = 3)
+
 pbi <- function(x, iterationcount = 10, topcount = 10) {
 	avgimportance <- lapply(c(1:iterationcount), function(i) GetAverageImportance(x, i))
 	avgimportancedf <- ldply(avgimportance, data.frame)
@@ -156,8 +159,8 @@ pbi <- function(x, iterationcount = 10, topcount = 10) {
 	importaverage <- merge(avgimportancedf, import, by = "categories")
 	importaverage <- merge(importaverage, taxonomy, by.x = "categories", by.y = "OTU")
 	importaverage <- importaverage[order(importaverage$mean, decreasing = FALSE),]
-	importaverage$categories <- factor(importaverage$categories, levels = importaverage$categories)
-	importaverage$Taxonomy <- factor(importaverage$Taxonomy, levels = importaverage$Taxonomy)
+	importaverage$categories <- factor(importaverage$categories, levels = unique(importaverage$categories))
+	importaverage$Taxonomy <- factor(importaverage$Taxonomy)
 	
 	binlength <- c(1:topcount) + 0.5
 
@@ -437,30 +440,40 @@ bhvci <- pbi(pasubsetmissing)
 # Compare Bacteria and Virus  #
 ###############################
 vauc <- rbind(hvadf, avcdf, hvcdf)
-vauc$class <- factor(vauc$class, levels = vauc$class)
+vauc$class <- factor(vauc$class, levels = unique(vauc$class))
 
 bauc <- rbind(bhvadf, bavcdf, bhvcdf)
-bauc$class <- factor(bauc$class, levels = bauc$class)
+bauc$class <- factor(bauc$class, levels = unique(bauc$class))
 
 vplot <- ggplot(vauc, aes(x = class, y = avgAUC)) +
 	theme_classic() +
 	theme(axis.text.x = element_text(angle=45, hjust = 1)) +
 	geom_point() +
-	ylim(0, 1) +
+	ylim(0, 1.1) +
 	stat_summary(fun.y=mean, colour="blue", geom="line", aes(group = 1)) +
 	ylab("Virus Model AUC") +
 	xlab("") +
-	scale_x_discrete(labels = c("Healthy vs Adenoma", "Adenoma vs Cancer", "Healthy vs Cancer"))
+	scale_x_discrete(labels = c("Healthy vs Adenoma", "Adenoma vs Cancer", "Healthy vs Cancer")) +
+	geom_segment(x = 1, xend = 2, y = 0.95, yend = 0.95) +
+	annotate("text", x = 1.5, y = 0.955, label = "*", size = 7) +
+	geom_segment(x = 2, xend = 3, y = 1, yend = 1) +
+	annotate("text", x = 2.5, y = 1.005, label = "*", size = 7) +
+	geom_segment(x = 1, xend = 3, y = 1.05, yend = 1.05) +
+	annotate("text", x = 2, y = 1.055, label = "*", size = 7)
+
+pairwise.wilcox.test(x = vauc$avgAUC, g = vauc$class, p.adjust.method = "fdr")
 
 bplot <- ggplot(bauc, aes(x = class, y = avgAUC)) +
 	theme_classic() +
 	theme(axis.text.x = element_text(angle=45, hjust = 1)) +
 	geom_point() +
-	ylim(0, 1) +
+	ylim(0, 1.1) +
 	stat_summary(fun.y=mean, colour="blue", geom="line", aes(group = 1)) +
 	ylab("Bacteria Model AUC") +
 	xlab("") +
 	scale_x_discrete(labels = c("Healthy vs Adenoma", "Adenoma vs Cancer", "Healthy vs Cancer"))
+
+pairwise.wilcox.test(x = bauc$avgAUC, g = bauc$class, p.adjust.method = "fdr")
 
 top <- plot_grid(vplot, bplot, labels = c("A", "B"))
 vcol <- plot_grid(
