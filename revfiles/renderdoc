@@ -1,0 +1,4 @@
+#! /bin/bash
+
+echo Rendering now...
+pandoc -H options.sty -s ./ReviewerComments.md -f markdown -t latex -o ./ReviewerComments.pdf
