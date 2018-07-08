@@ -1,0 +1,60 @@
+Original comments at:
+
+https://docs.google.com/document/d/1hW_4z9Uj_mOIxonJWkYWxQ7T9lf4Boj8IXG2JVI--wU/edit#
+
+## COMMENT 1
+
+<CHANGE LEGEND AND RERENDER>
+
+Sorry I don't see the discordance between the figures. Maybe we are looking at different versions?
+
+Love the rewording, that is much better!
+
+## COMMENT 2
+
+Incorporated the recommended legend.
+
+<ADD DASHED LINE TO LEGEND>
+
+## COMMENT 3
+
+
+
+## COMMENT 4
+
+We need to be careful about getting too caught up in the specific "important" phages because none of them are really that important. The importance levels are small, and multiple times less than what was observed by bacteria. So it's probably not a single phage involved. Also these are representative sequences from OVUs, and are not really meant to provide specific resolution, as described for the PLOS comp bio paper.
+
+## COMMENT 5
+
+Changed.
+
+## COMMENT 6
+
+Thanks, the intent was not to have it read as the only alternative hypothesis. We can add more, and point out that those are also not the only alternatives, because I think we could continue hypothesizing about this and coming up with more options.
+
+<FIX THE TEXT>
+
+## COMMENT 7
+
+Changed.
+
+## COMMENT 8
+
+I like this, although I would be hesitant to say non-linear patterns because, while it excells at complex non-linear relationships, it should be able to detect them as well.
+
+## COMMENT 9
+
+This is great. Changed it.
+
+## COMMENT 10
+
+Thanks for the feedback. I'll also try to make it sound less dodgy. The intent was to do the re-analyses and textual revisions that were warranted.
+
+## COMMENT 11
+
+Changed it.
+
+## COMMENT 12
+
+
+
