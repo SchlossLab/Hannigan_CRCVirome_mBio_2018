@@ -696,6 +696,13 @@ finalrelationships \
 		"/nfs/turbo/schloss-lab/bin/ncbi-blast-2.4.0+/bin/" \
 		"true"
 
+# Get a list of the virus clusters that hit bacteria but not phage references
+cut -f 1 ./data/contigclustersidentity/VirusRepsetIds_backup.tsv | sort | uniq > ./data/contigclustersidentity/VirusVirusIds.tsv
+cut -f 1 ./data/contigclustersidentity/VirusRepsetIdsAgainstBacteria.tsv | sort | uniq > ./data/contigclustersidentity/VirusBacteriaIds.tsv
+# Use grep to get the final list
+grep -xv --file=./data/contigclustersidentity/VirusVirusIds.tsv ./data/contigclustersidentity/VirusBacteriaIds.tsv | sort | uniq > ./data/contigclustersidentity/BacteriaNotVirus.tsv
+
+
 ./rtables/idcount.tsv :
 	bc <<< "scale=8; 100 * `wc -l < ./data/contigclustersidentity/clustax.tsv` / `wc -l < ./data/contigclustersidentity/longestcontigsvirus.tsv`" > ./rtables/idcount.tsv
 
