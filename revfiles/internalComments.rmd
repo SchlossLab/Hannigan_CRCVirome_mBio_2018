@@ -4,25 +4,25 @@ https://docs.google.com/document/d/1hW_4z9Uj_mOIxonJWkYWxQ7T9lf4Boj8IXG2JVI--wU/
 
 ## COMMENT 1
 
-<CHANGE LEGEND AND RERENDER>
+Sorry I don't see the discordance between the figures. Maybe we are looking at different versions? Regardless it should be fixed now.
 
-Sorry I don't see the discordance between the figures. Maybe we are looking at different versions?
-
-Love the rewording, that is much better!
+Rewording was also great.
 
 ## COMMENT 2
 
 Incorporated the recommended legend.
 
-<ADD DASHED LINE TO LEGEND>
-
 ## COMMENT 3
 
+Done.
 
+## COMMENT 4-A
 
-## COMMENT 4
+This is great feedback, thanks. I went through and made some revisions to hopefully make this clearer.
 
-We need to be careful about getting too caught up in the specific "important" phages because none of them are really that important. The importance levels are small, and multiple times less than what was observed by bacteria. So it's probably not a single phage involved. Also these are representative sequences from OVUs, and are not really meant to provide specific resolution, as described for the PLOS comp bio paper.
+## COMMENT 4-B
+
+I think we need to be careful about getting too caught up in the specific "important" phages because none of them are really all that important conpmared to the others. The importance levels are close, and multiple times less than what was observed by bacteria. So it's probably not a single phage involved and I don't think it really makes sense to get that caught up in a single phage (a point I probably didn't hit hard enough in the text). Also it is still important to note that these are representative sequences from OVUs, and are not really meant to provide specific resolution, as described for the PLOS comp bio paper. It could be a good idea to really dig into this if we had more compelling data (i.e. similar importance signal to the fusobacterium case on the CRC bacterial side of things) but here we are really only looking at community wide signatures without diving into any given specific elements.
 
 ## COMMENT 5
 
@@ -30,9 +30,7 @@ Changed.
 
 ## COMMENT 6
 
-Thanks, the intent was not to have it read as the only alternative hypothesis. We can add more, and point out that those are also not the only alternatives, because I think we could continue hypothesizing about this and coming up with more options.
-
-<FIX THE TEXT>
+Thanks, the intent was not to have it read as the only alternative hypothesis. We can add more, and point out that those are also not the only alternatives, because I think we could continue hypothesizing about this and coming up with more options. I'll add in these suggestions and make it clearer that there are many options to explore.
 
 ## COMMENT 7
 
@@ -40,7 +38,7 @@ Changed.
 
 ## COMMENT 8
 
-I like this, although I would be hesitant to say non-linear patterns because, while it excells at complex non-linear relationships, it should be able to detect them as well.
+I like this, although I am hesitant to focus on non-linear patterns in the language because, while it excells at complex non-linear relationships, it should be able to a good job detecting linear relationships as well.
 
 ## COMMENT 9
 
@@ -48,7 +46,7 @@ This is great. Changed it.
 
 ## COMMENT 10
 
-Thanks for the feedback. I'll also try to make it sound less dodgy. The intent was to do the re-analyses and textual revisions that were warranted.
+Thanks for the feedback. I'll also try to make it sound less dodgy.
 
 ## COMMENT 11
 
@@ -56,5 +54,10 @@ Changed it.
 
 ## COMMENT 12
 
+This is great and incorporated the changes.
+
+I agree that it should be self evident but this is something that some of my colleagues, who are not familiar with phages, appreciated hearing.
+
+These are also great points about how phages will interact with their bacterial hosts, and their lysogenic replication cycles. These will be important as we work to understand the system.
 
 
