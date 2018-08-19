@@ -6,7 +6,7 @@ https://docs.google.com/document/d/1hW_4z9Uj_mOIxonJWkYWxQ7T9lf4Boj8IXG2JVI--wU/
 
 Sorry I don't see the discordance between the figures. Maybe we are looking at different versions? Regardless it should be fixed now.
 
-Rewording was also great.
+Rewording was also great, thanks.
 
 ## COMMENT 2
 
@@ -46,7 +46,7 @@ This is great. Changed it.
 
 ## COMMENT 10
 
-Thanks for the feedback. I'll also try to make it sound less dodgy.
+Thanks for the feedback. I also tried to make it sound less dodgy.
 
 ## COMMENT 11
 
@@ -56,7 +56,7 @@ Changed it.
 
 This is great and incorporated the changes.
 
-I agree that it should be self evident but this is something that some of my colleagues, who are not familiar with phages, appreciated hearing.
+I agree that it should be self evident but this is something that some of my colleagues, who are not familiar with phages (e.g. clinicians), have appreciated hearing.
 
 These are also great points about how phages will interact with their bacterial hosts, and their lysogenic replication cycles. These will be important as we work to understand the system.
 
