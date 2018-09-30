@@ -677,12 +677,12 @@ finalrelationships \
 		--out $@
 
 # Align the contig seqs to the virus reference database
-./data/contigclustersidentity/VirusRepsetIds.tsv :
+./data/contigclustersidentity/clustax.tsv :
 	bash ./bin/IdentifyContigs.sh \
 		./data/totalcontigsvirus.fa \
 		./data/metadata/VirusPhageReferenceFormat.fa \
 		./data/contigclustersidentity/longestcontigsvirus.tsv \
-		./data/contigclustersidentity/VirusRepsetIds.tsv \
+		./data/contigclustersidentity/clustax.tsv \
 		"/nfs/turbo/schloss-lab/bin/ncbi-blast-2.4.0+/bin/" \
 		"false"
 
