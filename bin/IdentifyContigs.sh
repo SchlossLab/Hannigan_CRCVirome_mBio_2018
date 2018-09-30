@@ -72,7 +72,10 @@ else
 fi
 
 # Add cluster ID to the table
-cut -f 1,2 ./data/tmpid/blastout.tsv | sort | uniq > ./data/tmpid/cutblastout.tsv
+sort -k2,2 -k11,11g -k 12,12Vr ./data/tmpid/blastout.tsv \
+	| awk '!seen[substr($1,0,15)]++' \
+	| cut -f 1,2 \
+	> ./data/tmpid/cutblastout.tsv
 sed 's/\,/\t/' ./data/ContigClustersVirus/clustering_gt1000.csv > ./data/tmpid/clusterids.tsv
 awk -F "\t" 'FNR==NR { a[$1] = $2; next } { for( i in a ) if($1 ~ i) {print a[$1]"\t"$2} }' \
 	./data/tmpid/clusterids.tsv \
