@@ -24,6 +24,7 @@ RunBlast () {
 		-in "${2}" \
 		-out ./data/tmpid/ReferenceGenomes
 
+	# Use a higher max target seqs for filtering below
 	echo Running tblastx...
 	${BlastPath}tblastx \
     	-query "${1}" \
@@ -31,7 +32,7 @@ RunBlast () {
     	-db ./data/tmpid/ReferenceGenomes \
     	-evalue 1e-25 \
     	-num_threads 8 \
-    	-max_target_seqs 1 \
+    	-max_target_seqs 100 \
     	-outfmt 6
 }
 
