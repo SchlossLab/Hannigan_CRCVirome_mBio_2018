@@ -42,8 +42,8 @@ opt <- parse_args(opt_parser);
 ################
 # Run Analysis #
 ################
-input <- read.delim(opt$input, header=FALSE, sep="\t")
-metadata <- read.delim(opt$metadata, header=FALSE, sep="\t")[,c(2,26,27,30)]
+input <- read.delim("./data/ProjectSeqDepth.tsv", header=FALSE, sep="\t")
+metadata <- read.delim("./data/metadata/NexteraXT003Map.tsv", header=FALSE, sep="\t")[,c(2,26,27,30)]
 head(metadata)
 
 # DNA concentration
@@ -57,7 +57,7 @@ dnaconcplot <- ggplot(metadata, aes(x = V2, y = V26, fill = V30)) +
 	) +
 	geom_bar(stat="identity") +
 	coord_flip() +
-	scale_fill_manual(values = c(wes_palette("Royal1")[c(1,2,4)], wes_palette("Darjeeling")[5]), name = "Disease") +
+	scale_fill_manual(values = c(wes_palette("Royal1")[c(1,2,4)], "lightblue"), name = "Disease") +
 	ylab("VLP Genomic DNA Yield (ng/uL)") +
 	xlab("Prepared Samples")
 
@@ -73,13 +73,15 @@ depthplot <- ggplot(inputmerge, aes(x = V2, y = V1, fill = V30)) +
     ) +
     geom_bar(stat="identity") +
     coord_flip() +
-    scale_fill_manual(values = c(wes_palette("Royal1")[c(1,2,4)], wes_palette("Darjeeling")[5]), name = "Disease") +
-    ylab("VLP Sequence Yield (ng/uL)") +
-    xlab("")
+    scale_fill_manual(values = c(wes_palette("Royal1")[c(1,2,4)], "lightblue"), name = "Disease") +
+    ylab("VLP Sequence Count Yield") +
+    xlab("") +
+    geom_hline(yintercept = 1000000, linetype = "dashed")
 
 gridplot <- plot_grid(dnaconcplot, depthplot, labels = c("A", "B"))
+gridplot
 
 
-pdf(opt$out, height=4, width=10)
+pdf("./figures/qualitycontrol.pdf", height=4, width=10)
     gridplot
 dev.off()

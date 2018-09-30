@@ -1,6 +1,10 @@
 #! /bin/bash
 
+#! /bin/bash
+
 echo Rendering now...
+
+echo Rendering Up-To-Date Document...
 echo Running Knitr...
 Rscript -e "library(knitr); knit(input = './manuscript.Rmd', output = './manuscript.md')"
 echo Running Pandoc...
@@ -8,6 +12,21 @@ pandoc --latex-engine=xelatex --template=customtemplate.tex -H options.sty -s ./
 xelatex manuscript.tex
 xelatex manuscript.tex
 rm missfont.log
-rm manuscript.tex
 rm manuscript.log
 rm manuscript.aux
+
+echo Running Marked Changes...
+# Render the original as a latex file
+pandoc --latex-engine=xelatex --template=customtemplate.tex -H options.sty -s ./oman.md -f markdown -t latex -o ./oman.tex --biblio=citations.bib --csl=./mbio.csl
+# Create the diff file
+latexdiff oman.tex manuscript.tex > diff.tex
+# Render the diff file to pdf
+# Must run twice for proper figure number references
+xelatex diff.tex
+xelatex diff.tex
+# Rename output pdf the long way
+mv diff.pdf final-diff.pdf
+rm diff.*
+rm missfont.log
+
+
