@@ -687,6 +687,7 @@ finalrelationships \
 		"false"
 
 # Also align the contig seqs to the bacteria reference database
+# Not rerunning this here with updated max_target_seqs because it is for p/a
 ./data/contigclustersidentity/VirusRepsetIdsAgainstBacteria.tsv :
 	bash ./bin/IdentifyContigs.sh \
 		./data/totalcontigsvirus.fa \
