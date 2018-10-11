@@ -1,10 +1,10 @@
 First	Second	pval
-Virus	Bacteria	0.674423349778444
-Combined	Bacteria	0.237183433798336
-Metagenomic	Bacteria	1.28249365803639e-07
+Virus	Bacteria	0.578236204607939
+Combined	Bacteria	0.102002436554302
+Metagenomic	Bacteria	1.28067257669511e-07
 Virus	Virus	NA
-Combined	Virus	0.144428356548423
-Metagenomic	Virus	1.28249365803639e-07
+Combined	Virus	0.0789862428052255
+Metagenomic	Virus	1.28067257669511e-07
 Virus	Combined	NA
 Combined	Combined	NA
-Metagenomic	Combined	1.28249365803639e-07
+Metagenomic	Combined	1.28067257669511e-07
