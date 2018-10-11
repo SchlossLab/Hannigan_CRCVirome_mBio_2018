@@ -73,7 +73,7 @@ fi
 
 # Add cluster ID to the table
 sort -k2,2 -k11,11g -k 12,12Vr ./data/tmpid/blastout.tsv \
-	| awk '!seen[substr($1,0,15)]++' \
+	| awk '!seen[substr($1,0,35)]++' \
 	| cut -f 1,2 \
 	> ./data/tmpid/cutblastout.tsv
 sed 's/\,/\t/' ./data/ContigClustersVirus/clustering_gt1000.csv > ./data/tmpid/clusterids.tsv
@@ -111,10 +111,13 @@ for i in $(seq 1 8); do
 	awk -v col=$i '{ if($col) print $col; else print "Unclassified" }' ./data/tmpid/taxawnum.tsv > ./data/tmpcter/${i}.tsv
 done
 paste ./data/tmpcter/* > ./data/tmpid/fullcols.tsv
+sort ./data/tmpid/fullcols.tsv | uniq > ./data/tmpid/fullcols_filtered.tsv
 
-awk -F "\t" 'FNR==NR { a[$3] = $1"\t"$2; next } { for( i in a ) if($1 ~ i) {print a[$1]"\t"$0} }' \
-	./data/tmpid/ctax.tsv  \
-	./data/tmpid/fullcols.tsv \
-	> ${outputfile}
+# Get together the taxonomy reference and the contig IDs
+awk -F "\t" 'FNR==NR { a[$1] = $0; next } { {print $1"\t"$2"\t"a[$3]} }' \
+	./data/tmpid/fullcols_filtered.tsv \
+	./data/tmpid/ctax.tsv \
+	| cut -f -2,4- \
+	> ./data/contigclustersidentity/clustax.tsv
 
 
