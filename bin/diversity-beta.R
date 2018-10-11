@@ -13,10 +13,13 @@ library("optparse")
 library("ggplot2")
 library("plotROC")
 library("reshape2")
-library("wesanderson")
+library("viridis")
 library("vegan")
 library("plyr")
 library("cowplot")
+library("tidyr")
+library("dplyr")
+library("wesanderson")
 
 option_list <- list(
   make_option(c("-i", "--input"),
@@ -65,6 +68,28 @@ input <- read.delim("./data/VirusClusteredContigAbund.tsv", header=TRUE, sep="\t
 # Get the metadata table
 datadisease <- read.delim("./data/metadata/MasterMeta.tsv", header=FALSE, sep="\t")[,c(2,30,22)]
 
+# Remove the bacteria-not-virus clusters
+removaltable <- read.delim("./data/contigclustersidentity/BacteriaNotVirus.tsv", header = FALSE, sep = "\t")
+removaltable$V1 <- gsub("^", "Cluster_", removaltable$V1, perl = TRUE)
+# Clean input
+input <- input[!c(input$V1 %in% removaltable$V1),]
+
+# Get corrected aligned sequence count for each
+totalcounts <- input %>%
+    group_by(V2) %>%
+    summarize(total = sum(sum)) %>%
+    as.data.frame()
+
+# Write this to a file
+write.table(
+    file = "./data/ProjectSeqDepth.tsv",
+    x = totalcounts,
+    sep = "\t",
+    quote = FALSE,
+    row.names = FALSE,
+    col.names = TRUE
+    )
+
 # Format for vegan
 inputcast <- dcast(input, V2 ~ V1, value.var = "sum")
 inputcast[is.na(inputcast)] <- 0
@@ -78,8 +103,8 @@ castsum <- rowSums(inputcast)
 
 distlist <- lapply(c(1:25), function(i) {
     print(i)
-    inputcast <- rrarefy(inputcast, sample=100000)
-    inputcast <- inputcast[c(rowSums(inputcast) %in% 100000),]
+    inputcast <- rrarefy(inputcast, sample=1000000)
+    inputcast <- inputcast[c(rowSums(inputcast) %in% 1000000),]
     outdist <- vegdist(inputcast, method="bray", diag = TRUE, upper = TRUE)
     return(outdist)
 })
@@ -88,8 +113,8 @@ castdist <- Reduce("+", distlist) / length(distlist)
 
 distlist2 <- lapply(c(1:25), function(i) {
     print(i)
-    inputcast <- rrarefy(inputcast, sample=100000)
-    inputcast <- inputcast[c(rowSums(inputcast) %in% 100000),]
+    inputcast <- rrarefy(inputcast, sample=1000000)
+    inputcast <- inputcast[c(rowSums(inputcast) %in% 1000000),]
     # Make one without negative controls as well
     negcastvectorout <- as.character(datadisease[c(datadisease$V30 %in% "Negative"),1])
     negcastout <- inputcast[!c(rownames(inputcast) %in% negcastvectorout),]
@@ -110,7 +135,7 @@ NMDS_AND_MAP <- merge(ORD_FIT, datadisease, by.x="SampleID", by.y="V2")
 plotnmds <- ggplot(NMDS_AND_MAP, aes(x=MDS1, y=MDS2, colour=V30)) +
     theme_classic() +
     geom_point() +
-    scale_colour_manual(values = wes_palette("Darjeeling"), name = "Disease")
+    scale_color_viridis(name = "Disease", discrete=TRUE)
 
 # Make the distance matrix without negative control data
 ORD_NMDS <- metaMDS(castdistnoneg,k=2)
@@ -122,7 +147,7 @@ NMDS_AND_MAP <- merge(ORD_FIT, datadisease, by.x="SampleID", by.y="V2")
 nonegplotnmds <- ggplot(NMDS_AND_MAP, aes(x=MDS1, y=MDS2, colour=V30)) +
     theme_classic() +
     geom_point() +
-    scale_colour_manual(values = wes_palette("Darjeeling"), name = "Disease")
+    scale_color_viridis(name = "Disease", discrete = TRUE)
 
 write("Dispersion with negative controls", stderr())
 # Trying dispersion
@@ -173,7 +198,7 @@ nonegplotdiffs <- ggplot(moddf, aes(y=diff, x=comparison)) +
 
 ##### Alpha Diversity #####
 
-inputshannon <- data.frame(rownames(negcast) , diversity(negcast, index="shannon"), sample=100000)
+inputshannon <- data.frame(rownames(negcast) , diversity(negcast, index="shannon"), sample=1000000)
 colnames(inputshannon) <- c("SampleID", "ShannonDiv")
 mergedshannon <- merge(inputshannon, datadisease, by.x="SampleID", by.y="V2")
 mergedshannon <- mergedshannon[!c(mergedshannon$V30 %in% "Negative"),]
@@ -186,7 +211,7 @@ shannonplot <- ggplot(mergedshannon, aes(x=V30, y=ShannonDiv, fill=V30)) +
     scale_fill_manual(values = alpha(wes_palette("Darjeeling"), 0.75))
 pairwise.wilcox.test(x=mergedshannon$ShannonDiv, g=mergedshannon$V30, p.adjust.method="bonferroni")
 
-inputrich <- data.frame(rownames(negcast), rarefy(negcast, sample=100000))
+inputrich <- data.frame(rownames(negcast), rarefy(negcast, sample=1000000))
 colnames(inputrich) <- c("SampleID", "Rich")
 mergedrich <- merge(inputrich, datadisease, by.x="SampleID", by.y="V2")
 mergedrich <- mergedrich[!c(mergedrich$V30 %in% "Negative"),]

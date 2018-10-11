@@ -18,6 +18,8 @@ library("cowplot")
 library("vegan")
 library("extrafont")
 loadfonts()
+library("parallel")
+
 
 ###################
 # Set Subroutines #
@@ -140,6 +142,16 @@ alphacent$sampleID <- rownames(alphacent)
 input <- read.delim("./data/VirusClusteredContigAbund.tsv", header=TRUE, sep="\t")
 datadisease <- read.delim("./data/metadata/MasterMeta.tsv", header=FALSE, sep="\t")[,c(2,30,22)]
 
+# Remove the bacteria-not-virus clusters
+removaltable <- read.delim("./data/contigclustersidentity/BacteriaNotVirus.tsv", header = FALSE, sep = "\t")
+removaltable$V1 <- gsub("^", "Cluster_", removaltable$V1, perl = TRUE)
+# Clean input
+input <- input[!c(input$V1 %in% removaltable$V1),]
+# Remove the nodes from the network
+removenodevector <- data.frame(V1 = gsub("Cluster_", "Phage_", removaltable$V1, perl = TRUE))
+edgeout <- edgeout[!c(edgeout$from %in% removenodevector$V1),]
+
+
 # Rarefy input table
 minimumsubsample <- 1000000
 inputcast <- dcast(input, V1 ~ V2)
@@ -184,7 +196,7 @@ absmissingid <- abssubset[,-which(names(abssubset) %in% c("V22"))]
 outmodel <- caretmodel(absmissingid)
 outmodel
 
-avgimportance <- lapply(c(1:25), function(i) GetAverageImportance(absmissingid, i))
+avgimportance <- mclapply(c(1:25), mc.cores = 5, function(i) GetAverageImportance(absmissingid, i))
 avgimportance <- ldply(avgimportance, data.frame)
 avgimportance$sampleID <- gsub("Cluster", "Phage", avgimportance$categories)
 davg <- ddply(avgimportance, c("sampleID"), summarize, mean = mean(Overall))

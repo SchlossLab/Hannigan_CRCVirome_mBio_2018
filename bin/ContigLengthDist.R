@@ -39,6 +39,10 @@ colnames(clusters) <- c("ContigID", "Cluster")
 
 mergeddf <- merge(input, clusters, by = "ContigID")
 
+# Remove the bacteria-not-virus clusters
+removaltable <- read.delim("./data/contigclustersidentity/BacteriaNotVirus.tsv", header = FALSE, sep = "\t")
+mergeddf <- mergeddf[!c(mergeddf$Cluster %in% removaltable$V1),]
+
 lengthscatter <- ggplot(mergeddf, aes(x = Cluster, y = Length)) +
     theme_classic() +
     geom_point() +

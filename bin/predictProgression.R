@@ -102,15 +102,15 @@ plotimportance <- function(x, iterationcount = 10, topcount = 10, corecount = 5)
 	importaverage <- merge(avgimportancedf, import, by = "categories")
 
 	write("Getting Virus Tax", stderr())
-	virustax <- virustax[,c(1,3,7)]
+	virustax <- virustax[,c(1,3,6)]
 
 	importaverage <- merge(importaverage, virustax, by.x = "categories", by.y = "V1", all = TRUE)
-	importaverage$V7 <- as.character(importaverage$V7)
+	importaverage$V6 <- as.character(importaverage$V6)
 	importaverage <- importaverage[!c(importaverage$Overall %in% NA),]
 	importaverage[is.na(importaverage)] <- "Unknown"
 	importaverage <- importaverage[order(importaverage$mean, decreasing = FALSE),]
 	importaverage$categories <- factor(importaverage$categories, levels = unique(importaverage$categories))
-	importaverage$V7 <- factor(importaverage$V7)
+	importaverage$V6 <- factor(importaverage$V6)
 	
 	binlength <- c(1:topcount) + 0.5
 
@@ -134,7 +134,7 @@ plotimportance <- function(x, iterationcount = 10, topcount = 10, corecount = 5)
 	  	labels=parse(
 	  		text = paste0(
 	  			"italic('",
-	  			dfplot[c(0:(topcount - 1))*iterationcount+1,"V7"],
+	  			dfplot[c(0:(topcount - 1))*iterationcount+1,"V6"],
 	  			"')~",
 	  			paste(
 	  				" (",
@@ -149,8 +149,6 @@ plotimportance <- function(x, iterationcount = 10, topcount = 10, corecount = 5)
 
 	  return(importanceplot)
 }
-
-hvai <- plotimportance(absmissingid, iterationcount = 3)
 
 pbi <- function(x, iterationcount = 10, topcount = 10) {
 	avgimportance <- lapply(c(1:iterationcount), function(i) GetAverageImportance(x, i))

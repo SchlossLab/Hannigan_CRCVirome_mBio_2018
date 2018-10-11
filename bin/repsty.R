@@ -20,6 +20,13 @@ input <- read.delim("./data/VirusClusteredContigAbund.tsv", header=TRUE, sep="\t
 tempteratelist <- read.delim("./data/repcycle/repclust.tsv", header = FALSE, sep = "\t")
 datadisease <- read.delim("./data/metadata/MasterMeta.tsv", header=FALSE, sep="\t")[,c(2,30,22)]
 
+# Remove the bacteria-not-virus clusters
+removaltable <- read.delim("./data/contigclustersidentity/BacteriaNotVirus.tsv", header = FALSE, sep = "\t")
+removaltable$V1 <- gsub("^", "Cluster_", removaltable$V1, perl = TRUE)
+# Clean input
+input <- input[!c(input$V1 %in% removaltable$V1),]
+
+
 # Rarefy input table
 minimumsubsample <- 1000000
 inputcast <- dcast(input, V1 ~ V2)

@@ -99,15 +99,15 @@ plotimportance <- function(x, iterationcount = 25, topcount = 10, corecount = 5)
 	import <- ddply(avgimportancedf, c("categories"), summarize, mean = mean(Overall))
 	importaverage <- merge(avgimportancedf, import, by = "categories")
 
-	virustax <- virustax[,c(1,3,7)]
+	virustax <- virustax[,c(1,3,6)]
 
 	importaverage <- merge(importaverage, virustax, by.x = "categories", by.y = "V1", all = TRUE)
-	importaverage$V7 <- as.character(importaverage$V7)
+	importaverage$V6 <- as.character(importaverage$V6)
 	importaverage <- importaverage[!c(importaverage$Overall %in% NA),]
 	importaverage[is.na(importaverage)] <- "Unknown"
 	importaverage <- importaverage[order(importaverage$mean, decreasing = FALSE),]
 	importaverage$categories <- factor(importaverage$categories, levels = importaverage$categories)
-	importaverage$V7 <- factor(importaverage$V7, levels = importaverage$V7)
+	importaverage$V6 <- factor(importaverage$V6, levels = importaverage$V6)
 	
 	binlength <- c(1:topcount) + 0.5
 
@@ -145,7 +145,7 @@ plotimportance <- function(x, iterationcount = 25, topcount = 10, corecount = 5)
 			labels = parse(
 				text = paste0(
 					"italic('",
-					dfplot[c(0:(topcount - 1))*iterationcount+1,"V7"],
+					dfplot[c(0:(topcount - 1))*iterationcount+1,"V6"],
 					"')~",
 					paste(
 						" (",
@@ -213,7 +213,7 @@ pcomb <- function(x, iterationcount = 25, topcount = 10, corecount = 5) {
 	avgimportancedf <- ldply(avgimportance, data.frame)
 	import <- ddply(avgimportancedf, c("categories"), summarize, mean = mean(Overall))
 	importaverage <- merge(avgimportancedf, import, by = "categories")
-	coltax <- virustax[,c(1, 3, 7)]
+	coltax <- virustax[,c(1, 3, 6)]
 	colnames(coltax) <- c("OTU", "Size", "Taxonomy")
 	mtax <- rbind(taxonomy, coltax)
 	importaverage <- merge(importaverage, mtax, by.x = "categories", by.y = "OTU", all = TRUE)
@@ -315,6 +315,13 @@ taxonomy$Taxonomy <- sub(".+\\;(.+)\\(\\d+\\)\\;$", "\\1", taxonomy$Taxonomy, pe
 virustax$V1 <- sub("^", "Cluster_", virustax$V1, perl = TRUE)
 virustax <- unique(virustax)
 
+# Remove the bacteria-not-virus clusters
+removaltable <- read.delim("./data/contigclustersidentity/BacteriaNotVirus.tsv", header = FALSE, sep = "\t")
+removaltable$V1 <- gsub("^", "Cluster_", removaltable$V1, perl = TRUE)
+# Clean input
+input <- input[!c(input$V1 %in% removaltable$V1),]
+virustax <- virustax[!c(virustax$V1 %in% removaltable$V1),]
+
 # Rarefy input table
 minimumsubsample <- 1000000
 inputcast <- dcast(input, V1 ~ V2)
@@ -353,6 +360,19 @@ row.names(relabundcast) <- relabundcast$V2
 
 castmerge <- merge(relabundcast, datadisease, by.x="V2", by.y="V2")
 castmerge <- castmerge[,-1]
+
+# Save the resulting counts per group after rarefaction
+includedsamples <- data.frame(summary(castmerge$V30))
+colnames(includedsamples) <- "Count"
+includedsamples$id <- row.names(includedsamples)
+write.table(
+	includedsamples,
+	file = "./rtables/includedsamples.tsv",
+	quote = FALSE,
+	sep = "\t",
+	row.names = FALSE,
+	col.names = TRUE
+	)
 
 # Filter by presence/absence
 abssubset <- castmerge[!c(castmerge$V30 %in% "Negative"),]
@@ -617,10 +637,6 @@ finalgridplot
 
 pdf("./figures/predmodel-viromebacteria.pdf", height = 6, width = 13)
 	finalgridplot
-dev.off()
-
-pdf("./figures/auccomp-for-pres.pdf", height = 5, width = 3)
-	selectauccompareplot
 dev.off()
 
 write.table(aucstats, file = "./rtables/twoclass-auc.tsv", quote = FALSE, sep = "\t", row.names = FALSE, col.names = TRUE)

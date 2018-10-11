@@ -57,6 +57,10 @@ mergedclusters <- merge(mergedabund, clusters, by = "ContigID")
 
 clusterstats <- ddply(mergedclusters, "Cluster", summarize, sumcount = sum(sum), avglength = mean(Length))
 
+# Remove the bacteria-not-virus clusters
+removaltable <- read.delim("./data/contigclustersidentity/BacteriaNotVirus.tsv", header = FALSE, sep = "\t")
+clusterstats <- clusterstats[!c(clusterstats$Cluster %in% removaltable$V1),]
+
 virusclusterplot <- ggplot(clusterstats, aes(x=avglength, y=sumcount)) +
     theme_classic() +
     geom_point() +

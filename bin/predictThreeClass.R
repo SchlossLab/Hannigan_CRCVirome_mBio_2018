@@ -65,15 +65,15 @@ plotimportance <- function(x, iterationcount = 25, topcount = 10, corecount = 5)
 	import <- ddply(avgimportancedf, c("categories"), summarize, mean = mean(Overall), stder = sd(Overall)/sqrt(length(Overall)))
 	importaverage <- merge(avgimportancedf, import, by = "categories")
 
-	virustaxdf <- virustax[,c(1,3,7)]
+	virustaxdf <- virustax[,c(1,3,6)]
 
 	importaverage <- merge(importaverage, virustaxdf, by.x = "categories", by.y = "V1", all = TRUE)
-	importaverage$V7 <- as.character(importaverage$V7)
+	importaverage$V6 <- as.character(importaverage$V6)
 	importaverage <- importaverage[!c(importaverage$Overall %in% NA),]
 	importaverage[is.na(importaverage)] <- "Unknown"
 	importaverage <- importaverage[order(importaverage$mean, decreasing = FALSE),]
 	importaverage$categories <- factor(importaverage$categories, levels = importaverage$categories)
-	importaverage$V7 <- factor(importaverage$V7, levels = importaverage$V7)
+	importaverage$V6 <- factor(importaverage$V6, levels = importaverage$V6)
 	
 	binlength <- c(1:topcount) + 0.5
 
@@ -113,7 +113,7 @@ plotimportance <- function(x, iterationcount = 25, topcount = 10, corecount = 5)
 			labels=parse(
 				text = paste0(
 					"italic('",
-					dfplot[c(0:(topcount - 1))*iterationcount+1,"V7"],
+					dfplot[c(0:(topcount - 1))*iterationcount+1,"V6"],
 					"')~",
 					paste(
 						" (",
@@ -236,6 +236,13 @@ virustax <- read.delim("./data/contigclustersidentity/clustax.tsv", header = FAL
 virustax$V1 <- sub("^", "Cluster_", virustax$V1, perl = TRUE)
 virustax <- unique(virustax)
 
+# Remove the bacteria-not-virus clusters
+removaltable <- read.delim("./data/contigclustersidentity/BacteriaNotVirus.tsv", header = FALSE, sep = "\t")
+removaltable$V1 <- gsub("^", "Cluster_", removaltable$V1, perl = TRUE)
+# Clean input
+input <- input[!c(input$V1 %in% removaltable$V1),]
+virustax <- virustax[!c(virustax$V1 %in% removaltable$V1),]
+
 # Rarefy input table
 minimumsubsample <- 1000000
 inputcast <- dcast(input, V1 ~ V2)
@@ -315,8 +322,8 @@ varlength <- length(vardf$categories)
 pullvalues <- as.character(vardf[c((varlength-5):varlength),c("categories")])
 exampletry <- absmissingid[,c(pullvalues,"V30")]
 melttry <- melt(exampletry)
-melttry <- merge(melttry, virustax[,c(1,3,7)], by.x = "variable", by.y = "V1", all = TRUE)
-melttry$V7 <- as.character(melttry$V7)
+melttry <- merge(melttry, virustax[,c(1,3,6)], by.x = "variable", by.y = "V1", all = TRUE)
+melttry$V6 <- as.character(melttry$V6)
 melttry <- melttry[!c(melttry$value %in% NA),]
 melttry[is.na(melttry)] <- "Unknown"
 binlength <- c(1:5) + 0.5
@@ -339,7 +346,7 @@ importanceabundance <- ggplot(melttry, aes(x = factor(variable), y = (value + 1e
 		labels=parse(
 			text = paste0(
 				"italic('",
-				melttry[c(0:(72 - 1))*72+1,"V7"],
+				melttry[c(0:(72 - 1))*72+1,"V6"],
 				"')~",
 				paste(
 					" (",
@@ -350,7 +357,7 @@ importanceabundance <- ggplot(melttry, aes(x = factor(variable), y = (value + 1e
 			)
 		)
 	) +
-	# scale_x_discrete(labels=melttry[c(0:(72 - 1))*72+1,"V7"]) +
+	# scale_x_discrete(labels=melttry[c(0:(72 - 1))*72+1,"V6"]) +
 	scale_fill_manual(values = wes_palette("Royal1")[c(1,2,4)], name = "Disease")
 
 importanceabundance
@@ -454,9 +461,9 @@ auccompareplot <- ggplot(megatron, aes(x = class, y = avgAUC, fill = class)) +
 	) +
 	xlab("") +
 	ylab("Area Under the Curve") +
-	geom_segment(x = 1, xend = 2, y = 0.82, yend = 0.82) +
-	annotate("text", x = 1.5, y = 0.84, label = paste("p-value = ", signif(statsig$p.value, digits = 2), sep = ""), size = 4) +
-	ylim(0, 0.85)
+	geom_segment(x = 1, xend = 2, y = 0.90, yend = 0.90) +
+	annotate("text", x = 1.5, y = 0.94, label = paste("p-value = ", signif(statsig$p.value, digits = 2), sep = ""), size = 4) +
+	ylim(0, 1)
 
 aucstat <- ddply(megatron, "class", summarize, meanauc = mean(avgAUC))
 
