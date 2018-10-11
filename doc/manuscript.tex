@@ -298,20 +298,20 @@ the performance of the original report which used logit models instead
 of random forest models \textbf{(Figure \ref{predmodel} A)} (8). We then
 compared the bacterial OTU model to a model built using OVU relative
 abundances. The viral model performed as well as the bacterial model
-(corrected p-value = 0.4), with the viral and bacterial models achieving
-mean area under the curve (AUC) values of 0.792 and 0.809, respectively
+(corrected p-value = 0.6), with the viral and bacterial models achieving
+mean area under the curve (AUC) values of 0.768 and 0.775, respectively
 \textbf{(Figure \ref{predmodel} A - B)}. To evaluate the ability of both
 bacterial and viral biomarkers to classify samples, we built a combined
 model that used both bacterial and viral community data. The combined
 model did not yield a statistically significant performance improvement
-beyond the viral (corrected p-value = 0.4) and bacterial (corrected
-p-value = 0.08) models, yielding an AUC of 0.768 \textbf{(Figure
+beyond the viral (corrected p-value = 0.08) and bacterial (corrected
+p-value = 0.1) models, yielding an AUC of 0.807 \textbf{(Figure
 \ref{predmodel} A - B)}.
 
 We compared viral metagenomic methods to bacterial metagenomic methods
 by building a viral model and a model built using OGU relative abundance
 profiles from bacterial metagenomic shotgun sequencing data. This
-bacterial model performed worse than the other models (mean AUC = 0.474)
+bacterial model performed worse than the other models (mean AUC = 0.458)
 \textbf{(Figure \ref{predmodel} A - B)}. To determine the cause of the
 discrepancy between the two bacterial sequencing methods, we attempted
 to compare the approaches at a common sequencing depth. This revealed
@@ -342,14 +342,13 @@ viruses that are associated with the cancerous state. The identified
 viruses were bacteriophages, belonging to \emph{Siphoviridae},
 \emph{Myoviridae}, and phage taxa that could not be confidently
 identified beyond their broad phage identification (i.e.
-``unclassified''). Many of the important viruses, that were confirmed to
-not have genomic similarity to known bacterial genomes, were
-unidentifiable (denoted ``unknown''). This is common in viromes across
-habitats; studies have reported as much as 95\% of virus sequences
-belonging to unknown genomic units (14, 28--30). When the bacterial and
-viral community signatures were combined, both bacterial and viral
-organisms drove the community association with cancer \textbf{(Figure
-\ref{predmodel} E)}.
+``unclassified''). Viruses, which were confirmed to not have genomic
+similarity to known bacterial genomes, were unidentifiable (denoted
+``unknown''). This is common in viromes across habitats; studies have
+reported as much as 95\% of virus sequences belonging to unknown genomic
+units (14, 28--30). When the bacterial and viral community signatures
+were combined, both bacterial and viral organisms drove the community
+association with cancer \textbf{(Figure \ref{predmodel} E)}.
 
 \subsection{Phage Influence Between CRC
 Stages}\label{phage-influence-between-crc-stages}
@@ -370,9 +369,9 @@ cancerous stages \textbf{(Figure \ref{transitionmodels} C-E)}.
 
 After evaluating our ability to classify samples between two disease
 states, we performed a three-class random forest model including all
-disease states. The 16S rRNA gene model yielded a mean AUC of 0.765 and
+disease states. The 16S rRNA gene model yielded a mean AUC of 0.784 and
 outperformed the viral community model, which yielded a mean AUC of
-0.658 (p-value \textless{} 0.001, \textbf{Figure \ref{threewaymodel}
+0.654 (p-value \textless{} 0.001, \textbf{Figure \ref{threewaymodel}
 A-C}). The microbes important for the healthy versus cancer and healthy
 versus adenoma models were also important for the three-class model
 \textbf{(Figure \ref{threewaymodel} D-E)}. The most important bacterium

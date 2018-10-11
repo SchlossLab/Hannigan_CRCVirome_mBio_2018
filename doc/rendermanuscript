@@ -29,4 +29,4 @@ mv diff.pdf final-diff.pdf
 rm diff.*
 rm missfont.log
 
-
+# pandoc --template=customtemplate.tex -H options.sty -s ./manuscript.md -f markdown -o ./manuscript.docx --biblio=citations.bib --csl=./mbio.csl
